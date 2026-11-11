@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistem Kas Masjid Al-Marhamah - Candi Gebang Permai</title>
+  <!-- Library Eksternal untuk Export JPG & PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    :root {
+      --primary: #0f5132;
+      --primary-light: #198754;
+      --secondary: #d1e7dd;
+      --accent: #ffc107;
+      --danger: #dc3545;
+      --dark: #212529;
+      --gray: #6c757d;
+      --light: #f8f9fa;
+      --border: #dee2e6;
+      --white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background-color: #f0f4f2;
+      color: var(--dark);
+      line-height: 1.5;
+      padding-bottom: 40px;
+    }
+
+    /* Header Aplikasi */
+    .app-header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: var(--white);
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      margin-bottom: 24px;
+    }
+
+    .app-header h1 {
+      font-size: 1.5rem;
+      margin-bottom: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .app-header p {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    /* Layout Utama */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 920px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Panel Kartu */
+    .card {
+      background: var(--white);
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--secondary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Form Controls */
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #495057;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-light);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 14px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--white);
+      width: 100%;
+    }
+
+    .btn-success {
+      background-color: var(--primary-light);
+      color: var(--white);
+    }
+
+    .btn-danger {
+      background-color: var(--danger);
+      color: var(--white);
+    }
+
+    .btn-outline {
+      background-color: var(--white);
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .btn-sm {
+      padding: 5px 10px;
+      font-size: 0.8rem;
+    }
+
+    /* Baris Filter & Tombol Aksi Laporan */
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--white);
+      padding: 16px 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+    }
+
+    .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .filter-group select {
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .action-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    /* Area Cetak / Export Laporan (WA Friendly) */
+    #printableReport {
+      background: var(--white);
+      padding: 28px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .kop-laporan {
+      text-align: center;
+      border-bottom: 3px double var(--primary);
+      padding-bottom: 14px;
+      margin-bottom: 20px;
+    }
+
+    .kop-laporan h2 {
+      color: var(--primary);
+      font-size: 1.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .kop-laporan h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #333;
+      margin-top: 2px;
+    }
+
+    .kop-laporan p {
+      font-size: 0.85rem;
+      color: var(--gray);
+      margin-top: 4px;
+    }
+
+    .periode-title {
+      text-align: center;
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+      background: var(--secondary);
+      color: var(--primary);
+      padding: 8px;
+      border-radius: 6px;
+    }
+
+    /* Ringkasan Kartu Saldo */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    @media (max-width: 680px) {
+      .summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .summary-box {
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--light);
+    }
+
+    .summary-box .label {
+      font-size: 0.78rem;
+      color: var(--gray);
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .summary-box .val {
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .val-awal { color: #0d6efd; }
+    .val-masuk { color: var(--primary-light); }
+    .val-keluar { color: var(--danger); }
+    .val-akhir { color: var(--primary); }
+
+    /* Tabel Laporan */
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ced4da;
+      padding: 9px 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: var(--primary);
+      color: var(--white);
+      font-weight: 600;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    td.text-right {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    td.text-center {
+      text-align: center;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f8faf9;
+    }
+
+    .row-saldo-awal {
+      background-color: #eef6ff !important;
+      font-weight: 600;
+    }
+
+    .row-total {
+      background-color: var(--secondary) !important;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    /* Tanda Tangan Laporan */
+    .signature-area {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 28px;
+      padding: 0 20px;
+      font-size: 0.9rem;
+    }
+
+    .sig-box {
+      text-align: center;
+      min-width: 180px;
+    }
+
+    .sig-space {
+      height: 60px;
+    }
+
+    .sig-name {
+      font-weight: 700;
+      text-decoration: underline;
+    }
+
+    /* Status Notifikasi */
+    #toastMsg {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--dark);
+      color: var(--white);
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      display: none;
+      z-index: 9999;
+    }
+
+    /* Mode Cetak Printout & Ekspor Gambar/PDF */
+    .exporting .no-export {
+      display: none !important;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        padding: 0;
+      }
+      .no-print, .app-header, .sidebar, .toolbar {
+        display: none !important;
+      }
+      .container {
+        display: block;
+        max-width: 100%;
+        padding: 0;
+        margin: 0;
+      }
+      #printableReport {
+        box-shadow: none;
+        border: none;
+        padding: 0;
+      }
+      .no-export {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="app-header no-print">
+    <h1>SISTEM INFORMASI BENDAHARA MASJID AL-MARHAMAH</h1>
+    <p>Perum Candi Gebang Permai, Wedomartani, Ngemplak, Sleman</p>
+  </header>
+
+  <main class="container">
+    <!-- SIDEBAR: INPUT TRANSAKSI & PENGATURAN -->
+    <aside class="sidebar no-print">
+      <!-- Form Input Transaksi -->
+      <section class="card">
+        <div class="card-title">Input Transaksi Kas</div>
+        <form id="transactionForm">
+          <div class="form-group">
+            <label for="txDate">Tanggal Transaksi</label>
+            <input type="date" id="txDate" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="txType">Jenis Transaksi</label>
+            <select id="txType" class="form-control" required>
+              <option value="IN">Pemasukan (Kas Masuk)</option>
+              <option value="OUT">Pengeluaran (Kas Keluar)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="txCategory">Kategori</label>
+            <select id="txCategory" class="form-control" required>
+              <option value="Infaq Jumat">Infaq Kotak Jumat</option>
+              <option value="Infaq/Sedekah Umum">Infaq / Sedekah Umum</option>
+              <option value="Donatur Tetap">Donatur Tetap</option>
+              <option value="Operasional & Listrik">Operasional & Listrik/Air</option>
+              <option value="Bisyaroh Imam/Marbot">Bisyaroh Imam / Khatib / Marbot</option>
+              <option value="Kajian & PHBI">Kegiatan Kajian & PHBI</option>
+              <option value="Sarana & Pemeliharaan">Sarana & Pemeliharaan Masjid</option>
+              <option value="Lain-lain">Lain-lain</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="txDesc">Uraian / Keterangan</label>
+            <input type="text" id="txDesc" class="form-control" placeholder="Contoh: Infaq Jumat pekan ke-1" required>
+          </div>
+          <div class="form-group">
+            <label for="txAmount">Nominal (Rp)</label>
+            <input type="number" id="txAmount" class="form-control" min="1" step="any" placeholder="Contoh: 1500000" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Simpan Transaksi</button>
+        </form>
+      </section>
+
+      <!-- Pengaturan Pejabat Tanda Tangan & Backup Data -->
+      <section class="card">
+        <div class="card-title">Pengaturan & Cadangan Data</div>
+        <div class="form-group">
+          <label for="ketuaName">Nama Ketua Takmir</label>
+          <input type="text" id="ketuaName" class="form-control" placeholder="Nama Ketua Takmir">
+        </div>
+        <div class="form-group">
+          <label for="bendaharaName">Nama Bendahara</label>
+          <input type="text" id="bendaharaName" class="form-control" placeholder="Nama Bendahara">
+        </div>
+        <button type="button" id="btnSaveConfig" class="btn btn-outline btn-sm" style="width:100%; margin-bottom:14px;">
+          Simpan Nama Pengurus
+        </button>
+
+        <hr style="border:none; border-top:1px solid var(--border); margin: 14px 0;">
+
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button type="button" id="btnBackupJson" class="btn btn-outline btn-sm" style="flex:1;">
+            Backup JSON
+          </button>
+          <label class="btn btn-outline btn-sm" style="flex:1; cursor:pointer; margin:0;">
+            Restore JSON
+            <input type="file" id="fileRestoreJson" accept=".json" style="display:none;">
+          </label>
+          <button type="button" id="btnResetDemo" class="btn btn-danger btn-sm" style="width:100%; margin-top:4px;">
+            Muat Ulang Data Contoh
+          </button>
+        </div>
+      </section>
+    </aside>
+
+    <!-- KONTEN UTAMA: FILTER, EXPORT, & LAPORAN -->
+    <section class="main-content">
+      <!-- Toolbar Filter & Export -->
+      <div class="toolbar no-print">
+        <div class="filter-group">
+          <label for="reportMode" style="font-size:0.85rem; font-weight:700;">Jenis Laporan:</label>
+          <select id="reportMode">
+            <option value="MONTHLY">Laporan Bulanan</option>
+            <option value="YEARLY">Laporan Tahunan</option>
+          </select>
+
+          <select id="filterMonth">
+            <option value="01">Januari</option>
+            <option value="02">Februari</option>
+            <option value="03">Maret</option>
+            <option value="04">April</option>
+            <option value="05">Mei</option>
+            <option value="06">Juni</option>
+            <option value="07">Juli</option>
+            <option value="08">Agustus</option>
+            <option value="09">September</option>
+            <option value="10">Oktober</option>
+            <option value="11">November</option>
+            <option value="12">Desember</option>
+          </select>
+
+          <select id="filterYear"></select>
+        </div>
+
+        <div class="action-group">
+          <button type="button" id="btnExportJpg" class="btn btn-success">
+            Simpan JPG (Share WA)
+          </button>
+          <button type="button" id="btnExportPdf" class="btn btn-primary" style="width:auto;">
+            Simpan PDF
+          </button>
+          <button type="button" id="btnPrint" class="btn btn-outline">
+            Cetak Printout
+          </button>
+        </div>
+      </div>
+
+      <!-- Area Laporan yang Bisa Dicetak / Diunduh JPG & PDF -->
+      <div id="printableReport">
+        <div class="kop-laporan">
+          <h2>TAKHMIR MASJID AL-MARHAMAH</h2>
+          <h3>Perum Candi Gebang Permai, Wedomartani, Ngemplak, Sleman</h3>
+          <p>Laporan Pertanggungjawaban Keuangan Kas Masjid secara Transparan & Akuntabel</p>
+        </div>
+
+        <div id="reportPeriodTitle" class="periode-title">
+          LAPORAN KEUANGAN BULAN NOVEMBER 2026
+        </div>
+
+        <!-- Ringkasan 4 Kotak Saldo Berkesinambungan -->
+        <div class="summary-grid">
+          <div class="summary-box">
+            <div class="label" id="labelSaldoAwal">Saldo Awal Bulan</div>
+            <div class="val val-awal" id="valSaldoAwal">Rp 0</div>
+          </div>
+          <div class="summary-box">
+            <div class="label">Total Pemasukan</div>
+            <div class="val val-masuk" id="valTotalMasuk">Rp 0</div>
+          </div>
+          <div class="summary-box">
+            <div class="label">Total Pengeluaran</div>
+            <div class="val val-keluar" id="valTotalKeluar">Rp 0</div>
+          </div>
+          <div class="summary-box">
+            <div class="label" id="labelSaldoAkhir">Saldo Akhir Bulan</div>
+            <div class="val val-akhir" id="valSaldoAkhir">Rp 0</div>
+          </div>
+        </div>
+
+        <!-- Tabel Data Dinamis (Bulanan / Tahunan) -->
+        <div class="table-responsive">
+          <table id="reportTable">
+            <thead id="reportTableHead"></thead>
+            <tbody id="reportTableBody"></tbody>
+            <tfoot id="reportTableFoot"></tfoot>
+          </table>
+        </div>
+
+        <!-- Area Pengesahan -->
+        <div class="signature-area">
+          <div class="sig-box">
+            <div>Mengetahui,</div>
+            <div>Ketua Takmir Masjid Al-Marhamah</div>
+            <div class="sig-space"></div>
+            <div class="sig-name" id="displayKetua">H. Ahmad Fauzi</div>
+          </div>
+          <div class="sig-box">
+            <div id="sigDateText">Sleman, 30 November 2026</div>
+            <div>Bendahara Masjid</div>
+            <div class="sig-space"></div>
+            <div class="sig-name" id="displayBendahara">Fatchurohman</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toastMsg"></div>
+
+  <script>
+    (() => {
+      'use strict';
+
+      const STORAGE_KEY_TX = 'almarhamah_kas_transactions_v1';
+      const STORAGE_KEY_CFG = 'almarhamah_kas_config_v1';
+
+      const MONTH_NAMES = [
+        'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+        'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+      ];
+
+      // State Aplikasi
+      let transactions = [];
+      let config = {
+        ketua: 'H. Ahmad Fauzi',
+        bendahara: 'Fatchurohman'
+      };
+
+      // Referensi Elemen DOM
+      const dom = {
+        form: document.getElementById('transactionForm'),
+        txDate: document.getElementById('txDate'),
+        txType: document.getElementById('txType'),
+        txCategory: document.getElementById('txCategory'),
+        txDesc: document.getElementById('txDesc'),
+        txAmount: document.getElementById('txAmount'),
+        ketuaName: document.getElementById('ketuaName'),
+        bendaharaName: document.getElementById('bendaharaName'),
+        btnSaveConfig: document.getElementById('btnSaveConfig'),
+        btnBackupJson: document.getElementById('btnBackupJson'),
+        fileRestoreJson: document.getElementById('fileRestoreJson'),
+        btnResetDemo: document.getElementById('btnResetDemo'),
+        reportMode: document.getElementById('reportMode'),
+        filterMonth: document.getElementById('filterMonth'),
+        filterYear: document.getElementById('filterYear'),
+        btnExportJpg: document.getElementById('btnExportJpg'),
+        btnExportPdf: document.getElementById('btnExportPdf'),
+        btnPrint: document.getElementById('btnPrint'),
+        printableReport: document.getElementById('printableReport'),
+        reportPeriodTitle: document.getElementById('reportPeriodTitle'),
+        labelSaldoAwal: document.getElementById('labelSaldoAwal'),
+        labelSaldoAkhir: document.getElementById('labelSaldoAkhir'),
+        valSaldoAwal: document.getElementById('valSaldoAwal'),
+        valTotalMasuk: document.getElementById('valTotalMasuk'),
+        valTotalKeluar: document.getElementById('valTotalKeluar'),
+        valSaldoAkhir: document.getElementById('valSaldoAkhir'),
+        tableHead: document.getElementById('reportTableHead'),
+        tableBody: document.getElementById('reportTableBody'),
+        tableFoot: document.getElementById('reportTableFoot'),
+        displayKetua: document.getElementById('displayKetua'),
+        displayBendahara: document.getElementById('displayBendahara'),
+        sigDateText: document.getElementById('sigDateText'),
+        toastMsg: document.getElementById('toastMsg')
+      };
+
+      // Utilitas Notifikasi Singkat
+      const showToast = (message) => {
+        dom.toastMsg.textContent = message;
+        dom.toastMsg.style.display = 'block';
+        setTimeout(() => {
+          dom.toastMsg.style.display = 'none';
+        }, 3000);
+      };
+
+      // Format Mata Uang Rupiah
+      const formatRupiah = (number) => {
+        const safeNum = Number.isFinite(Number(number)) ? Number(number) : 0;
+        return new Intl.NumberFormat('id-ID', {
+          style: 'currency',
+          currency: 'IDR',
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0
+        }).format(safeNum);
+      };
+
+      // Sanitasi teks sederhana untuk mencegah injeksi HTML
+      const escapeHtml = (str) => {
+        if (str === null || str === undefined) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      };
+
+      // Validasi & Normalisasi Objek Transaksi dari JSON
+      const sanitizeTransaction = (item) => {
+        if (!item || typeof item !== 'object') return null;
+        const id = typeof item.id === 'string' && item.id.trim() !== ''
+          ? item.id.trim()
+          : `tx_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+        const date = typeof item.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(item.date)
+          ? item.date
+          : null;
+        const type = item.type === 'IN' || item.type === 'OUT' ? item.type : null;
+        const category = typeof item.category === 'string' && item.category.trim() !== ''
+          ? item.category.trim()
+          : 'Lain-lain';
+        const desc = typeof item.desc === 'string' && item.desc.trim() !== ''
+          ? item.desc.trim()
+          : '-';
+        const amount = Number(item.amount);
+
+        if (!date || !type || !Number.isFinite(amount) || amount <= 0) {
+          return null;
+        }
+
+        return { id, date, type, category, desc, amount };
+      };
+
+      // Data Contoh Berkesinambungan (Oktober -> November 2026)
+      const getDemoTransactions = () => [
+        {
+          id: 'demo_1',
+          date: '2026-10-02',
+          type: 'IN',
+          category: 'Infaq Jumat',
+          desc: 'Saldo Awal & Penerimaan Infaq Jumat Pekan 1 Oktober',
+          amount: 4500000
+        },
+        {
+          id: 'demo_2',
+          date: '2026-10-10',
+          type: 'OUT',
+          category: 'Operasional & Listrik',
+          desc: 'Pembayaran Tagihan Listrik & Air PDAM Masjid',
+          amount: 650000
+        },
+        {
+          id: 'demo_3',
+          date: '2026-10-16',
+          type: 'IN',
+          category: 'Infaq Jumat',
+          desc: 'Penerimaan Kotak Amal Jumat Pekan 3 Oktober',
+          amount: 1850000
+        },
+        {
+          id: 'demo_4',
+          date: '2026-10-25',
+          type: 'OUT',
+          category: 'Bisyaroh Imam/Marbot',
+          desc: 'Insentif Kebersihan & Marbot Bulan Oktober',
+          amount: 1200000
+        },
+        {
+          id: 'demo_5',
+          date: '2026-11-06',
+          type: 'IN',
+          category: 'Infaq Jumat',
+          desc: 'Penerimaan Kotak Amal Jumat Pekan 1 November',
+          amount: 2100000
+        },
+        {
+          id: 'demo_6',
+          date: '2026-11-08',
+          type: 'IN',
+          category: 'Donatur Tetap',
+          desc: 'Infaq Donatur Warga Blok C Candi Gebang Permai',
+          amount: 1000000
+        },
+        {
+          id: 'demo_7',
+          date: '2026-11-10',
+          type: 'OUT',
+          category: 'Sarana & Pemeliharaan',
+          desc: 'Servis Sound System & Pembelian Lampu LED Utama',
+          amount: 750000
+        }
+      ];
+
+      // Load Data dari LocalStorage dengan Safe JSON Parsing
+      const loadData = () => {
+        try {
+          const rawTx = localStorage.getItem(STORAGE_KEY_TX);
+          if (rawTx) {
+            const parsed = JSON.parse(rawTx);
+            if (Array.isArray(parsed)) {
+              transactions = parsed.map(sanitizeTransaction).filter(Boolean);
+            } else {
+              transactions = getDemoTransactions();
+            }
+          } else {
+            transactions = getDemoTransactions();
+            saveTransactions();
+          }
+        } catch (err) {
+          console.error('Gagal memuat data transaksi dari penyimpanan:', err);
+          transactions = getDemoTransactions();
+        }
+
+        try {
+          const rawCfg = localStorage.getItem(STORAGE_KEY_CFG);
+          if (rawCfg) {
+            const parsedCfg = JSON.parse(rawCfg);
+            if (parsedCfg && typeof parsedCfg === 'object') {
+              config.ketua = typeof parsedCfg.ketua === 'string' && parsedCfg.ketua.trim()
+                ? parsedCfg.ketua.trim()
+                : config.ketua;
+              config.bendahara = typeof parsedCfg.bendahara === 'string' && parsedCfg.bendahara.trim()
+                ? parsedCfg.bendahara.trim()
+                : config.bendahara;
+            }
+          }
+        } catch (err) {
+          console.error('Gagal memuat konfigurasi pengurus:', err);
+        }
+      };
+
+      const saveTransactions = () => {
+        try {
+          localStorage.setItem(STORAGE_KEY_TX, JSON.stringify(transactions));
+        } catch (err) {
+          console.error('Gagal menyimpan transaksi:', err);
+          showToast('Peringatan: Gagal menyimpan ke penyimpanan browser.');
+        }
+      };
+
+      const saveConfig = () => {
+        try {
+          localStorage.setItem(STORAGE_KEY_CFG, JSON.stringify(config));
+        } catch (err) {
+          console.error('Gagal menyimpan konfigurasi:', err);
+        }
+      };
+
+      // Urutkan transaksi berdasarkan tanggal secara kronologis
+      const getSortedTransactions = () => {
+        return [...transactions].sort((a, b) => {
+          if (a.date !== b.date) return a.date.localeCompare(b.date);
+          return a.id.localeCompare(b.id);
+        });
+      };
+
+      // Inisialisasi Pilihan Tahun
+      const populateYearSelect = () => {
+        const currentYear = new Date().getFullYear();
+        const years = new Set([currentYear - 1, currentYear, currentYear + 1, 2026]);
+        transactions.forEach((tx) => {
+          const yr = parseInt(tx.date.substring(0, 4), 10);
+          if (Number.isFinite(yr)) years.add(yr);
+        });
+
+        const sortedYears = Array.from(years).sort((a, b) => a - b);
+        const prevSelected = dom.filterYear.value || '2026';
+        dom.filterYear.innerHTML = sortedYears
+          .map((yr) => `<option value="${yr}">${yr}</option>`)
+          .join('');
+        dom.filterYear.value = sortedYears.includes(Number(prevSelected))
+          ? String(prevSelected)
+          : String(sortedYears[sortedYears.length - 1]);
+      };
+
+      // Render Laporan Bulanan (Menampilkan detail transaksi + kesinambungan saldo)
+      const renderMonthlyReport = (year, month) => {
+        const targetPrefix = `${year}-${month}`;
+        const monthIndex = parseInt(month, 10) - 1;
+        const monthName = MONTH_NAMES[monthIndex] || '';
+
+        dom.reportPeriodTitle.textContent = `LAPORAN KEUANGAN BULAN ${monthName.toUpperCase()} ${year}`;
+        dom.labelSaldoAwal.textContent = 'Saldo Awal Bulan';
+        dom.labelSaldoAkhir.textContent = 'Saldo Akhir Bulan';
+
+        const sorted = getSortedTransactions();
+
+        // Hitung Saldo Awal dari seluruh transaksi SEBELUM bulan ini
+        let saldoAwal = 0;
+        const monthlyTx = [];
+
+        sorted.forEach((tx) => {
+          const txMonthPrefix = tx.date.substring(0, 7);
+          if (txMonthPrefix < targetPrefix) {
+            saldoAwal += tx.type === 'IN' ? tx.amount : -tx.amount;
+          } else if (txMonthPrefix === targetPrefix) {
+            monthlyTx.push(tx);
+          }
+        });
+
+        let totalMasuk = 0;
+        let totalKeluar = 0;
+        let runningSaldo = saldoAwal;
+
+        // Header Tabel Bulanan
+        dom.tableHead.innerHTML = `
+          <tr>
+            <th style="width:45px;">No</th>
+            <th style="width:105px;">Tanggal</th>
+            <th style="width:160px;">Kategori</th>
+            <th>Uraian / Keterangan</th>
+            <th style="width:130px;">Pemasukan (Rp)</th>
+            <th style="width:130px;">Pengeluaran (Rp)</th>
+            <th style="width:140px;">Saldo (Rp)</th>
+            <th class="no-export" style="width:70px;">Aksi</th>
+          </tr>
+        `;
+
+        // Baris Saldo Awal
+        let rowsHtml = `
+          <tr class="row-saldo-awal">
+            <td class="text-center">-</td>
+            <td class="text-center">01/${month}/${year}</td>
+            <td>Saldo Kas</td>
+            <td>Saldo Awal (Lanjutan Bulan Sebelumnya)</td>
+            <td class="text-right">-</td>
+            <td class="text-right">-</td>
+            <td class="text-right">${formatRupiah(saldoAwal)}</td>
+            <td class="text-center no-export">-</td>
+          </tr>
+        `;
+
+        if (monthlyTx.length === 0) {
+          rowsHtml += `
+            <tr>
+              <td colspan="8" class="text-center" style="padding: 18px; color: var(--gray);">
+                Belum ada transaksi tercatat pada bulan ${monthName} ${year}.
+              </td>
+            </tr>
+          `;
+        } else {
+          monthlyTx.forEach((tx, idx) => {
+            const isMasuk = tx.type === 'IN';
+            if (isMasuk) {
+              totalMasuk += tx.amount;
+              runningSaldo += tx.amount;
+            } else {
+              totalKeluar += tx.amount;
+              runningSaldo -= tx.amount;
+            }
+
+            const [y, m, d] = tx.date.split('-');
+            rowsHtml += `
+              <tr>
+                <td class="text-center">${idx + 1}</td>
+                <td class="text-center">${d}/${m}/${y}</td>
+                <td>${escapeHtml(tx.category)}</td>
+                <td>${escapeHtml(tx.desc)}</td>
+                <td class="text-right">${isMasuk ? formatRupiah(tx.amount) : '-'}</td>
+                <td class="text-right">${!isMasuk ? formatRupiah(tx.amount) : '-'}</td>
+                <td class="text-right" style="font-weight:600;">${formatRupiah(runningSaldo)}</td>
+                <td class="text-center no-export">
+                  <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="${escapeHtml(tx.id)}">Hapus</button>
+                </td>
+              </tr>
+            `;
+          });
+        }
+
+        dom.tableBody.innerHTML = rowsHtml;
+
+        // Footer Tabel Bulanan
+        dom.tableFoot.innerHTML = `
+          <tr class="row-total">
+            <td colspan="4" class="text-right">TOTAL MUTASI & SALDO AKHIR ${monthName.toUpperCase()} ${year}</td>
+            <td class="text-right">${formatRupiah(totalMasuk)}</td>
+            <td class="text-right">${formatRupiah(totalKeluar)}</td>
+            <td class="text-right">${formatRupiah(runningSaldo)}</td>
+            <td class="no-export"></td>
+          </tr>
+        `;
+
+        // Update Ringkasan Kotak Atas
+        dom.valSaldoAwal.textContent = formatRupiah(saldoAwal);
+        dom.valTotalMasuk.textContent = formatRupiah(totalMasuk);
+        dom.valTotalKeluar.textContent = formatRupiah(totalKeluar);
+        dom.valSaldoAkhir.textContent = formatRupiah(runningSaldo);
+
+        // Update Tanggal Tanda Tangan Akhir Bulan
+        const lastDay = new Date(Number(year), Number(month), 0).getDate();
+        dom.sigDateText.textContent = `Sleman, ${lastDay} ${monthName} ${year}`;
+      };
+
+      // Render Laporan Tahunan (Rekapitulasi 12 Bulan Berkesinambungan)
+      const renderYearlyReport = (year) => {
+        dom.reportPeriodTitle.textContent = `LAPORAN REKAPITULASI KEUANGAN TAHUN ${year}`;
+        dom.labelSaldoAwal.textContent = `Saldo Awal Tahun ${year}`;
+        dom.labelSaldoAkhir.textContent = `Saldo Akhir Tahun ${year}`;
+
+        const sorted = getSortedTransactions();
+
+        // Hitung Saldo Awal sebelum 1 Januari tahun terpilih
+        let saldoAwalTahun = 0;
+        const monthlyStats = Array.from({ length: 12 }, () => ({ masuk: 0, keluar: 0 }));
+
+        sorted.forEach((tx) => {
+          const txYear = tx.date.substring(0, 4);
+          if (txYear < year) {
+            saldoAwalTahun += tx.type === 'IN' ? tx.amount : -tx.amount;
+          } else if (txYear === year) {
+            const mIdx = parseInt(tx.date.substring(5, 7), 10) - 1;
+            if (mIdx >= 0 && mIdx < 12) {
+              if (tx.type === 'IN') {
+                monthlyStats[mIdx].masuk += tx.amount;
+              } else {
+                monthlyStats[mIdx].keluar += tx.amount;
+              }
+            }
+          }
+        });
+
+        dom.tableHead.innerHTML = `
+          <tr>
+            <th style="width:50px;">No</th>
+            <th>Bulan</th>
+            <th style="width:160px;">Saldo Awal Bulan</th>
+            <th style="width:160px;">Total Pemasukan</th>
+            <th style="width:160px;">Total Pengeluaran</th>
+            <th style="width:170px;">Saldo Akhir Bulan</th>
+          </tr>
+        `;
+
+        let runningBalance = saldoAwalTahun;
+        let totalMasukTahun = 0;
+        let totalKeluarTahun = 0;
+        let rowsHtml = '';
+
+        MONTH_NAMES.forEach((mName, idx) => {
+          const sAwalBulan = runningBalance;
+          const masuk = monthlyStats[idx].masuk;
+          const keluar = monthlyStats[idx].keluar;
+          const sAkhirBulan = sAwalBulan + masuk - keluar;
+
+          runningBalance = sAkhirBulan;
+          totalMasukTahun += masuk;
+          totalKeluarTahun += keluar;
+
+          rowsHtml += `
+            <tr>
+              <td class="text-center">${idx + 1}</td>
+              <td style="font-weight:600;">${mName} ${year}</td>
+              <td class="text-right">${formatRupiah(sAwalBulan)}</td>
+              <td class="text-right">${formatRupiah(masuk)}</td>
+              <td class="text-right">${formatRupiah(keluar)}</td>
+              <td class="text-right" style="font-weight:700;">${formatRupiah(sAkhirBulan)}</td>
+            </tr>
+          `;
+        });
+
+        dom.tableBody.innerHTML = rowsHtml;
+        dom.tableFoot.innerHTML = `
+          <tr class="row-total">
+            <td colspan="2" class="text-right">REKAPITULASI AKHIR TAHUN ${year}</td>
+            <td class="text-right">${formatRupiah(saldoAwalTahun)}</td>
+            <td class="text-right">${formatRupiah(totalMasukTahun)}</td>
+            <td class="text-right">${formatRupiah(totalKeluarTahun)}</td>
+            <td class="text-right">${formatRupiah(runningBalance)}</td>
+          </tr>
+        `;
+
+        dom.valSaldoAwal.textContent = formatRupiah(saldoAwalTahun);
+        dom.valTotalMasuk.textContent = formatRupiah(totalMasukTahun);
+        dom.valTotalKeluar.textContent = formatRupiah(totalKeluarTahun);
+        dom.valSaldoAkhir.textContent = formatRupiah(runningBalance);
+
+        dom.sigDateText.textContent = `Sleman, 31 Desember ${year}`;
+      };
+
+      // Fungsi Utama Render Berdasarkan Filter
+      const renderReport = () => {
+        const mode = dom.reportMode.value;
+        const year = dom.filterYear.value;
+        const month = dom.filterMonth.value;
+
+        dom.displayKetua.textContent = config.ketua;
+        dom.displayBendahara.textContent = config.bendahara;
+
+        if (mode === 'YEARLY') {
+          dom.filterMonth.style.display = 'none';
+          renderYearlyReport(year);
+        } else {
+          dom.filterMonth.style.display = 'inline-block';
+          renderMonthlyReport(year, month);
+        }
+      };
+
+      // Fungsi Ekspor ke Gambar JPG (Untuk Share ke Grup WA)
+      const exportToJpg = async () => {
+        if (typeof window.html2canvas !== 'function') {
+          showToast('Library pembuat gambar belum siap. Periksa koneksi internet.');
+          return;
+        }
+
+        try {
+          dom.btnExportJpg.disabled = true;
+          dom. printableReport.classList.add('exporting');
+          showToast('Sedang menyiapkan gambar JPG...');
+
+          const canvas = await window.html2canvas(dom.printableReport, {
+            scale: 2,
+            backgroundColor: '#ffffff',
+            useCORS: true
+          });
+
+          const imgData = canvas.toDataURL('image/jpeg', 0.95);
+          const link = document.createElement('a');
+          const mode = dom.reportMode.value === 'YEARLY'
+            ? `Tahunan_${dom.filterYear.value}`
+            : `Bulanan_${dom.filterYear.value}-${dom.filterMonth.value}`;
+
+          link.download = `Laporan_Kas_AlMarhamah_${mode}.jpg`;
+          link.href = imgData;
+          link.click();
+          showToast('Gambar JPG berhasil diunduh, siap dibagikan ke WhatsApp!');
+        } catch (err) {
+          console.error('Gagal mengekspor JPG:', err);
+          showToast('Terjadi kesalahan saat membuat gambar JPG.');
+        } finally {
+          dom.printableReport.classList.remove('exporting');
+          dom.btnExportJpg.disabled = false;
+        }
+      };
+
+      // Fungsi Ekspor ke PDF
+      const exportToPdf = async () => {
+        if (typeof window.html2canvas !== 'function' || !window.jspdf) {
+          showToast('Library PDF belum siap. Periksa koneksi internet.');
+          return;
+        }
+
+        try {
+          dom.btnExportPdf.disabled = true;
+          dom.printableReport.classList.add('exporting');
+          showToast('Sedang menyusun dokumen PDF...');
+
+          const canvas = await window.html2canvas(dom.printableReport, {
+            scale: 2,
+            backgroundColor: '#ffffff',
+            useCORS: true
+          });
+
+          const imgData = canvas.toDataURL('image/jpeg', 0.95);
+          const { jsPDF } = window.jspdf;
+          const pdf = new jsPDF('p', 'mm', 'a4');
+
+          const pageWidth = pdf.internal.pageSize.getWidth();
+          const pageHeight = pdf.internal.pageSize.getHeight();
+          const margin = 10;
+          const usableWidth = pageWidth - margin * 2;
+          const imgHeight = (canvas.height * usableWidth) / canvas.width;
+
+          let heightLeft = imgHeight;
+          let position = margin;
+
+          pdf.addImage(imgData, 'JPEG', margin, position, usableWidth, imgHeight);
+          heightLeft -= (pageHeight - margin * 2);
+
+          while (heightLeft > 0) {
+            position = heightLeft - imgHeight + margin;
+            pdf.addPage();
+            pdf.addImage(imgData, 'JPEG', margin, position, usableWidth, imgHeight);
+            heightLeft -= (pageHeight - margin * 2);
+          }
+
+          const mode = dom.reportMode.value === 'YEARLY'
+            ? `Tahunan_${dom.filterYear.value}`
+            : `Bulanan_${dom.filterYear.value}-${dom.filterMonth.value}`;
+
+          pdf.save(`Laporan_Kas_AlMarhamah_${mode}.pdf`);
+          showToast('Dokumen PDF berhasil diunduh!');
+        } catch (err) {
+          console.error('Gagal mengekspor PDF:', err);
+          showToast('Terjadi kesalahan saat membuat PDF.');
+        } finally {
+          dom.printableReport.classList.remove('exporting');
+          dom.btnExportPdf.disabled = false;
+        }
+      };
+
+      // Event Listeners
+      const bindEvents = () => {
+        // Tambah Transaksi
+        dom.form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const newTx = sanitizeTransaction({
+            id: `tx_${Date.now()}`,
+            date: dom.txDate.value,
+            type: dom.txType.value,
+            category: dom.txCategory.value,
+            desc: dom.txDesc.value,
+            amount: Number(dom.txAmount.value)
+          });
+
+          if (!newTx) {
+            showToast('Mohon lengkapi data transaksi dengan benar.');
+            return;
+          }
+
+          transactions.push(newTx);
+          saveTransactions();
+          populateYearSelect();
+
+          // Otomatis arahkan filter ke bulan & tahun transaksi yang baru diinput
+          const [txYear, txMonth] = newTx.date.split('-');
+          dom.filterYear.value = txYear;
+          dom.filterMonth.value = txMonth;
+
+          dom.txDesc.value = '';
+          dom.txAmount.value = '';
+          renderReport();
+          showToast('Transaksi berhasil disimpan.');
+        });
+
+        // Hapus Transaksi (Delegasi Event)
+        dom.tableBody.addEventListener('click', (e) => {
+          const btn = e.target.closest('.btn-delete');
+          if (!btn) return;
+          const id = btn.getAttribute('data-id');
+          if (!id) return;
+
+          if (window.confirm('Hapus transaksi ini? Saldo bulan berikutnya akan otomatis disesuaikan.')) {
+            transactions = transactions.filter((tx) => tx.id !== id);
+            saveTransactions();
+            renderReport();
+            showToast('Transaksi dihapus & saldo diperbarui.');
+          }
+        });
+
+        // Simpan Pengurus
+        dom.btnSaveConfig.addEventListener('click', () => {
+          config.ketua = dom.ketuaName.value.trim() || 'Ketua Takmir';
+          config.bendahara = dom.bendaharaName.value.trim() || 'Bendahara';
+          saveConfig();
+          renderReport();
+          showToast('Nama pengurus berhasil diperbarui.');
+        });
+
+        // Filter Perubahan Periode
+        dom.reportMode.addEventListener('change', renderReport);
+        dom.filterMonth.addEventListener('change', renderReport);
+        dom.filterYear.addEventListener('change', renderReport);
+
+        // Tombol Export & Cetak
+        dom.btnExportJpg.addEventListener('click', exportToJpg);
+        dom.btnExportPdf.addEventListener('click', exportToPdf);
+        dom.btnPrint.addEventListener('click', () => window.print());
+
+        // Backup Data JSON
+        dom.btnBackupJson.addEventListener('click', () => {
+          try {
+            const payload = {
+              masjid: 'Masjid Al-Marhamah Perum Candi Gebang Permai',
+              exportedAt: new Date().toISOString(),
+              config,
+              transactions
+            };
+            const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Backup_Kas_AlMarhamah_${new Date().toISOString().slice(0, 10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('File cadangan JSON berhasil diunduh.');
+          } catch (err) {
+            console.error('Gagal membuat backup JSON:', err);
+            showToast('Gagal mengunduh backup JSON.');
+          }
+        });
+
+        // Restore Data JSON dengan Validasi Aman
+        dom.fileRestoreJson.addEventListener('change', (e) => {
+          const file = e.target.files && e.target.files[0];
+          if (!file) return;
+
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            try {
+              const rawContent = event.target ? event.target.result : '';
+              const parsed = JSON.parse(String(rawContent));
+
+              if (!parsed || typeof parsed !== 'object' || !Array.isArray(parsed.transactions)) {
+                throw new Error('Struktur JSON tidak sesuai format aplikasi.');
+              }
+
+              const validTx = parsed.transactions.map(sanitizeTransaction).filter(Boolean);
+              transactions = validTx;
+
+              if (parsed.config && typeof parsed.config === 'object') {
+                config.ketua = typeof parsed.config.ketua === 'string' ? parsed.config.ketua : config.ketua;
+                config.bendahara = typeof parsed.config.bendahara === 'string' ? parsed.config.bendahara : config.bendahara;
+                dom.ketuaName.value = config.ketua;
+                dom.bendaharaName.value = config.bendahara;
+                saveConfig();
+              }
+
+              saveTransactions();
+              populateYearSelect();
+              renderReport();
+              showToast(`Berhasil memulihkan ${validTx.length} data transaksi.`);
+            } catch (err) {
+              console.error('Error saat memulihkan JSON:', err);
+              showToast('File JSON tidak valid atau rusak.');
+            } finally {
+              dom.fileRestoreJson.value = '';
+            }
+          };
+          reader.readAsText(file);
+        });
+
+        // Reset Data Contoh
+        dom.btnResetDemo.addEventListener('click', () => {
+          if (window.confirm('Muat ulang data contoh? Data yang Anda input saat ini akan diganti dengan data simulasi Oktober-November 2026.')) {
+            transactions = getDemoTransactions();
+            saveTransactions();
+            populateYearSelect();
+            dom.filterYear.value = '2026';
+            dom.filterMonth.value = '11';
+            renderReport();
+            showToast('Data simulasi berhasil dimuat ulang.');
+          }
+        });
+      };
+
+      // Inisialisasi Aplikasi
+      const init = () => {
+        loadData();
+        const today = new Date().toISOString().slice(0, 10);
+        dom.txDate.value = today;
+
+        dom.ketuaName.value = config.ketua;
+        dom.bendaharaName.value = config.bendahara;
+
+        populateYearSelect();
+        // Default ke November 2026 agar simulasi kesinambungan dari Oktober langsung terlihat
+        dom.filterYear.value = '2026';
+        dom.filterMonth.value = '11';
+
+        bindEvents();
+        renderReport();
+      };
+
+      init();
+    })();
+  </script>
+</body>
+</html>
