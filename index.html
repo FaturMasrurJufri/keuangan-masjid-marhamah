@@ -104,8 +104,15 @@
       display: block;
       font-size: 0.85rem;
       font-weight: 600;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       color: #495057;
+    }
+
+    .field-hint {
+      display: block;
+      font-size: 0.76rem;
+      color: var(--gray);
+      margin-bottom: 6px;
     }
 
     .form-control {
@@ -277,7 +284,7 @@
     }
 
     .summary-box .label {
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       color: var(--gray);
       text-transform: uppercase;
       font-weight: 700;
@@ -440,21 +447,39 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="txCategory">Kategori</label>
-            <select id="txCategory" class="form-control" required>
-              <option value="Infaq Jumat">Infaq Kotak Jumat</option>
-              <option value="Infaq/Sedekah Umum">Infaq / Sedekah Umum</option>
-              <option value="Donatur Tetap">Donatur Tetap</option>
-              <option value="Operasional & Listrik">Operasional & Listrik/Air</option>
-              <option value="Bisyaroh Imam/Marbot">Bisyaroh Imam / Khatib / Marbot</option>
-              <option value="Kajian & PHBI">Kegiatan Kajian & PHBI</option>
-              <option value="Sarana & Pemeliharaan">Sarana & Pemeliharaan Masjid</option>
-              <option value="Lain-lain">Lain-lain</option>
-            </select>
+            <label for="txCategory">Kategori Pos Dana</label>
+            <span class="field-hint">Bisa pilih dari daftar atau ketik langsung kategori baru:</span>
+            <input
+              type="text"
+              id="txCategory"
+              list="categorySuggestions"
+              class="form-control"
+              placeholder="Ketik atau pilih kategori..."
+              autocomplete="off"
+              required
+            >
+            <datalist id="categorySuggestions">
+              <option value="Infaq Jumat"></option>
+              <option value="Infaq / Sedekah Umum"></option>
+              <option value="Donatur Tetap"></option>
+              <option value="Zakat / Wakaf / Sosial"></option>
+              <option value="Operasional & Listrik/Air"></option>
+              <option value="Bisyaroh Imam / Khatib / Marbot"></option>
+              <option value="Konsumsi & Kajian Rutin"></option>
+              <option value="Kegiatan PHBI / Ramadhan"></option>
+              <option value="Sarana & Pemeliharaan Masjid"></option>
+            </datalist>
           </div>
           <div class="form-group">
-            <label for="txDesc">Uraian / Keterangan</label>
-            <input type="text" id="txDesc" class="form-control" placeholder="Contoh: Infaq Jumat pekan ke-1" required>
+            <label for="txDesc">Deskripsi / Uraian Lengkap</label>
+            <span class="field-hint">Ketik bebas detail pemasukan atau pengeluaran:</span>
+            <textarea
+              id="txDesc"
+              class="form-control"
+              rows="2"
+              placeholder="Contoh: Pembelian mikrofon wireless baru / Infaq hamba Allah..."
+              required
+            ></textarea>
           </div>
           <div class="form-group">
             <label for="txAmount">Nominal (Rp)</label>
@@ -541,7 +566,7 @@
       <!-- Area Laporan yang Bisa Dicetak / Diunduh JPG & PDF -->
       <div id="printableReport">
         <div class="kop-laporan">
-          <h2>TAKHMIR MASJID AL-MARHAMAH</h2>
+          <h2>TAKMIR MASJID AL-MARHAMAH</h2>
           <h3>Perum Candi Gebang Permai, Wedomartani, Ngemplak, Sleman</h3>
           <p>Laporan Pertanggungjawaban Keuangan Kas Masjid secara Transparan & Akuntabel</p>
         </div>
@@ -553,19 +578,19 @@
         <!-- Ringkasan 4 Kotak Saldo Berkesinambungan -->
         <div class="summary-grid">
           <div class="summary-box">
-            <div class="label" id="labelSaldoAwal">Saldo Awal Bulan</div>
+            <div class="label" id="labelSaldoAwal">Saldo Bulan Oktober 2026</div>
             <div class="val val-awal" id="valSaldoAwal">Rp 0</div>
           </div>
           <div class="summary-box">
-            <div class="label">Total Pemasukan</div>
+            <div class="label">Pemasukan Bulan Ini</div>
             <div class="val val-masuk" id="valTotalMasuk">Rp 0</div>
           </div>
           <div class="summary-box">
-            <div class="label">Total Pengeluaran</div>
+            <div class="label">Pengeluaran Bulan Ini</div>
             <div class="val val-keluar" id="valTotalKeluar">Rp 0</div>
           </div>
           <div class="summary-box">
-            <div class="label" id="labelSaldoAkhir">Saldo Akhir Bulan</div>
+            <div class="label" id="labelSaldoAkhir">Saldo Akhir November 2026</div>
             <div class="val val-akhir" id="valSaldoAkhir">Rp 0</div>
           </div>
         </div>
@@ -585,13 +610,13 @@
             <div>Mengetahui,</div>
             <div>Ketua Takmir Masjid Al-Marhamah</div>
             <div class="sig-space"></div>
-            <div class="sig-name" id="displayKetua">H.Zaenal Abidin</div>
+            <div class="sig-name" id="displayKetua">H. Ahmad Fauzi</div>
           </div>
           <div class="sig-box">
             <div id="sigDateText">Sleman, 30 November 2026</div>
             <div>Bendahara Masjid</div>
             <div class="sig-space"></div>
-            <div class="sig-name" id="displayBendahara">H.M. Rofik</div>
+            <div class="sig-name" id="displayBendahara">Fatchurohman</div>
           </div>
         </div>
       </div>
@@ -625,6 +650,7 @@
         txDate: document.getElementById('txDate'),
         txType: document.getElementById('txType'),
         txCategory: document.getElementById('txCategory'),
+        categorySuggestions: document.getElementById('categorySuggestions'),
         txDesc: document.getElementById('txDesc'),
         txAmount: document.getElementById('txAmount'),
         ketuaName: document.getElementById('ketuaName'),
@@ -676,7 +702,7 @@
         }).format(safeNum);
       };
 
-      // Sanitasi teks sederhana untuk mencegah injeksi HTML
+      // Sanitasi teks untuk mencegah injeksi HTML
       const escapeHtml = (str) => {
         if (str === null || str === undefined) return '';
         return String(str)
@@ -685,6 +711,24 @@
           .replace(/>/g, '&gt;')
           .replace(/"/g, '&quot;')
           .replace(/'/g, '&#039;');
+      };
+
+      // Helper untuk mencari Nama Bulan & Tahun Sebelumnya secara Dinamis
+      const getPreviousMonthInfo = (yearStr, monthStr) => {
+        let year = parseInt(yearStr, 10);
+        let monthIdx = parseInt(monthStr, 10) - 1; // 0 = Januari, 11 = Desember
+
+        if (monthIdx === 0) {
+          monthIdx = 11;
+          year -= 1;
+        } else {
+          monthIdx -= 1;
+        }
+
+        return {
+          prevMonthName: MONTH_NAMES[monthIdx] || 'Sebelumnya',
+          prevYear: year
+        };
       };
 
       // Validasi & Normalisasi Objek Transaksi dari JSON
@@ -712,6 +756,29 @@
         return { id, date, type, category, desc, amount };
       };
 
+      // Perbarui daftar saran kategori otomatis berdasarkan input yang pernah diketik bendahara
+      const updateCategoryDatalist = () => {
+        const defaultCategories = [
+          'Infaq Jumat',
+          'Infaq / Sedekah Umum',
+          'Donatur Tetap',
+          'Zakat / Wakaf / Sosial',
+          'Operasional & Listrik/Air',
+          'Bisyaroh Imam / Khatib / Marbot',
+          'Konsumsi & Kajian Rutin',
+          'Kegiatan PHBI / Ramadhan',
+          'Sarana & Pemeliharaan Masjid'
+        ];
+        const categorySet = new Set(defaultCategories);
+        transactions.forEach((tx) => {
+          if (tx.category) categorySet.add(tx.category);
+        });
+
+        dom.categorySuggestions.innerHTML = Array.from(categorySet)
+          .map((cat) => `<option value="${escapeHtml(cat)}"></option>`)
+          .join('');
+      };
+
       // Data Contoh Berkesinambungan (Oktober -> November 2026)
       const getDemoTransactions = () => [
         {
@@ -726,7 +793,7 @@
           id: 'demo_2',
           date: '2026-10-10',
           type: 'OUT',
-          category: 'Operasional & Listrik',
+          category: 'Operasional & Listrik/Air',
           desc: 'Pembayaran Tagihan Listrik & Air PDAM Masjid',
           amount: 650000
         },
@@ -742,7 +809,7 @@
           id: 'demo_4',
           date: '2026-10-25',
           type: 'OUT',
-          category: 'Bisyaroh Imam/Marbot',
+          category: 'Bisyaroh Imam / Khatib / Marbot',
           desc: 'Insentif Kebersihan & Marbot Bulan Oktober',
           amount: 1200000
         },
@@ -758,15 +825,15 @@
           id: 'demo_6',
           date: '2026-11-08',
           type: 'IN',
-          category: 'Donatur Tetap',
-          desc: 'Infaq Donatur Warga Blok C Candi Gebang Permai',
+          category: 'Sumbangan Pembangunan Parkir',
+          desc: 'Infaq khusus warga Blok C untuk kanopi tempat wudhu & parkir',
           amount: 1000000
         },
         {
           id: 'demo_7',
           date: '2026-11-10',
           type: 'OUT',
-          category: 'Sarana & Pemeliharaan',
+          category: 'Sarana & Pemeliharaan Masjid',
           desc: 'Servis Sound System & Pembelian Lampu LED Utama',
           amount: 750000
         }
@@ -813,6 +880,7 @@
       const saveTransactions = () => {
         try {
           localStorage.setItem(STORAGE_KEY_TX, JSON.stringify(transactions));
+          updateCategoryDatalist();
         } catch (err) {
           console.error('Gagal menyimpan transaksi:', err);
           showToast('Peringatan: Gagal menyimpan ke penyimpanan browser.');
@@ -854,15 +922,16 @@
           : String(sortedYears[sortedYears.length - 1]);
       };
 
-      // Render Laporan Bulanan (Menampilkan detail transaksi + kesinambungan saldo)
+      // Render Laporan Bulanan (Menampilkan detail transaksi + kesinambungan saldo bulan sebelumnya)
       const renderMonthlyReport = (year, month) => {
         const targetPrefix = `${year}-${month}`;
         const monthIndex = parseInt(month, 10) - 1;
         const monthName = MONTH_NAMES[monthIndex] || '';
+        const { prevMonthName, prevYear } = getPreviousMonthInfo(year, month);
 
         dom.reportPeriodTitle.textContent = `LAPORAN KEUANGAN BULAN ${monthName.toUpperCase()} ${year}`;
-        dom.labelSaldoAwal.textContent = 'Saldo Awal Bulan';
-        dom.labelSaldoAkhir.textContent = 'Saldo Akhir Bulan';
+        dom.labelSaldoAwal.textContent = `Saldo Bulan ${prevMonthName} ${prevYear}`;
+        dom.labelSaldoAkhir.textContent = `Saldo Akhir ${monthName} ${year}`;
 
         const sorted = getSortedTransactions();
 
@@ -888,8 +957,8 @@
           <tr>
             <th style="width:45px;">No</th>
             <th style="width:105px;">Tanggal</th>
-            <th style="width:160px;">Kategori</th>
-            <th>Uraian / Keterangan</th>
+            <th style="width:170px;">Kategori Pos Dana</th>
+            <th>Deskripsi / Uraian Transaksi</th>
             <th style="width:130px;">Pemasukan (Rp)</th>
             <th style="width:130px;">Pengeluaran (Rp)</th>
             <th style="width:140px;">Saldo (Rp)</th>
@@ -897,13 +966,13 @@
           </tr>
         `;
 
-        // Baris Saldo Awal
+        // Baris Pertama Otomatis Menyebutkan Saldo Bulan Sebelumnya
         let rowsHtml = `
           <tr class="row-saldo-awal">
             <td class="text-center">-</td>
             <td class="text-center">01/${month}/${year}</td>
             <td>Saldo Kas</td>
-            <td>Saldo Awal (Lanjutan Bulan Sebelumnya)</td>
+            <td><strong>Saldo Bulan ${escapeHtml(prevMonthName)} ${prevYear}</strong></td>
             <td class="text-right">-</td>
             <td class="text-right">-</td>
             <td class="text-right">${formatRupiah(saldoAwal)}</td>
@@ -915,7 +984,7 @@
           rowsHtml += `
             <tr>
               <td colspan="8" class="text-center" style="padding: 18px; color: var(--gray);">
-                Belum ada transaksi tercatat pada bulan ${monthName} ${year}.
+                Belum ada transaksi baru pada bulan ${monthName} ${year}. Saldo tetap melanjutkan dari bulan ${prevMonthName} ${prevYear}.
               </td>
             </tr>
           `;
@@ -974,8 +1043,9 @@
 
       // Render Laporan Tahunan (Rekapitulasi 12 Bulan Berkesinambungan)
       const renderYearlyReport = (year) => {
+        const prevYear = Number(year) - 1;
         dom.reportPeriodTitle.textContent = `LAPORAN REKAPITULASI KEUANGAN TAHUN ${year}`;
-        dom.labelSaldoAwal.textContent = `Saldo Awal Tahun ${year}`;
+        dom.labelSaldoAwal.textContent = `Saldo Akhir Tahun ${prevYear}`;
         dom.labelSaldoAkhir.textContent = `Saldo Akhir Tahun ${year}`;
 
         const sorted = getSortedTransactions();
@@ -1004,10 +1074,10 @@
           <tr>
             <th style="width:50px;">No</th>
             <th>Bulan</th>
-            <th style="width:160px;">Saldo Awal Bulan</th>
-            <th style="width:160px;">Total Pemasukan</th>
-            <th style="width:160px;">Total Pengeluaran</th>
-            <th style="width:170px;">Saldo Akhir Bulan</th>
+            <th style="width:190px;">Saldo dari Bulan Sebelumnya</th>
+            <th style="width:155px;">Total Pemasukan</th>
+            <th style="width:155px;">Total Pengeluaran</th>
+            <th style="width:165px;">Saldo Akhir Bulan</th>
           </tr>
         `;
 
@@ -1022,6 +1092,8 @@
           const keluar = monthlyStats[idx].keluar;
           const sAkhirBulan = sAwalBulan + masuk - keluar;
 
+          const prevLabel = idx === 0 ? `Desember ${prevYear}` : `${MONTH_NAMES[idx - 1]} ${year}`;
+
           runningBalance = sAkhirBulan;
           totalMasukTahun += masuk;
           totalKeluarTahun += keluar;
@@ -1030,7 +1102,7 @@
             <tr>
               <td class="text-center">${idx + 1}</td>
               <td style="font-weight:600;">${mName} ${year}</td>
-              <td class="text-right">${formatRupiah(sAwalBulan)}</td>
+              <td class="text-right" title="Saldo akhir ${prevLabel}">${formatRupiah(sAwalBulan)}</td>
               <td class="text-right">${formatRupiah(masuk)}</td>
               <td class="text-right">${formatRupiah(keluar)}</td>
               <td class="text-right" style="font-weight:700;">${formatRupiah(sAkhirBulan)}</td>
@@ -1084,7 +1156,7 @@
 
         try {
           dom.btnExportJpg.disabled = true;
-          dom. printableReport.classList.add('exporting');
+          dom.printableReport.classList.add('exporting');
           showToast('Sedang menyiapkan gambar JPG...');
 
           const canvas = await window.html2canvas(dom.printableReport, {
@@ -1196,6 +1268,7 @@
           dom.filterYear.value = txYear;
           dom.filterMonth.value = txMonth;
 
+          dom.txCategory.value = '';
           dom.txDesc.value = '';
           dom.txAmount.value = '';
           renderReport();
@@ -1316,6 +1389,8 @@
       // Inisialisasi Aplikasi
       const init = () => {
         loadData();
+        updateCategoryDatalist();
+
         const today = new Date().toISOString().slice(0, 10);
         dom.txDate.value = today;
 
@@ -1323,7 +1398,7 @@
         dom.bendaharaName.value = config.bendahara;
 
         populateYearSelect();
-        // Default ke November 2026 agar simulasi kesinambungan dari Oktober langsung terlihat
+        // Default ke November 2026 agar terlihat jelas "Saldo Bulan Oktober 2026" masuk ke November
         dom.filterYear.value = '2026';
         dom.filterMonth.value = '11';
 
