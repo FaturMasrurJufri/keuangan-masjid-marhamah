@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sistem Kas Masjid Al-Marhamah - Candi Gebang Permai</title>
-  <!-- Library Eksternal untuk Export JPG & PDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
@@ -35,7 +34,6 @@
       padding-bottom: 40px;
     }
 
-    /* Header Aplikasi */
     .app-header {
       background: linear-gradient(135deg, var(--primary), var(--primary-light));
       color: var(--white);
@@ -56,24 +54,22 @@
       opacity: 0.9;
     }
 
-    /* Layout Utama */
     .container {
-      max-width: 1200px;
+      max-width: 1220px;
       margin: 0 auto;
       padding: 0 16px;
       display: grid;
-      grid-template-columns: 360px 1fr;
+      grid-template-columns: 370px 1fr;
       gap: 24px;
       align-items: start;
     }
 
-    @media (max-width: 920px) {
+    @media (max-width: 940px) {
       .container {
         grid-template-columns: 1fr;
       }
     }
 
-    /* Panel Kartu */
     .card {
       background: var(--white);
       border-radius: 10px;
@@ -84,10 +80,10 @@
     }
 
     .card-title {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 700;
       color: var(--primary);
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       padding-bottom: 8px;
       border-bottom: 2px solid var(--secondary);
       display: flex;
@@ -95,7 +91,23 @@
       align-items: center;
     }
 
-    /* Form Controls */
+    .sync-badge {
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-weight: 700;
+    }
+
+    .sync-online {
+      background: #d1e7dd;
+      color: #0f5132;
+    }
+
+    .sync-offline {
+      background: #f8d7da;
+      color: #842029;
+    }
+
     .form-group {
       margin-bottom: 14px;
     }
@@ -110,7 +122,7 @@
 
     .field-hint {
       display: block;
-      font-size: 0.76rem;
+      font-size: 0.75rem;
       color: var(--gray);
       margin-bottom: 6px;
     }
@@ -120,7 +132,7 @@
       padding: 9px 12px;
       border: 1px solid var(--border);
       border-radius: 6px;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       transition: border-color 0.2s;
     }
 
@@ -135,7 +147,7 @@
       justify-content: center;
       gap: 6px;
       padding: 10px 14px;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 600;
       border: none;
       border-radius: 6px;
@@ -175,11 +187,10 @@
     }
 
     .btn-sm {
-      padding: 5px 10px;
+      padding: 6px 10px;
       font-size: 0.8rem;
     }
 
-    /* Baris Filter & Tombol Aksi Laporan */
     .toolbar {
       display: flex;
       flex-wrap: wrap;
@@ -215,7 +226,6 @@
       gap: 8px;
     }
 
-    /* Area Cetak / Export Laporan (WA Friendly) */
     #printableReport {
       background: var(--white);
       padding: 28px;
@@ -262,7 +272,6 @@
       border-radius: 6px;
     }
 
-    /* Ringkasan Kartu Saldo */
     .summary-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -301,7 +310,6 @@
     .val-keluar { color: var(--danger); }
     .val-akhir { color: var(--primary); }
 
-    /* Tabel Laporan */
     .table-responsive {
       width: 100%;
       overflow-x: auto;
@@ -353,7 +361,6 @@
       color: var(--primary);
     }
 
-    /* Tanda Tangan Laporan */
     .signature-area {
       display: flex;
       justify-content: space-between;
@@ -376,7 +383,6 @@
       text-decoration: underline;
     }
 
-    /* Status Notifikasi */
     #toastMsg {
       position: fixed;
       bottom: 20px;
@@ -391,7 +397,6 @@
       z-index: 9999;
     }
 
-    /* Mode Cetak Printout & Ekspor Gambar/PDF */
     .exporting .no-export {
       display: none !important;
     }
@@ -429,7 +434,7 @@
   </header>
 
   <main class="container">
-    <!-- SIDEBAR: INPUT TRANSAKSI & PENGATURAN -->
+    <!-- SIDEBAR: INPUT TRANSAKSI, CLOUD GSHEET & PENGATURAN -->
     <aside class="sidebar no-print">
       <!-- Form Input Transaksi -->
       <section class="card">
@@ -448,7 +453,7 @@
           </div>
           <div class="form-group">
             <label for="txCategory">Kategori Pos Dana</label>
-            <span class="field-hint">Bisa pilih dari daftar atau ketik langsung kategori baru:</span>
+            <span class="field-hint">Pilih dari daftar atau ketik langsung kategori baru:</span>
             <input
               type="text"
               id="txCategory"
@@ -458,17 +463,7 @@
               autocomplete="off"
               required
             >
-            <datalist id="categorySuggestions">
-              <option value="Infaq Jumat"></option>
-              <option value="Infaq / Sedekah Umum"></option>
-              <option value="Donatur Tetap"></option>
-              <option value="Zakat / Wakaf / Sosial"></option>
-              <option value="Operasional & Listrik/Air"></option>
-              <option value="Bisyaroh Imam / Khatib / Marbot"></option>
-              <option value="Konsumsi & Kajian Rutin"></option>
-              <option value="Kegiatan PHBI / Ramadhan"></option>
-              <option value="Sarana & Pemeliharaan Masjid"></option>
-            </datalist>
+            <datalist id="categorySuggestions"></datalist>
           </div>
           <div class="form-group">
             <label for="txDesc">Deskripsi / Uraian Lengkap</label>
@@ -485,13 +480,24 @@
             <label for="txAmount">Nominal (Rp)</label>
             <input type="number" id="txAmount" class="form-control" min="1" step="any" placeholder="Contoh: 1500000" required>
           </div>
-          <button type="submit" class="btn btn-primary">Simpan Transaksi</button>
+          <button type="submit" class="btn btn-primary" id="btnSubmitTx">Simpan Transaksi</button>
         </form>
+      </section>
+
+      <!-- Panel Integrasi Google Sheets (Google Drive) - Disembunyikan agar otomatis tersambung -->
+      <section class="card" style="display:none;">
+        <div class="card-title">
+          <span>Google Sheets (Drive)</span>
+          <span id="syncStatusBadge" class="sync-badge sync-online">Terhubung GSheet</span>
+        </div>
+        <div class="form-group">
+          <input type="url" id="gsheetUrl" class="form-control" value="https://script.google.com/macros/s/AKfycbwyBOLhNlFc4UHa-tBdSNA5QibitDSpeDivzHurzY332J3WgU1qg8KPkPlw6uARaegtuw/exec">
+        </div>
       </section>
 
       <!-- Pengaturan Pejabat Tanda Tangan & Backup Data -->
       <section class="card">
-        <div class="card-title">Pengaturan & Cadangan Data</div>
+        <div class="card-title">Pengurus & Cadangan File</div>
         <div class="form-group">
           <label for="ketuaName">Nama Ketua Takmir</label>
           <input type="text" id="ketuaName" class="form-control" placeholder="Nama Ketua Takmir">
@@ -523,7 +529,6 @@
 
     <!-- KONTEN UTAMA: FILTER, EXPORT, & LAPORAN -->
     <section class="main-content">
-      <!-- Toolbar Filter & Export -->
       <div class="toolbar no-print">
         <div class="filter-group">
           <label for="reportMode" style="font-size:0.85rem; font-weight:700;">Jenis Laporan:</label>
@@ -563,7 +568,6 @@
         </div>
       </div>
 
-      <!-- Area Laporan yang Bisa Dicetak / Diunduh JPG & PDF -->
       <div id="printableReport">
         <div class="kop-laporan">
           <h2>TAKMIR MASJID AL-MARHAMAH</h2>
@@ -575,18 +579,17 @@
           LAPORAN KEUANGAN BULAN NOVEMBER 2026
         </div>
 
-        <!-- Ringkasan 4 Kotak Saldo Berkesinambungan -->
         <div class="summary-grid">
           <div class="summary-box">
             <div class="label" id="labelSaldoAwal">Saldo Bulan Oktober 2026</div>
             <div class="val val-awal" id="valSaldoAwal">Rp 0</div>
           </div>
           <div class="summary-box">
-            <div class="label">Pemasukan Bulan Ini</div>
+            <div class="label">Pemasukan Periode Ini</div>
             <div class="val val-masuk" id="valTotalMasuk">Rp 0</div>
           </div>
           <div class="summary-box">
-            <div class="label">Pengeluaran Bulan Ini</div>
+            <div class="label">Pengeluaran Periode Ini</div>
             <div class="val val-keluar" id="valTotalKeluar">Rp 0</div>
           </div>
           <div class="summary-box">
@@ -595,7 +598,6 @@
           </div>
         </div>
 
-        <!-- Tabel Data Dinamis (Bulanan / Tahunan) -->
         <div class="table-responsive">
           <table id="reportTable">
             <thead id="reportTableHead"></thead>
@@ -604,7 +606,6 @@
           </table>
         </div>
 
-        <!-- Area Pengesahan -->
         <div class="signature-area">
           <div class="sig-box">
             <div>Mengetahui,</div>
@@ -631,20 +632,22 @@
 
       const STORAGE_KEY_TX = 'almarhamah_kas_transactions_v1';
       const STORAGE_KEY_CFG = 'almarhamah_kas_config_v1';
+      
+      // URL Google Script Anda sudah ditanam secara permanen di sini:
+      const DEFAULT_GSHEET_URL = 'https://script.google.com/macros/s/AKfycbwyBOLhNlFc4UHa-tBdSNA5QibitDSpeDivzHurzY332J3WgU1qg8KPkPlw6uARaegtuw/exec';
 
       const MONTH_NAMES = [
         'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
         'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
       ];
 
-      // State Aplikasi
       let transactions = [];
       let config = {
         ketua: 'H. Ahmad Fauzi',
         bendahara: 'Fatchurohman'
       };
+      let gsheetUrl = DEFAULT_GSHEET_URL;
 
-      // Referensi Elemen DOM
       const dom = {
         form: document.getElementById('transactionForm'),
         txDate: document.getElementById('txDate'),
@@ -682,16 +685,14 @@
         toastMsg: document.getElementById('toastMsg')
       };
 
-      // Utilitas Notifikasi Singkat
       const showToast = (message) => {
         dom.toastMsg.textContent = message;
         dom.toastMsg.style.display = 'block';
         setTimeout(() => {
           dom.toastMsg.style.display = 'none';
-        }, 3000);
+        }, 3500);
       };
 
-      // Format Mata Uang Rupiah
       const formatRupiah = (number) => {
         const safeNum = Number.isFinite(Number(number)) ? Number(number) : 0;
         return new Intl.NumberFormat('id-ID', {
@@ -702,7 +703,6 @@
         }).format(safeNum);
       };
 
-      // Sanitasi teks untuk mencegah injeksi HTML
       const escapeHtml = (str) => {
         if (str === null || str === undefined) return '';
         return String(str)
@@ -713,25 +713,21 @@
           .replace(/'/g, '&#039;');
       };
 
-      // Helper untuk mencari Nama Bulan & Tahun Sebelumnya secara Dinamis
       const getPreviousMonthInfo = (yearStr, monthStr) => {
         let year = parseInt(yearStr, 10);
-        let monthIdx = parseInt(monthStr, 10) - 1; // 0 = Januari, 11 = Desember
-
+        let monthIdx = parseInt(monthStr, 10) - 1;
         if (monthIdx === 0) {
           monthIdx = 11;
           year -= 1;
         } else {
           monthIdx -= 1;
         }
-
         return {
           prevMonthName: MONTH_NAMES[monthIdx] || 'Sebelumnya',
           prevYear: year
         };
       };
 
-      // Validasi & Normalisasi Objek Transaksi dari JSON
       const sanitizeTransaction = (item) => {
         if (!item || typeof item !== 'object') return null;
         const id = typeof item.id === 'string' && item.id.trim() !== ''
@@ -752,11 +748,9 @@
         if (!date || !type || !Number.isFinite(amount) || amount <= 0) {
           return null;
         }
-
         return { id, date, type, category, desc, amount };
       };
 
-      // Perbarui daftar saran kategori otomatis berdasarkan input yang pernah diketik bendahara
       const updateCategoryDatalist = () => {
         const defaultCategories = [
           'Infaq Jumat',
@@ -773,13 +767,11 @@
         transactions.forEach((tx) => {
           if (tx.category) categorySet.add(tx.category);
         });
-
         dom.categorySuggestions.innerHTML = Array.from(categorySet)
           .map((cat) => `<option value="${escapeHtml(cat)}"></option>`)
           .join('');
       };
 
-      // Data Contoh Berkesinambungan (Oktober -> November 2026)
       const getDemoTransactions = () => [
         {
           id: 'demo_1',
@@ -839,63 +831,96 @@
         }
       ];
 
-      // Load Data dari LocalStorage dengan Safe JSON Parsing
+      const pushToGoogleSheets = async (silent = false) => {
+        if (!gsheetUrl) return;
+        try {
+          if (!silent) showToast('Menyimpan data ke Google Sheets...');
+          const response = await fetch(gsheetUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ transactions, config })
+          });
+          const resJson = await response.json();
+          if (resJson.status === 'success') {
+            if (!silent) showToast('Berhasil tersimpan di Google Sheets (Drive)!');
+          } else {
+            throw new Error(resJson.message || 'Respons tidak dikenal');
+          }
+        } catch (err) {
+          console.error('Gagal sinkronisasi ke GSheet:', err);
+          if (!silent) showToast('Data tersimpan di HP, gagal dikirim ke GSheet.');
+        }
+      };
+
+      const pullFromGoogleSheets = async () => {
+        if (!gsheetUrl) return;
+        try {
+          showToast('Menarik data terbaru dari Google Sheets...');
+          const response = await fetch(gsheetUrl);
+          const data = await response.json();
+
+          if (data.status === 'success' && Array.isArray(data.transactions)) {
+            const validTx = data.transactions.map(sanitizeTransaction).filter(Boolean);
+            if (validTx.length > 0) {
+              transactions = validTx;
+            } else {
+              transactions = getDemoTransactions();
+            }
+            if (data.config && typeof data.config === 'object') {
+              config.ketua = data.config.ketua || config.ketua;
+              config.bendahara = data.config.bendahara || config.bendahara;
+              dom.ketuaName.value = config.ketua;
+              dom.bendaharaName.value = config.bendahara;
+              localStorage.setItem(STORAGE_KEY_CFG, JSON.stringify(config));
+            }
+            localStorage.setItem(STORAGE_KEY_TX, JSON.stringify(transactions));
+            updateCategoryDatalist();
+            populateYearSelect();
+            renderReport();
+            showToast('Data sinkron dari Google Drive!');
+          }
+        } catch (err) {
+          console.error('Gagal menarik data dari GSheet:', err);
+        }
+      };
+
       const loadData = () => {
         try {
           const rawTx = localStorage.getItem(STORAGE_KEY_TX);
           if (rawTx) {
             const parsed = JSON.parse(rawTx);
-            if (Array.isArray(parsed)) {
-              transactions = parsed.map(sanitizeTransaction).filter(Boolean);
-            } else {
-              transactions = getDemoTransactions();
-            }
+            transactions = Array.isArray(parsed)
+              ? parsed.map(sanitizeTransaction).filter(Boolean)
+              : getDemoTransactions();
           } else {
             transactions = getDemoTransactions();
-            saveTransactions();
+            localStorage.setItem(STORAGE_KEY_TX, JSON.stringify(transactions));
           }
-        } catch (err) {
-          console.error('Gagal memuat data transaksi dari penyimpanan:', err);
-          transactions = getDemoTransactions();
-        }
 
-        try {
           const rawCfg = localStorage.getItem(STORAGE_KEY_CFG);
           if (rawCfg) {
             const parsedCfg = JSON.parse(rawCfg);
             if (parsedCfg && typeof parsedCfg === 'object') {
-              config.ketua = typeof parsedCfg.ketua === 'string' && parsedCfg.ketua.trim()
-                ? parsedCfg.ketua.trim()
-                : config.ketua;
-              config.bendahara = typeof parsedCfg.bendahara === 'string' && parsedCfg.bendahara.trim()
-                ? parsedCfg.bendahara.trim()
-                : config.bendahara;
+              config.ketua = parsedCfg.ketua || config.ketua;
+              config.bendahara = parsedCfg.bendahara || config.bendahara;
             }
           }
         } catch (err) {
-          console.error('Gagal memuat konfigurasi pengurus:', err);
+          transactions = getDemoTransactions();
         }
       };
 
       const saveTransactions = () => {
-        try {
-          localStorage.setItem(STORAGE_KEY_TX, JSON.stringify(transactions));
-          updateCategoryDatalist();
-        } catch (err) {
-          console.error('Gagal menyimpan transaksi:', err);
-          showToast('Peringatan: Gagal menyimpan ke penyimpanan browser.');
-        }
+        localStorage.setItem(STORAGE_KEY_TX, JSON.stringify(transactions));
+        updateCategoryDatalist();
+        pushToGoogleSheets(true);
       };
 
       const saveConfig = () => {
-        try {
-          localStorage.setItem(STORAGE_KEY_CFG, JSON.stringify(config));
-        } catch (err) {
-          console.error('Gagal menyimpan konfigurasi:', err);
-        }
+        localStorage.setItem(STORAGE_KEY_CFG, JSON.stringify(config));
+        pushToGoogleSheets(true);
       };
 
-      // Urutkan transaksi berdasarkan tanggal secara kronologis
       const getSortedTransactions = () => {
         return [...transactions].sort((a, b) => {
           if (a.date !== b.date) return a.date.localeCompare(b.date);
@@ -903,7 +928,6 @@
         });
       };
 
-      // Inisialisasi Pilihan Tahun
       const populateYearSelect = () => {
         const currentYear = new Date().getFullYear();
         const years = new Set([currentYear - 1, currentYear, currentYear + 1, 2026]);
@@ -911,7 +935,6 @@
           const yr = parseInt(tx.date.substring(0, 4), 10);
           if (Number.isFinite(yr)) years.add(yr);
         });
-
         const sortedYears = Array.from(years).sort((a, b) => a - b);
         const prevSelected = dom.filterYear.value || '2026';
         dom.filterYear.innerHTML = sortedYears
@@ -922,7 +945,6 @@
           : String(sortedYears[sortedYears.length - 1]);
       };
 
-      // Render Laporan Bulanan (Menampilkan detail transaksi + kesinambungan saldo bulan sebelumnya)
       const renderMonthlyReport = (year, month) => {
         const targetPrefix = `${year}-${month}`;
         const monthIndex = parseInt(month, 10) - 1;
@@ -934,8 +956,6 @@
         dom.labelSaldoAkhir.textContent = `Saldo Akhir ${monthName} ${year}`;
 
         const sorted = getSortedTransactions();
-
-        // Hitung Saldo Awal dari seluruh transaksi SEBELUM bulan ini
         let saldoAwal = 0;
         const monthlyTx = [];
 
@@ -952,7 +972,6 @@
         let totalKeluar = 0;
         let runningSaldo = saldoAwal;
 
-        // Header Tabel Bulanan
         dom.tableHead.innerHTML = `
           <tr>
             <th style="width:45px;">No</th>
@@ -966,7 +985,6 @@
           </tr>
         `;
 
-        // Baris Pertama Otomatis Menyebutkan Saldo Bulan Sebelumnya
         let rowsHtml = `
           <tr class="row-saldo-awal">
             <td class="text-center">-</td>
@@ -1018,8 +1036,6 @@
         }
 
         dom.tableBody.innerHTML = rowsHtml;
-
-        // Footer Tabel Bulanan
         dom.tableFoot.innerHTML = `
           <tr class="row-total">
             <td colspan="4" class="text-right">TOTAL MUTASI & SALDO AKHIR ${monthName.toUpperCase()} ${year}</td>
@@ -1030,18 +1046,15 @@
           </tr>
         `;
 
-        // Update Ringkasan Kotak Atas
         dom.valSaldoAwal.textContent = formatRupiah(saldoAwal);
         dom.valTotalMasuk.textContent = formatRupiah(totalMasuk);
         dom.valTotalKeluar.textContent = formatRupiah(totalKeluar);
         dom.valSaldoAkhir.textContent = formatRupiah(runningSaldo);
 
-        // Update Tanggal Tanda Tangan Akhir Bulan
         const lastDay = new Date(Number(year), Number(month), 0).getDate();
         dom.sigDateText.textContent = `Sleman, ${lastDay} ${monthName} ${year}`;
       };
 
-      // Render Laporan Tahunan (Rekapitulasi 12 Bulan Berkesinambungan)
       const renderYearlyReport = (year) => {
         const prevYear = Number(year) - 1;
         dom.reportPeriodTitle.textContent = `LAPORAN REKAPITULASI KEUANGAN TAHUN ${year}`;
@@ -1049,8 +1062,6 @@
         dom.labelSaldoAkhir.textContent = `Saldo Akhir Tahun ${year}`;
 
         const sorted = getSortedTransactions();
-
-        // Hitung Saldo Awal sebelum 1 Januari tahun terpilih
         let saldoAwalTahun = 0;
         const monthlyStats = Array.from({ length: 12 }, () => ({ masuk: 0, keluar: 0 }));
 
@@ -1061,11 +1072,8 @@
           } else if (txYear === year) {
             const mIdx = parseInt(tx.date.substring(5, 7), 10) - 1;
             if (mIdx >= 0 && mIdx < 12) {
-              if (tx.type === 'IN') {
-                monthlyStats[mIdx].masuk += tx.amount;
-              } else {
-                monthlyStats[mIdx].keluar += tx.amount;
-              }
+              if (tx.type === 'IN') monthlyStats[mIdx].masuk += tx.amount;
+              else monthlyStats[mIdx].keluar += tx.amount;
             }
           }
         });
@@ -1092,8 +1100,6 @@
           const keluar = monthlyStats[idx].keluar;
           const sAkhirBulan = sAwalBulan + masuk - keluar;
 
-          const prevLabel = idx === 0 ? `Desember ${prevYear}` : `${MONTH_NAMES[idx - 1]} ${year}`;
-
           runningBalance = sAkhirBulan;
           totalMasukTahun += masuk;
           totalKeluarTahun += keluar;
@@ -1102,7 +1108,7 @@
             <tr>
               <td class="text-center">${idx + 1}</td>
               <td style="font-weight:600;">${mName} ${year}</td>
-              <td class="text-right" title="Saldo akhir ${prevLabel}">${formatRupiah(sAwalBulan)}</td>
+              <td class="text-right">${formatRupiah(sAwalBulan)}</td>
               <td class="text-right">${formatRupiah(masuk)}</td>
               <td class="text-right">${formatRupiah(keluar)}</td>
               <td class="text-right" style="font-weight:700;">${formatRupiah(sAkhirBulan)}</td>
@@ -1125,11 +1131,9 @@
         dom.valTotalMasuk.textContent = formatRupiah(totalMasukTahun);
         dom.valTotalKeluar.textContent = formatRupiah(totalKeluarTahun);
         dom.valSaldoAkhir.textContent = formatRupiah(runningBalance);
-
         dom.sigDateText.textContent = `Sleman, 31 Desember ${year}`;
       };
 
-      // Fungsi Utama Render Berdasarkan Filter
       const renderReport = () => {
         const mode = dom.reportMode.value;
         const year = dom.filterYear.value;
@@ -1147,17 +1151,11 @@
         }
       };
 
-      // Fungsi Ekspor ke Gambar JPG (Untuk Share ke Grup WA)
       const exportToJpg = async () => {
-        if (typeof window.html2canvas !== 'function') {
-          showToast('Library pembuat gambar belum siap. Periksa koneksi internet.');
-          return;
-        }
-
         try {
           dom.btnExportJpg.disabled = true;
           dom.printableReport.classList.add('exporting');
-          showToast('Sedang menyiapkan gambar JPG...');
+          showToast('Menyiapkan gambar JPG...');
 
           const canvas = await window.html2canvas(dom.printableReport, {
             scale: 2,
@@ -1165,36 +1163,28 @@
             useCORS: true
           });
 
-          const imgData = canvas.toDataURL('image/jpeg', 0.95);
           const link = document.createElement('a');
           const mode = dom.reportMode.value === 'YEARLY'
             ? `Tahunan_${dom.filterYear.value}`
             : `Bulanan_${dom.filterYear.value}-${dom.filterMonth.value}`;
 
           link.download = `Laporan_Kas_AlMarhamah_${mode}.jpg`;
-          link.href = imgData;
+          link.href = canvas.toDataURL('image/jpeg', 0.95);
           link.click();
-          showToast('Gambar JPG berhasil diunduh, siap dibagikan ke WhatsApp!');
+          showToast('Gambar JPG berhasil diunduh!');
         } catch (err) {
-          console.error('Gagal mengekspor JPG:', err);
-          showToast('Terjadi kesalahan saat membuat gambar JPG.');
+          showToast('Gagal membuat gambar JPG.');
         } finally {
           dom.printableReport.classList.remove('exporting');
           dom.btnExportJpg.disabled = false;
         }
       };
 
-      // Fungsi Ekspor ke PDF
       const exportToPdf = async () => {
-        if (typeof window.html2canvas !== 'function' || !window.jspdf) {
-          showToast('Library PDF belum siap. Periksa koneksi internet.');
-          return;
-        }
-
         try {
           dom.btnExportPdf.disabled = true;
           dom.printableReport.classList.add('exporting');
-          showToast('Sedang menyusun dokumen PDF...');
+          showToast('Menyusun dokumen PDF...');
 
           const canvas = await window.html2canvas(dom.printableReport, {
             scale: 2,
@@ -1205,7 +1195,6 @@
           const imgData = canvas.toDataURL('image/jpeg', 0.95);
           const { jsPDF } = window.jspdf;
           const pdf = new jsPDF('p', 'mm', 'a4');
-
           const pageWidth = pdf.internal.pageSize.getWidth();
           const pageHeight = pdf.internal.pageSize.getHeight();
           const margin = 10;
@@ -1232,17 +1221,14 @@
           pdf.save(`Laporan_Kas_AlMarhamah_${mode}.pdf`);
           showToast('Dokumen PDF berhasil diunduh!');
         } catch (err) {
-          console.error('Gagal mengekspor PDF:', err);
-          showToast('Terjadi kesalahan saat membuat PDF.');
+          showToast('Gagal membuat PDF.');
         } finally {
           dom.printableReport.classList.remove('exporting');
           dom.btnExportPdf.disabled = false;
         }
       };
 
-      // Event Listeners
       const bindEvents = () => {
-        // Tambah Transaksi
         dom.form.addEventListener('submit', (e) => {
           e.preventDefault();
           const newTx = sanitizeTransaction({
@@ -1254,16 +1240,11 @@
             amount: Number(dom.txAmount.value)
           });
 
-          if (!newTx) {
-            showToast('Mohon lengkapi data transaksi dengan benar.');
-            return;
-          }
-
+          if (!newTx) return;
           transactions.push(newTx);
           saveTransactions();
           populateYearSelect();
 
-          // Otomatis arahkan filter ke bulan & tahun transaksi yang baru diinput
           const [txYear, txMonth] = newTx.date.split('-');
           dom.filterYear.value = txYear;
           dom.filterMonth.value = txMonth;
@@ -1272,138 +1253,93 @@
           dom.txDesc.value = '';
           dom.txAmount.value = '';
           renderReport();
-          showToast('Transaksi berhasil disimpan.');
+          showToast('Transaksi disimpan & disinkronkan ke Google Sheets!');
         });
 
-        // Hapus Transaksi (Delegasi Event)
         dom.tableBody.addEventListener('click', (e) => {
           const btn = e.target.closest('.btn-delete');
           if (!btn) return;
           const id = btn.getAttribute('data-id');
-          if (!id) return;
-
-          if (window.confirm('Hapus transaksi ini? Saldo bulan berikutnya akan otomatis disesuaikan.')) {
+          if (window.confirm('Hapus transaksi ini? Perubahan juga akan disinkronkan ke Google Sheets.')) {
             transactions = transactions.filter((tx) => tx.id !== id);
             saveTransactions();
             renderReport();
-            showToast('Transaksi dihapus & saldo diperbarui.');
+            showToast('Transaksi dihapus.');
           }
         });
 
-        // Simpan Pengurus
         dom.btnSaveConfig.addEventListener('click', () => {
           config.ketua = dom.ketuaName.value.trim() || 'Ketua Takmir';
           config.bendahara = dom.bendaharaName.value.trim() || 'Bendahara';
           saveConfig();
           renderReport();
-          showToast('Nama pengurus berhasil diperbarui.');
+          showToast('Nama pengurus diperbarui.');
         });
 
-        // Filter Perubahan Periode
         dom.reportMode.addEventListener('change', renderReport);
         dom.filterMonth.addEventListener('change', renderReport);
         dom.filterYear.addEventListener('change', renderReport);
-
-        // Tombol Export & Cetak
         dom.btnExportJpg.addEventListener('click', exportToJpg);
         dom.btnExportPdf.addEventListener('click', exportToPdf);
         dom.btnPrint.addEventListener('click', () => window.print());
 
-        // Backup Data JSON
         dom.btnBackupJson.addEventListener('click', () => {
-          try {
-            const payload = {
-              masjid: 'Masjid Al-Marhamah Perum Candi Gebang Permai',
-              exportedAt: new Date().toISOString(),
-              config,
-              transactions
-            };
-            const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `Backup_Kas_AlMarhamah_${new Date().toISOString().slice(0, 10)}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
-            showToast('File cadangan JSON berhasil diunduh.');
-          } catch (err) {
-            console.error('Gagal membuat backup JSON:', err);
-            showToast('Gagal mengunduh backup JSON.');
-          }
+          const blob = new Blob([JSON.stringify({ config, transactions }, null, 2)], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `Backup_Kas_AlMarhamah_${new Date().toISOString().slice(0, 10)}.json`;
+          a.click();
+          URL.revokeObjectURL(url);
         });
 
-        // Restore Data JSON dengan Validasi Aman
         dom.fileRestoreJson.addEventListener('change', (e) => {
           const file = e.target.files && e.target.files[0];
           if (!file) return;
-
           const reader = new FileReader();
           reader.onload = (event) => {
             try {
-              const rawContent = event.target ? event.target.result : '';
-              const parsed = JSON.parse(String(rawContent));
-
-              if (!parsed || typeof parsed !== 'object' || !Array.isArray(parsed.transactions)) {
-                throw new Error('Struktur JSON tidak sesuai format aplikasi.');
+              const parsed = JSON.parse(String(event.target.result));
+              if (Array.isArray(parsed.transactions)) {
+                transactions = parsed.transactions.map(sanitizeTransaction).filter(Boolean);
+                saveTransactions();
+                populateYearSelect();
+                renderReport();
+                showToast('Data berhasil dipulihkan & disinkronkan!');
               }
-
-              const validTx = parsed.transactions.map(sanitizeTransaction).filter(Boolean);
-              transactions = validTx;
-
-              if (parsed.config && typeof parsed.config === 'object') {
-                config.ketua = typeof parsed.config.ketua === 'string' ? parsed.config.ketua : config.ketua;
-                config.bendahara = typeof parsed.config.bendahara === 'string' ? parsed.config.bendahara : config.bendahara;
-                dom.ketuaName.value = config.ketua;
-                dom.bendaharaName.value = config.bendahara;
-                saveConfig();
-              }
-
-              saveTransactions();
-              populateYearSelect();
-              renderReport();
-              showToast(`Berhasil memulihkan ${validTx.length} data transaksi.`);
             } catch (err) {
-              console.error('Error saat memulihkan JSON:', err);
-              showToast('File JSON tidak valid atau rusak.');
-            } finally {
-              dom.fileRestoreJson.value = '';
+              showToast('File JSON tidak valid.');
             }
           };
           reader.readAsText(file);
         });
 
-        // Reset Data Contoh
         dom.btnResetDemo.addEventListener('click', () => {
-          if (window.confirm('Muat ulang data contoh? Data yang Anda input saat ini akan diganti dengan data simulasi Oktober-November 2026.')) {
+          if (window.confirm('Muat ulang data simulasi Oktober-November 2026?')) {
             transactions = getDemoTransactions();
             saveTransactions();
             populateYearSelect();
             dom.filterYear.value = '2026';
             dom.filterMonth.value = '11';
             renderReport();
-            showToast('Data simulasi berhasil dimuat ulang.');
           }
         });
       };
 
-      // Inisialisasi Aplikasi
       const init = () => {
         loadData();
         updateCategoryDatalist();
-
-        const today = new Date().toISOString().slice(0, 10);
-        dom.txDate.value = today;
-
+        dom.txDate.value = new Date().toISOString().slice(0, 10);
         dom.ketuaName.value = config.ketua;
         dom.bendaharaName.value = config.bendahara;
 
         populateYearSelect();
-        // Default ke November 2026 agar terlihat jelas "Saldo Bulan Oktober 2026" masuk ke November
         dom.filterYear.value = '2026';
         dom.filterMonth.value = '11';
 
         bindEvents();
         renderReport();
+        pullFromGoogleSheets();
       };
 
       init();
