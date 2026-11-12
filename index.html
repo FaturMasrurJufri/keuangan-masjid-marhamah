@@ -8,15 +8,20 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     :root {
-      --primary: #0f4c3a;
-      --primary-soft: #eaf4f0;
-      --header-blue: #c5d9ed;
-      --header-border: #2c4a6f;
-      --accent: #d4af37;
-      --danger: #dc3545;
-      --dark: #1e293b;
-      --gray: #64748b;
-      --border: #94a3b8;
+      --emerald-900: #063729;
+      --emerald-800: #0a4f3c;
+      --emerald-700: #0f684e;
+      --emerald-100: #e6f4ef;
+      --emerald-50: #f4faf7;
+      --gold-600: #b7892b;
+      --gold-400: #d4af37;
+      --gold-100: #fbf5e6;
+      --rose-700: #9f1239;
+      --rose-50: #fff1f2;
+      --slate-900: #0f172a;
+      --slate-700: #334155;
+      --slate-500: #64748b;
+      --slate-200: #e2e8f0;
       --white: #ffffff;
     }
 
@@ -24,25 +29,25 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
     body {
-      background-color: #e2e8f0;
-      color: var(--dark);
-      line-height: 1.45;
+      background-color: #cbd5e1;
+      color: var(--slate-900);
+      line-height: 1.5;
       padding-bottom: 50px;
     }
 
-    /* Banner Atas Aplikasi */
+    /* Header Aplikasi */
     .app-banner {
-      background: linear-gradient(135deg, #0b3b2d, #15654d);
+      background: linear-gradient(135deg, var(--emerald-900), var(--emerald-700));
       color: var(--white);
       padding: 18px 20px;
       text-align: center;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       margin-bottom: 22px;
-      border-bottom: 3px solid var(--accent);
+      border-bottom: 3px solid var(--gold-400);
     }
 
     .app-banner h1 {
@@ -57,18 +62,18 @@
       opacity: 0.9;
     }
 
-    /* Grid Utama */
+    /* Layout Utama */
     .main-layout {
-      max-width: 1340px;
+      max-width: 1380px;
       margin: 0 auto;
       padding: 0 14px;
       display: grid;
-      grid-template-columns: 340px 1fr;
+      grid-template-columns: 360px 1fr;
       gap: 20px;
       align-items: start;
     }
 
-    @media (max-width: 1024px) {
+    @media (max-width: 1040px) {
       .main-layout {
         grid-template-columns: 1fr;
       }
@@ -77,20 +82,20 @@
     /* Kartu Panel Samping */
     .card {
       background: var(--white);
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 18px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
       margin-bottom: 16px;
-      border: 1px solid #cbd5e1;
+      border: 1px solid var(--slate-200);
     }
 
     .card-title {
-      font-size: 1rem;
+      font-size: 0.98rem;
       font-weight: 700;
-      color: var(--primary);
+      color: var(--emerald-800);
       padding-bottom: 8px;
       margin-bottom: 14px;
-      border-bottom: 2px solid var(--primary-soft);
+      border-bottom: 2px solid var(--emerald-100);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -105,13 +110,13 @@
       font-size: 0.82rem;
       font-weight: 600;
       margin-bottom: 4px;
-      color: #334155;
+      color: var(--slate-700);
     }
 
     .field-hint {
       display: block;
       font-size: 0.73rem;
-      color: var(--gray);
+      color: var(--slate-500);
       margin-bottom: 5px;
     }
 
@@ -119,13 +124,14 @@
       width: 100%;
       padding: 8px 11px;
       border: 1px solid #cbd5e1;
-      border-radius: 6px;
+      border-radius: 8px;
       font-size: 0.88rem;
+      transition: border-color 0.2s;
     }
 
     .form-control:focus {
       outline: none;
-      border-color: var(--primary);
+      border-color: var(--emerald-700);
     }
 
     .btn {
@@ -134,9 +140,9 @@
       justify-content: center;
       gap: 6px;
       padding: 9px 14px;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       font-weight: 600;
-      border-radius: 6px;
+      border-radius: 8px;
       border: none;
       cursor: pointer;
       transition: all 0.15s;
@@ -144,25 +150,26 @@
 
     .btn:active { transform: scale(0.98); }
     .btn:disabled { opacity: 0.6; cursor: not-allowed; }
-    .btn-primary { background: var(--primary); color: var(--white); width: 100%; }
+    .btn-primary { background: var(--emerald-800); color: var(--white); width: 100%; }
     .btn-success { background: #15803d; color: var(--white); }
-    .btn-danger { background: var(--danger); color: var(--white); }
-    .btn-outline { background: var(--white); color: var(--primary); border: 1px solid var(--primary); }
-    .btn-sm { padding: 5px 10px; font-size: 0.78rem; }
+    .btn-gold { background: var(--gold-600); color: var(--white); }
+    .btn-danger { background: var(--rose-700); color: var(--white); }
+    .btn-outline { background: var(--white); color: var(--emerald-800); border: 1px solid var(--emerald-800); }
+    .btn-sm { padding: 6px 10px; font-size: 0.78rem; }
 
     /* Toolbar Atas Laporan */
     .toolbar {
       background: var(--white);
       padding: 14px 18px;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
       margin-bottom: 16px;
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
       justify-content: space-between;
       align-items: center;
-      border: 1px solid #cbd5e1;
+      border: 1px solid var(--slate-200);
     }
 
     .filter-group {
@@ -173,11 +180,12 @@
     }
 
     .filter-group select {
-      padding: 7px 11px;
-      border-radius: 6px;
+      padding: 8px 12px;
+      border-radius: 8px;
       border: 1px solid #cbd5e1;
       font-weight: 600;
       font-size: 0.86rem;
+      color: var(--slate-900);
     }
 
     .action-group {
@@ -186,128 +194,199 @@
       gap: 8px;
     }
 
-    /* Pembungkus Scrollable di HP agar Kertas Laporan Tetap Proporsional */
+    /* Area Canvas Tanda Tangan di Sidebar */
+    .sig-pad-box {
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      background: #f8fafc;
+      padding: 8px;
+      margin-bottom: 12px;
+    }
+
+    .sig-pad-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--slate-700);
+    }
+
+    .sig-canvas {
+      width: 100%;
+      height: 110px;
+      background: var(--white);
+      border: 1px dashed #94a3b8;
+      border-radius: 6px;
+      touch-action: none;
+      cursor: crosshair;
+      display: block;
+    }
+
+    /* Pembungkus Scrollable di HP */
     .report-scroll-wrapper {
       width: 100%;
       overflow-x: auto;
-      padding-bottom: 12px;
+      padding-bottom: 16px;
     }
 
-    /* KERTAS LAPORAN ESTETIS (SIap Share WA & Cetak) */
+    /* ==========================================================================
+       DESAIN KERTAS LAPORAN ESTETIS & PROPORSIONAL (SIAP SHARE WA)
+       ========================================================================== */
     #printableReport {
       background: var(--white);
-      width: 920px;
-      min-width: 920px;
+      width: 960px;
+      min-width: 960px;
       margin: 0 auto;
-      padding: 32px 36px;
-      border-radius: 4px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      border: 1px solid #cbd5e1;
-      color: #111827;
+      padding: 36px 42px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+      color: var(--slate-900);
       position: relative;
+      border-top: 8px solid var(--emerald-800);
+      border-bottom: 6px solid var(--gold-400);
     }
 
-    /* Kop Laporan Resmi */
+    /* Kop Laporan Elegan */
     .kop-header {
       text-align: center;
-      padding-bottom: 12px;
-      margin-bottom: 14px;
-      border-bottom: 3px double #1e3a5f;
+      padding-bottom: 18px;
+      margin-bottom: 20px;
+      position: relative;
+      border-bottom: 2px solid var(--emerald-800);
+    }
+
+    .kop-header::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      right: 0;
+      height: 1.5px;
+      background-color: var(--gold-400);
+    }
+
+    .kop-badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--emerald-700);
+      background: var(--emerald-100);
+      padding: 3px 14px;
+      border-radius: 20px;
+      margin-bottom: 6px;
     }
 
     .kop-header h2 {
-      font-size: 1.55rem;
+      font-size: 1.85rem;
       font-weight: 800;
-      color: #0f172a;
-      letter-spacing: 1px;
-      margin-bottom: 3px;
+      color: var(--emerald-900);
+      letter-spacing: 1.2px;
+      margin-bottom: 4px;
     }
 
     .kop-header .sub-kop {
-      font-size: 0.86rem;
-      color: #334155;
-      font-weight: 500;
-      line-height: 1.4;
+      font-size: 0.95rem;
+      color: var(--slate-700);
+      font-weight: 600;
+      letter-spacing: 0.3px;
     }
 
-    .kop-header .bank-info {
-      display: inline-block;
-      margin-top: 4px;
-      padding: 2px 12px;
-      background: #f1f5f9;
-      border-radius: 4px;
-      font-size: 0.84rem;
+    /* Judul Banner Periode */
+    .report-title-bar {
+      background: linear-gradient(90deg, var(--emerald-900) 0%, var(--emerald-700) 100%);
+      color: var(--white);
+      text-align: center;
+      padding: 10px 16px;
+      border-radius: 8px 8px 0 0;
+      font-size: 0.96rem;
       font-weight: 700;
-      color: #0f4c3a;
-      border: 1px solid #cbd5e1;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      border-bottom: 3px solid var(--gold-400);
     }
 
-    /* Tabel Dua Sisi (Penerimaan & Pengeluaran) */
+    /* Tabel Modern Proporsional */
+    .ledger-container {
+      border: 1px solid #cbd5e1;
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    }
+
     .ledger-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.8rem;
-      border: 1.5px solid #334155;
+      font-size: 0.82rem;
     }
 
     .ledger-table th,
     .ledger-table td {
-      border: 1px solid #64748b;
-      padding: 4px 7px;
+      padding: 6px 10px;
       vertical-align: middle;
+      border-bottom: 1px solid #e2e8f0;
+      border-right: 1px solid #e2e8f0;
     }
 
-    .ledger-table thead .title-banner th {
-      background: linear-gradient(180deg, #dceaf7 0%, #bfd6ec 100%);
-      color: #0f172a;
-      font-size: 0.88rem;
-      font-weight: 800;
-      text-align: center;
-      padding: 7px;
-      letter-spacing: 0.5px;
-      border-bottom: 1.5px solid #334155;
+    .ledger-table th:last-child,
+    .ledger-table td:last-child {
+      border-right: none;
     }
 
     .ledger-table thead .col-headers th {
-      background-color: #d0e1f3;
-      color: #0f172a;
       font-weight: 700;
       text-align: center;
-      padding: 6px 6px;
-      border-bottom: 1.5px solid #334155;
+      padding: 9px 8px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .th-in {
+      background-color: #d1fae5;
+      color: #065f46;
+      border-bottom: 2px solid #10b981 !important;
+    }
+
+    .th-out {
+      background-color: #ffe4e6;
+      color: #9f1239;
+      border-bottom: 2px solid #f43f5e !important;
     }
 
     .ledger-table tbody tr:nth-child(even) {
       background-color: #f8fafc;
     }
 
-    .ledger-table tbody tr:hover {
-      background-color: #f1f5f9;
-    }
-
     .col-date {
-      width: 78px;
+      width: 82px;
       text-align: center;
       white-space: nowrap;
+      color: var(--slate-700);
+      font-weight: 500;
       font-variant-numeric: tabular-nums;
     }
 
     .col-desc {
       text-align: left;
+      color: var(--slate-900);
+      font-weight: 500;
     }
 
     .col-amount {
-      width: 112px;
+      width: 118px;
       white-space: nowrap;
       font-variant-numeric: tabular-nums;
     }
 
-    /* Pemisah Tengah Antara Penerimaan & Pengeluaran */
     .divider-left {
-      border-left: 2px solid #1e293b !important;
+      border-left: 2.5px solid var(--emerald-800) !important;
     }
 
-    /* Format Uang Rp Kiri - Angka Kanan seperti Excel Akuntansi */
     .rp-cell {
       display: flex;
       justify-content: space-between;
@@ -317,21 +396,28 @@
     }
 
     .rp-cell .rp-sym {
-      color: #475569;
-      font-size: 0.75rem;
+      color: var(--slate-500);
+      font-size: 0.74rem;
+      font-weight: 600;
     }
 
-    .rp-cell .rp-val {
-      font-weight: 600;
+    .rp-cell .rp-val-in {
+      font-weight: 700;
+      color: #047857;
       text-align: right;
     }
 
-    /* Tombol Hapus Mini di dalam Sel (Hilang saat Export/Print) */
+    .rp-cell .rp-val-out {
+      font-weight: 700;
+      color: #be123c;
+      text-align: right;
+    }
+
     .item-row-wrap {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
     }
 
     .btn-del-inline {
@@ -347,17 +433,12 @@
       flex-shrink: 0;
     }
 
-    .btn-del-inline:hover {
-      background: #ef4444;
-      color: #fff;
-    }
-
-    /* Bagian Bawah: Rekapan + Tanda Tangan + Stempel */
+    /* Bagian Bawah: Kartu Rekapan & Legalisasi */
     .footer-section {
-      margin-top: 14px;
+      margin-top: 20px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 14px;
     }
 
     .rekapan-wrapper {
@@ -365,79 +446,125 @@
       justify-content: flex-end;
     }
 
+    .rekapan-card {
+      width: 430px;
+      background: var(--emerald-50);
+      border: 1.5px solid #a7f3d0;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(6, 55, 41, 0.06);
+    }
+
+    .rekapan-card-header {
+      background: var(--emerald-800);
+      color: var(--white);
+      padding: 7px 14px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
     .rekapan-table {
-      width: 410px;
+      width: 100%;
       border-collapse: collapse;
-      font-size: 0.83rem;
+      font-size: 0.85rem;
     }
 
     .rekapan-table td {
-      padding: 3px 6px;
-    }
-
-    .rekapan-title {
-      font-weight: 800;
-      color: #0f172a;
-      padding-bottom: 4px !important;
+      padding: 6px 14px;
+      border-bottom: 1px solid #d1fae5;
     }
 
     .rekapan-highlight td {
-      background-color: #c5d9ed;
-      border-top: 1.5px solid #1e293b;
-      border-bottom: 2px double #1e293b;
+      background: linear-gradient(90deg, var(--gold-100) 0%, #fef3c7 100%);
+      border-top: 2px solid var(--gold-400);
+      border-bottom: none;
       font-weight: 800;
-      color: #0f172a;
-      padding: 5px 6px;
+      font-size: 0.92rem;
+      color: var(--emerald-900);
+      padding: 9px 14px;
     }
 
-    .rekapan-highlight td:first-child {
-      border-left: 1.5px solid #1e293b;
+    /* Area Tanda Tangan & Cap Proporsional di Tengah */
+    .legalization-area {
+      margin-top: 6px;
+      position: relative;
     }
 
-    .rekapan-highlight td:last-child {
-      border-right: 1.5px solid #1e293b;
+    .sig-date-text {
+      text-align: right;
+      padding-right: 48px;
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--slate-700);
+      margin-bottom: 8px;
     }
 
-    /* Baris Tanda Tangan & Stempel Masjid */
     .sig-stamp-grid {
       display: grid;
-      grid-template-columns: 1fr 200px 1fr;
+      grid-template-columns: 1fr 220px 1fr;
       align-items: center;
-      margin-top: 6px;
-      padding: 0 24px;
+      padding: 0 20px;
+      position: relative;
+      min-height: 155px;
     }
 
     .sig-block {
       text-align: center;
-      font-size: 0.85rem;
-      color: #1e293b;
+      font-size: 0.88rem;
+      color: var(--slate-900);
+      z-index: 2;
     }
 
-    .sig-space {
-      height: 58px;
+    .sig-role {
+      font-weight: 600;
+      color: var(--slate-700);
+      margin-bottom: 4px;
+    }
+
+    .sig-image-holder {
+      height: 82px;
       display: flex;
       align-items: center;
       justify-content: center;
+      margin: 2px 0;
+    }
+
+    .sig-image-holder img {
+      max-height: 80px;
+      max-width: 210px;
+      object-fit: contain;
     }
 
     .sig-name {
       font-weight: 800;
       text-decoration: underline;
-      color: #0f172a;
+      color: var(--emerald-900);
+      font-size: 0.92rem;
     }
 
-    /* Stempel Vektor Estetis */
-    .stamp-container {
+    /* Wadah Cap di Tengah-Tengah 2 Tanda Tangan */
+    .center-stamp-holder {
       display: flex;
       justify-content: center;
       align-items: center;
+      height: 145px;
+      position: relative;
+      z-index: 3;
     }
 
-    .mosque-stamp {
-      width: 138px;
-      height: 138px;
-      opacity: 0.82;
-      transform: rotate(-4deg);
+    .stamp-img-preview {
+      width: 142px;
+      height: 142px;
+      object-fit: contain;
+      opacity: 0.9;
+      transform: rotate(-2deg);
+      display: none;
+    }
+
+    .stamp-img-preview.active {
+      display: block;
     }
 
     /* Toast Notification */
@@ -445,12 +572,12 @@
       position: fixed;
       bottom: 20px;
       right: 20px;
-      background: #0f172a;
-      color: #fff;
+      background: var(--emerald-900);
+      color: var(--white);
       padding: 12px 18px;
       border-radius: 8px;
       font-size: 0.86rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
       display: none;
       z-index: 9999;
     }
@@ -479,8 +606,7 @@
         width: 100%;
         min-width: 0;
         box-shadow: none;
-        border: none;
-        padding: 0;
+        padding: 10px;
       }
       .no-export {
         display: none !important;
@@ -492,16 +618,17 @@
 
   <header class="app-banner no-print">
     <h1>SISTEM INFORMASI KAS MASJID AL-MARHAMAH</h1>
-    <p>Perumahan Candi Gebang Permai Blok DD 12A, Wedomartani, Sleman</p>
+    <p>Kompleks Perum Candi Gebang Permai, Jetis, Wedomartani, Sleman</p>
   </header>
 
   <main class="main-layout">
-    <!-- PANEL KIRI: FORM INPUT BENDAHARA -->
+    <!-- PANEL KIRI: INPUT TRANSAKSI, TANDA TANGAN DIGITAL, & CAP -->
     <aside class="sidebar no-print">
+      <!-- 1. Input Transaksi -->
       <section class="card">
         <div class="card-title">
           <span>Input Transaksi Kas</span>
-          <span style="font-size:0.72rem; background:#dcfce7; color:#166534; padding:2px 8px; border-radius:10px;">Auto-Save GSheet</span>
+          <span style="font-size:0.7rem; background:#dcfce7; color:#166534; padding:2px 8px; border-radius:10px;">Auto-Save GSheet</span>
         </div>
         <form id="transactionForm">
           <div class="form-group">
@@ -511,19 +638,19 @@
           <div class="form-group">
             <label for="txType">Jenis Kas</label>
             <select id="txType" class="form-control" required>
-              <option value="IN">Penerimaan (Kas Masuk - Tabel Kiri)</option>
-              <option value="OUT">Pengeluaran (Kas Keluar - Tabel Kanan)</option>
+              <option value="IN">Penerimaan (Kas Masuk - Kiri)</option>
+              <option value="OUT">Pengeluaran (Kas Keluar - Kanan)</option>
             </select>
           </div>
           <div class="form-group">
             <label for="txDesc">Uraian Penerimaan / Pengeluaran</label>
-            <span class="field-hint">Pilih dari saran atau ketik bebas uraian baru:</span>
+            <span class="field-hint">Pilih dari daftar atau ketik langsung uraian baru:</span>
             <input
               type="text"
               id="txDesc"
               list="descSuggestions"
               class="form-control"
-              placeholder="Contoh: Kotak Infaq Jumat Pekan ke 1 / Listrik..."
+              placeholder="Contoh: Kotak Infaq Jumat Pekan ke 1..."
               autocomplete="off"
               required
             >
@@ -537,12 +664,61 @@
         </form>
       </section>
 
-      <!-- Pengaturan Kop, Rekening, & Pengurus -->
+      <!-- 2. Menu Tanda Tangan Digital (HP Responsif) & Cap Masjid -->
       <section class="card">
-        <div class="card-title">Identitas & Pengurus Masjid</div>
+        <div class="card-title">Legalitas: Tanda Tangan & Cap</div>
+        <span class="field-hint" style="margin-bottom:10px;">
+          Goreskan tanda tangan langsung dengan jari di layar HP:
+        </span>
+
+        <!-- Canvas Tanda Tangan Ketua -->
+        <div class="sig-pad-box">
+          <div class="sig-pad-header">
+            <span>Tanda Tangan Ketua Takmir</span>
+            <button type="button" id="btnClearSigKetua" class="btn btn-danger btn-sm" style="padding:2px 8px; font-size:0.72rem;">Hapus</button>
+          </div>
+          <canvas id="canvasSigKetua" class="sig-canvas"></canvas>
+        </div>
+
+        <!-- Canvas Tanda Tangan Bendahara -->
+        <div class="sig-pad-box">
+          <div class="sig-pad-header">
+            <span>Tanda Tangan Bendahara</span>
+            <button type="button" id="btnClearSigBendahara" class="btn btn-danger btn-sm" style="padding:2px 8px; font-size:0.72rem;">Hapus</button>
+          </div>
+          <canvas id="canvasSigBendahara" class="sig-canvas"></canvas>
+        </div>
+
+        <button type="button" id="btnApplySignatures" class="btn btn-primary btn-sm" style="margin-bottom:14px;">
+          Terapkan Tanda Tangan ke Laporan
+        </button>
+
+        <hr style="border:none; border-top:1px solid var(--slate-200); margin:12px 0;">
+
+        <!-- Menu Cap / Stempel Resmi (Sudah Tertanam) -->
+        <div class="form-group" style="margin-bottom:4px;">
+          <label>Menu Cap / Stempel Masjid</label>
+          <span class="field-hint">Logo Cap Al-Marhamah sudah siap. Klik tombol di bawah untuk menempel/melepas cap:</span>
+          <div style="display:flex; gap:8px; margin-top:6px;">
+            <button type="button" id="btnToggleStamp" class="btn btn-gold btn-sm" style="flex:1.4;">
+              Tempel Cap
+            </button>
+            <button type="button" id="btnResetDefaultStamp" class="btn btn-outline btn-sm" style="flex:1;" title="Gunakan Cap Bawaan Al-Marhamah">
+              Cap Bawaan
+            </button>
+            <label class="btn btn-outline btn-sm" style="flex:1; cursor:pointer; margin:0;" title="Ganti dengan gambar lain dari HP">
+              Ganti File
+              <input type="file" id="fileStampInput" accept="image/*" style="display:none;">
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Pengaturan Saldo Awal & Nama Pejabat -->
+      <section class="card">
+        <div class="card-title">Pengaturan Pengurus & Saldo</div>
         <div class="form-group">
-          <label for="cfgSaldoAwal">Saldo Awal Pertama Kali (SebelumSemua Bulan)</label>
-          <span class="field-hint">Saldo dasar kas sebelum bulan pertama (Rp):</span>
+          <label for="cfgSaldoAwal">Saldo Kas Awal Pertama Kali (Rp)</label>
           <input type="number" id="cfgSaldoAwal" class="form-control" step="any" placeholder="15550000">
         </div>
         <div class="form-group">
@@ -553,15 +729,9 @@
           <label for="cfgBendahara">Nama Bendahara</label>
           <input type="text" id="cfgBendahara" class="form-control" placeholder="Lugito">
         </div>
-        <div class="form-group">
-          <label for="cfgRekening">Info Bank & Nomor Rekening Kop</label>
-          <input type="text" id="cfgRekening" class="form-control" placeholder="Bank : BANK SYARIAH INDONESIA  Nama : MASJID AL MARHAMAH | Nomor Rekening : 3388331133">
-        </div>
         <button type="button" id="btnSaveConfig" class="btn btn-outline btn-sm" style="width:100%; margin-bottom:12px;">
           Simpan Pengaturan
         </button>
-
-        <hr style="border:none; border-top:1px solid #e2e8f0; margin:12px 0;">
 
         <div style="display:flex; gap:6px; flex-wrap:wrap;">
           <button type="button" id="btnBackupJson" class="btn btn-outline btn-sm" style="flex:1;">Backup JSON</button>
@@ -576,14 +746,14 @@
       </section>
     </aside>
 
-    <!-- PANEL KANAN: LAPORAN DUA KOLOM -->
+    <!-- PANEL KANAN: KERTAS LAPORAN ESTETIS -->
     <section class="content-area">
       <div class="toolbar no-print">
         <div class="filter-group">
-          <label for="reportMode" style="font-size:0.84rem; font-weight:700;">Tampilan:</label>
+          <label for="reportMode" style="font-size:0.84rem; font-weight:700;">Jenis Laporan:</label>
           <select id="reportMode">
-            <option value="MONTHLY">Laporan Bulanan (2 Kolom)</option>
-            <option value="YEARLY">Rekapitulasi Tahunan (12 Bulan)</option>
+            <option value="MONTHLY">Laporan Bulanan</option>
+            <option value="YEARLY">Rekapitulasi Tahunan</option>
           </select>
 
           <select id="filterMonth">
@@ -605,6 +775,9 @@
         </div>
 
         <div class="action-group">
+          <button type="button" id="btnQuickStamp" class="btn btn-gold">
+            Tempel Cap
+          </button>
           <button type="button" id="btnExportJpg" class="btn btn-success">
             Simpan JPG (Share WA)
           </button>
@@ -620,94 +793,89 @@
       <!-- Kertas Laporan -->
       <div class="report-scroll-wrapper">
         <div id="printableReport">
-          <!-- KOP MASJID -->
+          <!-- KOP MASJID SESUAI PERMINTAAN -->
           <div class="kop-header">
-            <h2>MASJID AL MARHAMAH</h2>
-            <div class="sub-kop">Sekretariat : Perumahan Candi Gebang Permai Blok DD 12A Tlp. 883124</div>
-            <div class="sub-kop" id="displayBankLine1">Bank : BANK SYARIAH INDONESIA &nbsp; Nama : MASJID AL MARHAMAH</div>
-            <div class="bank-info" id="displayBankLine2">Nomor Rekening : 3388331133</div>
+            <div class="kop-badge">Laporan Keuangan Resmi</div>
+            <h2>MASJID AL-MARHAMAH</h2>
+            <div class="sub-kop">Kompleks Perum Candi Gebang Permai, Jetis, Wedomartani, Sleman</div>
           </div>
 
-          <!-- TABEL UTAMA -->
-          <table class="ledger-table" id="mainLedgerTable">
-            <thead id="ledgerHead"></thead>
-            <tbody id="ledgerBody"></tbody>
-          </table>
+          <!-- JUDUL PERIODE LAPORAN -->
+          <div class="report-title-bar" id="reportTitleBanner">
+            LAPORAN PENERIMAAN DAN PENGELUARAN KAS BULAN AGUSTUS 2026
+          </div>
 
-          <!-- BAGIAN BAWAH: REKAPAN, STEMPEL & TANDA TANGAN -->
+          <!-- TABEL UTAMA PROPORSIONAL -->
+          <div class="ledger-container">
+            <table class="ledger-table" id="mainLedgerTable">
+              <thead id="ledgerHead"></thead>
+              <tbody id="ledgerBody"></tbody>
+            </table>
+          </div>
+
+          <!-- BAGIAN BAWAH: KARTU REKAPAN & AREA LEGALISASI -->
           <div class="footer-section">
             <div class="rekapan-wrapper">
-              <table class="rekapan-table">
-                <tbody>
-                  <tr>
-                    <td colspan="3" class="rekapan-title">Rekapan:</td>
-                  </tr>
-                  <tr>
-                    <td id="rekapLabel1" style="width: 245px;">1. Saldo Kas bulan lalu</td>
-                    <td style="width: 30px; text-align:right; color:#475569;">Rp</td>
-                    <td id="rekapValAwal" style="text-align:right; font-weight:700; font-variant-numeric:tabular-nums;">0</td>
-                  </tr>
-                  <tr>
-                    <td id="rekapLabel2">2. Penerimaan Bulan Ini</td>
-                    <td style="text-align:right; color:#475569;">Rp</td>
-                    <td id="rekapValMasuk" style="text-align:right; font-weight:700; font-variant-numeric:tabular-nums;">0</td>
-                  </tr>
-                  <tr>
-                    <td id="rekapLabel3">3. Pengeluaran Bulan Ini</td>
-                    <td style="text-align:right; color:#475569;">Rp</td>
-                    <td id="rekapValKeluar" style="text-align:right; font-weight:700; font-variant-numeric:tabular-nums;">0</td>
-                  </tr>
-                  <tr class="rekapan-highlight">
-                    <td id="rekapLabel4">SALDO KAS BULAN INI</td>
-                    <td style="text-align:right;">Rp</td>
-                    <td id="rekapValAkhir" style="text-align:right; font-variant-numeric:tabular-nums;">0</td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="rekapan-card">
+                <div class="rekapan-card-header">Ringkasan Rekapan Kas</div>
+                <table class="rekapan-table">
+                  <tbody>
+                    <tr>
+                      <td id="rekapLabel1" style="color:var(--slate-700); font-weight:600;">1. Saldo Kas bulan lalu</td>
+                      <td style="width:35px; text-align:right; color:var(--slate-500); font-weight:600;">Rp</td>
+                      <td id="rekapValAwal" style="text-align:right; font-weight:700; font-variant-numeric:tabular-nums;">0</td>
+                    </tr>
+                    <tr>
+                      <td id="rekapLabel2" style="color:#047857; font-weight:600;">2. Penerimaan Bulan Ini</td>
+                      <td style="text-align:right; color:#047857; font-weight:600;">Rp</td>
+                      <td id="rekapValMasuk" style="text-align:right; font-weight:700; color:#047857; font-variant-numeric:tabular-nums;">0</td>
+                    </tr>
+                    <tr>
+                      <td id="rekapLabel3" style="color:#be123c; font-weight:600;">3. Pengeluaran Bulan Ini</td>
+                      <td style="text-align:right; color:#be123c; font-weight:600;">Rp</td>
+                      <td id="rekapValKeluar" style="text-align:right; font-weight:700; color:#be123c; font-variant-numeric:tabular-nums;">0</td>
+                    </tr>
+                    <tr class="rekapan-highlight">
+                      <td id="rekapLabel4">SALDO KAS BULAN INI</td>
+                      <td style="text-align:right;">Rp</td>
+                      <td id="rekapValAkhir" style="text-align:right; font-variant-numeric:tabular-nums;">0</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
 
-            <div style="text-align:right; padding-right:48px; font-size:0.84rem; font-weight:600; margin-top:4px;" id="sigDateLine">
-              Candi Gebang, 31- Agustus 2026
-            </div>
-
-            <div class="sig-stamp-grid">
-              <div class="sig-block">
-                <div>Mengetahui,</div>
-                <div>Ketua</div>
-                <div class="sig-space"></div>
-                <div class="sig-name" id="displayKetua">H. Zaenal Abidin</div>
+            <!-- Area Tanda Tangan & Cap di Tengah -->
+            <div class="legalization-area">
+              <div class="sig-date-text" id="sigDateLine">
+                Candi Gebang, 31 Agustus 2026
               </div>
 
-              <!-- Stempel Vektor Masjid Al Marhamah -->
-              <div class="stamp-container">
-                <svg class="mosque-stamp" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                  <defs>
-                    <path id="textArcTop" d="M 26,100 A 74,74 0 1,1 174,100" />
-                    <path id="textArcBottom" d="M 178,102 A 78,78 0 1,1 22,102" />
-                  </defs>
-                  <circle cx="100" cy="100" r="92" fill="none" stroke="#1e88e5" stroke-width="3.5" stroke-dasharray="4,2"/>
-                  <circle cx="100" cy="100" r="85" fill="none" stroke="#1e88e5" stroke-width="1.8"/>
-                  <circle cx="100" cy="100" r="56" fill="none" stroke="#1e88e5" stroke-width="1.8"/>
-                  <!-- Kubah & Bulan Sabit -->
-                  <path d="M 70,115 L 70,92 Q 100,55 130,92 L 130,115 Z" fill="#1e88e5" opacity="0.18"/>
-                  <path d="M 65,115 L 135,115 M 75,115 L 75,92 Q 100,62 125,92 L 125,115" fill="none" stroke="#1e88e5" stroke-width="3.5"/>
-                  <text x="100" y="54" text-anchor="middle" fill="#1e88e5" font-size="14" font-weight="bold">★</text>
-                  <text fill="#1e88e5" font-size="13.5" font-weight="800" letter-spacing="2">
-                    <textPath href="#textArcTop" startOffset="50%" text-anchor="middle">★ AL MARHAMAH ★</textPath>
-                  </text>
-                  <text fill="#1e88e5" font-size="10.5" font-weight="700" letter-spacing="1.2">
-                    <textPath href="#textArcBottom" startOffset="50%" text-anchor="middle">PERUM CANDI GEBANG PERMAI</textPath>
-                  </text>
-                  <text x="100" y="132" text-anchor="middle" fill="#1e88e5" font-size="11" font-weight="800">TA'MIR</text>
-                  <text x="100" y="145" text-anchor="middle" fill="#1e88e5" font-size="11" font-weight="800">MASJID</text>
-                </svg>
-              </div>
+              <div class="sig-stamp-grid">
+                <!-- Tanda Tangan Ketua -->
+                <div class="sig-block">
+                  <div>Mengetahui,</div>
+                  <div class="sig-role">Ketua Takmir</div>
+                  <div class="sig-image-holder">
+                    <img id="imgSigKetua" alt="Tanda Tangan Ketua" style="display:none;">
+                  </div>
+                  <div class="sig-name" id="displayKetua">H. Zaenal Abidin</div>
+                </div>
 
-              <div class="sig-block">
-                <div>&nbsp;</div>
-                <div>Bendahara</div>
-                <div class="sig-space"></div>
-                <div class="sig-name" id="displayBendahara">Lugito</div>
+                <!-- Posisi Cap di Tengah-Tengah Antara 2 Tanda Tangan -->
+                <div class="center-stamp-holder">
+                  <img id="imgStampPreview" class="stamp-img-preview" alt="Cap Masjid Al-Marhamah">
+                </div>
+
+                <!-- Tanda Tangan Bendahara -->
+                <div class="sig-block">
+                  <div>&nbsp;</div>
+                  <div class="sig-role">Bendahara</div>
+                  <div class="sig-image-holder">
+                    <img id="imgSigBendahara" alt="Tanda Tangan Bendahara" style="display:none;">
+                  </div>
+                  <div class="sig-name" id="displayBendahara">Lugito</div>
+                </div>
               </div>
             </div>
           </div>
@@ -722,9 +890,37 @@
     (() => {
       'use strict';
 
-      const STORAGE_KEY_TX = 'almarhamah_kas_tx_v2';
-      const STORAGE_KEY_CFG = 'almarhamah_kas_cfg_v2';
+      const STORAGE_KEY_TX = 'almarhamah_kas_tx_v3';
+      const STORAGE_KEY_CFG = 'almarhamah_kas_cfg_v3';
+      const STORAGE_KEY_LEGAL = 'almarhamah_kas_legal_v4';
       const DEFAULT_GSHEET_URL = 'https://script.google.com/macros/s/AKfycbwyBOLhNlFc4UHa-tBdSNA5QibitDSpeDivzHurzY332J3WgU1qg8KPkPlw6uARaegtuw/exec';
+
+      // Logo Cap Resmi Masjid Al-Marhamah (Sesuai Gambar yang Dikirim, Latar Belakang 100% Transparan Bersih)
+      const DEFAULT_STAMP_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320">
+        <defs>
+          <path id="topArc" d="M 52,158 A 108,108 0 1,1 268,158" />
+          <path id="botArc" d="M 38,162 A 122,122 0 1,0 282,162" />
+        </defs>
+        <g fill="#1348a8">
+          <text font-family="'Arial Black', Impact, sans-serif" font-size="31" font-weight="900" letter-spacing="2.5">
+            <textPath href="#topArc" startOffset="50%" text-anchor="middle">AL MARHAMAH</textPath>
+          </text>
+          <text font-family="Arial, Helvetica, sans-serif" font-size="22.5" font-weight="900" letter-spacing="2.2">
+            <textPath href="#botArc" startOffset="50%" text-anchor="middle">PERUM CANDI GEBANG PERMAI</textPath>
+          </text>
+          <text x="53" y="136" font-size="27" text-anchor="middle">★</text>
+          <text x="267" y="136" font-size="27" text-anchor="middle">★</text>
+          <!-- Siluet Menara & Kubah Kaligrafi Sesuai Cap Asli -->
+          <path d="M 126,64 C 122,74 104,84 104,96 L 94,96 C 91,96 90,99 90,104 C 90,109 92,111 97,111 L 102,111 L 102,172 C 102,182 95,186 90,183 C 86,180 82,182 81,186 C 80,192 88,197 96,193 C 107,187 123,178 123,172 L 123,112 L 116,112 C 113,108 114,98 122,95 C 128,93 134,98 132,107 L 126,110 L 143,115 L 143,167 C 143,182 156,191 174,187 L 174,173 C 164,173 160,167 160,157 L 160,115 L 166,111 C 166,97 163,94 156,94 L 148,94 C 148,83 131,74 126,64 Z" />
+          <path d="M 192,80 C 185,92 170,103 152,112 C 132,122 124,132 126,143 C 128,154 146,162 162,172 C 172,178 175,187 175,187 C 186,186 192,174 185,163 C 178,153 154,144 146,138 C 140,133 145,126 164,119 C 182,113 200,114 218,125 C 234,135 236,151 224,158 C 216,162 208,167 209,176 C 210,185 222,190 234,185 C 248,179 257,164 252,148 C 248,136 239,134 239,134 C 246,125 242,113 224,104 C 206,95 197,88 192,80 Z" />
+          <text x="164" y="210" font-family="Georgia, 'Times New Roman', serif" font-size="23" font-weight="900" text-anchor="middle" letter-spacing="1">TA’MIR</text>
+          <text x="164" y="234" font-family="Georgia, 'Times New Roman', serif" font-size="23" font-weight="900" text-anchor="middle" letter-spacing="1">MASJID</text>
+          <circle cx="164" cy="256" r="14" fill="none" stroke="#1348a8" stroke-width="3.2" />
+          <text x="164" y="263" font-family="Arial, sans-serif" font-size="19" font-weight="900" text-anchor="middle">B</text>
+        </g>
+      </svg>`;
+
+      const DEFAULT_STAMP_DATA_URI = 'data:image/svg+xml;utf8,' + encodeURIComponent(DEFAULT_STAMP_SVG);
 
       const MONTH_NAMES = [
         'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
@@ -735,8 +931,15 @@
       let config = {
         baseBalance: 15550000,
         ketua: 'H. Zaenal Abidin',
-        bendahara: 'Lugito',
-        rekening: 'Bank : BANK SYARIAH INDONESIA  Nama : MASJID AL MARHAMAH | Nomor Rekening : 3388331133'
+        bendahara: 'Lugito'
+      };
+
+      // State Tanda Tangan Digital & Cap (Default menggunakan Cap Resmi Al-Marhamah)
+      let legalData = {
+        sigKetua: '',
+        sigBendahara: '',
+        stampImage: DEFAULT_STAMP_DATA_URI,
+        stampActive: true
       };
 
       const dom = {
@@ -746,10 +949,18 @@
         txDesc: document.getElementById('txDesc'),
         descSuggestions: document.getElementById('descSuggestions'),
         txAmount: document.getElementById('txAmount'),
+        canvasSigKetua: document.getElementById('canvasSigKetua'),
+        canvasSigBendahara: document.getElementById('canvasSigBendahara'),
+        btnClearSigKetua: document.getElementById('btnClearSigKetua'),
+        btnClearSigBendahara: document.getElementById('btnClearSigBendahara'),
+        btnApplySignatures: document.getElementById('btnApplySignatures'),
+        btnToggleStamp: document.getElementById('btnToggleStamp'),
+        btnResetDefaultStamp: document.getElementById('btnResetDefaultStamp'),
+        btnQuickStamp: document.getElementById('btnQuickStamp'),
+        fileStampInput: document.getElementById('fileStampInput'),
         cfgSaldoAwal: document.getElementById('cfgSaldoAwal'),
         cfgKetua: document.getElementById('cfgKetua'),
         cfgBendahara: document.getElementById('cfgBendahara'),
-        cfgRekening: document.getElementById('cfgRekening'),
         btnSaveConfig: document.getElementById('btnSaveConfig'),
         btnBackupJson: document.getElementById('btnBackupJson'),
         fileRestoreJson: document.getElementById('fileRestoreJson'),
@@ -761,8 +972,7 @@
         btnExportPdf: document.getElementById('btnExportPdf'),
         btnPrint: document.getElementById('btnPrint'),
         printableReport: document.getElementById('printableReport'),
-        displayBankLine1: document.getElementById('displayBankLine1'),
-        displayBankLine2: document.getElementById('displayBankLine2'),
+        reportTitleBanner: document.getElementById('reportTitleBanner'),
         ledgerHead: document.getElementById('ledgerHead'),
         ledgerBody: document.getElementById('ledgerBody'),
         rekapLabel1: document.getElementById('rekapLabel1'),
@@ -776,6 +986,9 @@
         sigDateLine: document.getElementById('sigDateLine'),
         displayKetua: document.getElementById('displayKetua'),
         displayBendahara: document.getElementById('displayBendahara'),
+        imgSigKetua: document.getElementById('imgSigKetua'),
+        imgSigBendahara: document.getElementById('imgSigBendahara'),
+        imgStampPreview: document.getElementById('imgStampPreview'),
         toastMsg: document.getElementById('toastMsg')
       };
 
@@ -785,10 +998,9 @@
         setTimeout(() => { dom.toastMsg.style.display = 'none'; }, 3200);
       };
 
-      // Format angka ribuan dengan koma/titik rapi tanpa simbol Rp (karena Rp dipisah di kiri sel)
       const formatNumber = (num) => {
         const n = Number.isFinite(Number(num)) ? Number(num) : 0;
-        return new Intl.NumberFormat('en-US', {
+        return new Intl.NumberFormat('id-ID', {
           minimumFractionDigits: 0,
           maximumFractionDigits: 0
         }).format(n);
@@ -808,6 +1020,119 @@
         if (!isoDate || !/^\d{4}-\d{2}-\d{2}$/.test(isoDate)) return '-';
         const [y, m, d] = isoDate.split('-');
         return `${d}/${m}/${y}`;
+      };
+
+      // Inisialisasi Canvas Tanda Tangan yang Responsif untuk Layar Sentuh HP & Mouse
+      const setupSignaturePad = (canvas) => {
+        const ctx = canvas.getContext('2d');
+        let drawing = false;
+        let hasDrawn = false;
+
+        const resizeCanvas = () => {
+          const rect = canvas.getBoundingClientRect();
+          const ratio = Math.max(window.devicePixelRatio || 1, 1);
+          canvas.width = rect.width * ratio;
+          canvas.height = rect.height * ratio;
+          ctx.scale(ratio, ratio);
+          ctx.lineWidth = 2.2;
+          ctx.lineCap = 'round';
+          ctx.lineJoin = 'round';
+          ctx.strokeStyle = '#0f172a';
+        };
+
+        resizeCanvas();
+
+        const getPoint = (e) => {
+          const rect = canvas.getBoundingClientRect();
+          const touch = e.touches && e.touches[0];
+          const clientX = touch ? touch.clientX : e.clientX;
+          const clientY = touch ? touch.clientY : e.clientY;
+          return {
+            x: clientX - rect.left,
+            y: clientY - rect.top
+          };
+        };
+
+        const startDraw = (e) => {
+          e.preventDefault();
+          drawing = true;
+          hasDrawn = true;
+          const pt = getPoint(e);
+          ctx.beginPath();
+          ctx.moveTo(pt.x, pt.y);
+        };
+
+        const moveDraw = (e) => {
+          if (!drawing) return;
+          e.preventDefault();
+          const pt = getPoint(e);
+          ctx.lineTo(pt.x, pt.y);
+          ctx.stroke();
+        };
+
+        const endDraw = (e) => {
+          if (!drawing) return;
+          e.preventDefault();
+          drawing = false;
+        };
+
+        canvas.addEventListener('mousedown', startDraw);
+        canvas.addEventListener('mousemove', moveDraw);
+        window.addEventListener('mouseup', endDraw);
+
+        canvas.addEventListener('touchstart', startDraw, { passive: false });
+        canvas.addEventListener('touchmove', moveDraw, { passive: false });
+        window.addEventListener('touchend', endDraw);
+
+        return {
+          clear: () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            hasDrawn = false;
+          },
+          isEmpty: () => !hasDrawn,
+          toDataURL: () => canvas.toDataURL('image/png')
+        };
+      };
+
+      let padKetua = null;
+      let padBendahara = null;
+
+      // Render Tanda Tangan & Cap pada Lembar Laporan
+      const renderLegalizationAssets = () => {
+        if (legalData.sigKetua) {
+          dom.imgSigKetua.src = legalData.sigKetua;
+          dom.imgSigKetua.style.display = 'block';
+        } else {
+          dom.imgSigKetua.style.display = 'none';
+        }
+
+        if (legalData.sigBendahara) {
+          dom.imgSigBendahara.src = legalData.sigBendahara;
+          dom.imgSigBendahara.style.display = 'block';
+        } else {
+          dom.imgSigBendahara.style.display = 'none';
+        }
+
+        const stampSrc = legalData.stampImage || DEFAULT_STAMP_DATA_URI;
+        dom.imgStampPreview.src = stampSrc;
+
+        if (legalData.stampActive) {
+          dom.imgStampPreview.classList.add('active');
+          dom.btnToggleStamp.textContent = 'Lepas Cap';
+          dom.btnQuickStamp.textContent = 'Cap Masjid: ON';
+        } else {
+          dom.imgStampPreview.classList.remove('active');
+          dom.btnToggleStamp.textContent = 'Tempel Cap';
+          dom.btnQuickStamp.textContent = 'Cap Masjid: OFF';
+        }
+      };
+
+      const saveLegalData = () => {
+        try {
+          localStorage.setItem(STORAGE_KEY_LEGAL, JSON.stringify(legalData));
+        } catch (err) {
+          console.error('Gagal menyimpan tanda tangan/cap:', err);
+        }
       };
 
       const sanitizeTransaction = (item) => {
@@ -831,9 +1156,7 @@
         return { id, date, type, category, desc, amount };
       };
 
-      // Data Contoh Persis Seperti Foto Laporan Bulan Agustus 2026
       const getAugustSampleTransactions = () => [
-        // PENERIMAAN (15 Baris)
         { id: 'in_1', date: '2026-08-01', type: 'IN', category: 'Infaq', desc: 'Infaq Listrik Hamba Allah RW 62', amount: 300000 },
         { id: 'in_2', date: '2026-08-07', type: 'IN', category: 'Infaq Jumat', desc: 'Kotak Infaq Jumat Pekan ke 1', amount: 3358000 },
         { id: 'in_3', date: '2026-08-10', type: 'IN', category: 'Infaq', desc: 'Infaq Listrik Hamba Allah RW 66', amount: 1000000 },
@@ -849,8 +1172,6 @@
         { id: 'in_13', date: '2026-08-31', type: 'IN', category: 'Sedekah', desc: 'Sedekah Internet', amount: 200000 },
         { id: 'in_14', date: '2026-08-31', type: 'IN', category: 'Sedekah', desc: 'Sedekah BBM Genset', amount: 100000 },
         { id: 'in_15', date: '2026-08-31', type: 'IN', category: 'Sedekah', desc: 'Sedekah Air PDAM', amount: 41000 },
-
-        // PENGELUARAN (38 Baris)
         { id: 'out_1', date: '2026-08-01', type: 'OUT', category: 'Operasional', desc: 'Akses Operasional Masjid', amount: 750000 },
         { id: 'out_2', date: '2026-08-01', type: 'OUT', category: 'Bisyaroh', desc: 'Bisyaroh Ustadzah TPA', amount: 1100000 },
         { id: 'out_3', date: '2026-08-01', type: 'OUT', category: 'Operasional', desc: 'Sembako Marbot', amount: 600000 },
@@ -859,7 +1180,7 @@
         { id: 'out_6', date: '2026-08-07', type: 'OUT', category: 'Operasional', desc: 'Air Mineral', amount: 1405000 },
         { id: 'out_7', date: '2026-08-08', type: 'OUT', category: 'Operasional', desc: 'Gas dan ATK', amount: 37000 },
         { id: 'out_8', date: '2026-08-12', type: 'OUT', category: 'Bisyaroh', desc: 'Bisyaroh Ustadz Kajian rutin ke 2', amount: 1000000 },
-        { id: 'out_9', date: '2026-08-13', type: 'OUT', category: 'Perlengkapan', desc: 'lampu Hias HUT RI ke 81', amount: 400000 },
+        { id: 'out_9', date: '2026-08-13', type: 'OUT', category: 'Perlengkapan', desc: 'Lampu Hias HUT RI ke 81', amount: 400000 },
         { id: 'out_10', date: '2026-08-14', type: 'OUT', category: 'Sholat Jumat', desc: 'Pelaksanaan Sholat Jumat ke 2', amount: 500000 },
         { id: 'out_11', date: '2026-08-14', type: 'OUT', category: 'Utilitas', desc: 'Listrik', amount: 2439000 },
         { id: 'out_12', date: '2026-08-17', type: 'OUT', category: 'Konsumsi', desc: 'Konsumsi Kajian Ahad pagi', amount: 1000000 },
@@ -869,7 +1190,7 @@
         { id: 'out_16', date: '2026-08-19', type: 'OUT', category: 'Pemeliharaan', desc: 'Door Closer', amount: 455000 },
         { id: 'out_17', date: '2026-08-20', type: 'OUT', category: 'Bisyaroh', desc: 'Bisyaroh Ustadz Kajian rutin ke 3', amount: 400000 },
         { id: 'out_18', date: '2026-08-21', type: 'OUT', category: 'Sholat Jumat', desc: 'Pelaksanaan Sholat Jumat ke 3', amount: 200000 },
-        { id: 'out_19', date: '2026-08-21', type: 'OUT', category: 'Operasional', desc: 'Tras Bag', amount: 32000 },
+        { id: 'out_19', date: '2026-08-21', type: 'OUT', category: 'Operasional', desc: 'Trash Bag', amount: 32000 },
         { id: 'out_20', date: '2026-08-25', type: 'OUT', category: 'Bisyaroh', desc: 'Bisyaroh Ustadz Maulid Nabi', amount: 500000 },
         { id: 'out_21', date: '2026-08-25', type: 'OUT', category: 'PHBI', desc: 'Qori Pengajian Maulid Nabi', amount: 200000 },
         { id: 'out_22', date: '2026-08-25', type: 'OUT', category: 'Kebersihan', desc: 'Cairan Pembersih dan Pewangi', amount: 570000 },
@@ -902,8 +1223,7 @@
           'Air PDAM',
           'Internet',
           'Bisyaroh Marbot',
-          'Cleaning Service',
-          'Pelaksanaan Sholat Jumat ke 1'
+          'Cleaning Service'
         ];
         const set = new Set(defaults);
         transactions.forEach((t) => { if (t.desc) set.add(t.desc); });
@@ -935,16 +1255,13 @@
         try {
           const res = await fetch(DEFAULT_GSHEET_URL);
           const data = await res.json();
-          if (data.status === 'success' && Array.isArray(data.transactions) && data.transactions.length > 0) {
+          if (data.status === 'success' && Array.isArray(data.transactions) && data.transactions.length > 7) {
             const valid = data.transactions.map(sanitizeTransaction).filter(Boolean);
-            // Hanya timpa jika bukan data demo lama 7 item
-            if (valid.length > 7) {
-              transactions = valid;
-              localStorage.setItem(STORAGE_KEY_TX, JSON.stringify(transactions));
-              updateSuggestions();
-              populateYears();
-              renderReport();
-            }
+            transactions = valid;
+            localStorage.setItem(STORAGE_KEY_TX, JSON.stringify(transactions));
+            updateSuggestions();
+            populateYears();
+            renderReport();
           }
         } catch (err) {
           console.error('Pull GSheet error:', err);
@@ -973,7 +1290,19 @@
                 : 15550000;
               config.ketua = parsedCfg.ketua || config.ketua;
               config.bendahara = parsedCfg.bendahara || config.bendahara;
-              config.rekening = parsedCfg.rekening || config.rekening;
+            }
+          }
+
+          const rawLegal = localStorage.getItem(STORAGE_KEY_LEGAL);
+          if (rawLegal) {
+            const parsedLegal = JSON.parse(rawLegal);
+            if (parsedLegal && typeof parsedLegal === 'object') {
+              legalData.sigKetua = parsedLegal.sigKetua || '';
+              legalData.sigBendahara = parsedLegal.sigBendahara || '';
+              legalData.stampImage = parsedLegal.stampImage || DEFAULT_STAMP_DATA_URI;
+              legalData.stampActive = typeof parsedLegal.stampActive === 'boolean'
+                ? parsedLegal.stampActive
+                : true;
             }
           }
         } catch (err) {
@@ -1012,23 +1341,15 @@
         dom.filterYear.value = sorted.includes(Number(prev)) ? String(prev) : '2026';
       };
 
-      const updateHeaderAndFooterInfo = () => {
-        const parts = config.rekening.split('|');
-        dom.displayBankLine1.textContent = (parts[0] || 'Bank : BANK SYARIAH INDONESIA   Nama : MASJID AL MARHAMAH').trim();
-        dom.displayBankLine2.textContent = (parts[1] || 'Nomor Rekening : 3388331133').trim();
-        dom.displayKetua.textContent = config.ketua;
-        dom.displayBendahara.textContent = config.bendahara;
-      };
-
-      // RENDER LAPORAN BULANAN DUA SISI (KIRI PENERIMAAN - KANAN PENGELUARAN)
+      // RENDER LAPORAN BULANAN DUA SISI
       const renderMonthlySideBySide = (year, month) => {
         const targetPrefix = `${year}-${month}`;
         const mIdx = parseInt(month, 10) - 1;
         const mName = MONTH_NAMES[mIdx] || '';
 
-        const sorted = getSortedTransactions();
+        dom.reportTitleBanner.textContent = `LAPORAN PENERIMAAN DAN PENGELUARAN KAS BULAN ${mName.toUpperCase()} ${year}`;
 
-        // Hitung Saldo Kas Bulan Lalu (Base Balance + Seluruh Mutasi Sebelum Bulan Ini)
+        const sorted = getSortedTransactions();
         let saldoBulanLalu = Number(config.baseBalance) || 0;
         const inList = [];
         const outList = [];
@@ -1048,16 +1369,13 @@
         const saldoAkhir = saldoBulanLalu + totalIn - totalOut;
 
         dom.ledgerHead.innerHTML = `
-          <tr class="title-banner">
-            <th colspan="6">LAPORAN PENERIMAAN DAN PENGELUARAN KAS BULAN ${mName.toUpperCase()} ${year}</th>
-          </tr>
           <tr class="col-headers">
-            <th class="col-date">Tanggal</th>
-            <th class="col-desc">Penerimaan</th>
-            <th class="col-amount">Jumlah</th>
-            <th class="col-date divider-left">Tanggal</th>
-            <th class="col-desc">Pengeluaran</th>
-            <th class="col-amount">Jumlah</th>
+            <th class="col-date th-in">Tanggal</th>
+            <th class="col-desc th-in">Uraian Penerimaan</th>
+            <th class="col-amount th-in">Jumlah</th>
+            <th class="col-date th-out divider-left">Tanggal</th>
+            <th class="col-desc th-out">Uraian Pengeluaran</th>
+            <th class="col-amount th-out">Jumlah</th>
           </tr>
         `;
 
@@ -1080,7 +1398,7 @@
               <td class="col-amount">
                 <div class="rp-cell">
                   <span class="rp-sym">Rp</span>
-                  <span class="rp-val">${formatNumber(inItem.amount)}</span>
+                  <span class="rp-val-in">${formatNumber(inItem.amount)}</span>
                 </div>
               </td>
             `
@@ -1102,7 +1420,7 @@
               <td class="col-amount">
                 <div class="rp-cell">
                   <span class="rp-sym">Rp</span>
-                  <span class="rp-val">${formatNumber(outItem.amount)}</span>
+                  <span class="rp-val-out">${formatNumber(outItem.amount)}</span>
                 </div>
               </td>
             `
@@ -1117,7 +1435,6 @@
 
         dom.ledgerBody.innerHTML = rowsHtml;
 
-        // Update Bagian Rekapan Bawah
         dom.rekapLabel1.textContent = '1. Saldo Kas bulan lalu';
         dom.rekapLabel2.textContent = '2. Penerimaan Bulan Ini';
         dom.rekapLabel3.textContent = '3. Pengeluaran Bulan Ini';
@@ -1129,11 +1446,13 @@
         dom.rekapValAkhir.textContent = formatNumber(saldoAkhir);
 
         const lastDay = new Date(Number(year), Number(month), 0).getDate();
-        dom.sigDateLine.textContent = `Candi Gebang, ${lastDay}- ${mName} ${year}`;
+        dom.sigDateLine.textContent = `Candi Gebang, ${lastDay} ${mName} ${year}`;
       };
 
-      // RENDER REKAPITULASI TAHUNAN (12 BULAN BERKESINAMBUNGAN)
+      // RENDER REKAPITULASI TAHUNAN
       const renderYearlySummary = (year) => {
+        dom.reportTitleBanner.textContent = `LAPORAN REKAPITULASI PENERIMAAN DAN PENGELUARAN KAS TAHUN ${year}`;
+
         const sorted = getSortedTransactions();
         let saldoAwalTahun = Number(config.baseBalance) || 0;
         const monthly = Array.from({ length: 12 }, () => ({ in: 0, out: 0 }));
@@ -1152,16 +1471,13 @@
         });
 
         dom.ledgerHead.innerHTML = `
-          <tr class="title-banner">
-            <th colspan="6">LAPORAN REKAPITULASI PENERIMAAN DAN PENGELUARAN KAS TAHUN ${year}</th>
-          </tr>
           <tr class="col-headers">
-            <th style="width:45px;">No</th>
-            <th>Bulan</th>
-            <th style="width:165px;">Saldo Kas Bulan Lalu</th>
-            <th style="width:165px;">Penerimaan Bulan Ini</th>
-            <th style="width:165px;">Pengeluaran Bulan Ini</th>
-            <th style="width:175px;">Saldo Kas Bulan Ini</th>
+            <th class="th-in" style="width:45px;">No</th>
+            <th class="th-in">Bulan</th>
+            <th class="th-in" style="width:170px;">Saldo Kas Bulan Lalu</th>
+            <th class="th-in" style="width:170px;">Penerimaan Bulan Ini</th>
+            <th class="th-out" style="width:170px;">Pengeluaran Bulan Ini</th>
+            <th class="th-in" style="width:180px;">Saldo Kas Bulan Ini</th>
           </tr>
         `;
 
@@ -1184,10 +1500,10 @@
             <tr>
               <td class="col-date">${idx + 1}</td>
               <td style="font-weight:700;">${mName} ${year}</td>
-              <td class="col-amount"><div class="rp-cell"><span class="rp-sym">Rp</span><span class="rp-val">${formatNumber(sLalu)}</span></div></td>
-              <td class="col-amount"><div class="rp-cell"><span class="rp-sym">Rp</span><span class="rp-val">${formatNumber(mIn)}</span></div></td>
-              <td class="col-amount"><div class="rp-cell"><span class="rp-sym">Rp</span><span class="rp-val">${formatNumber(mOut)}</span></div></td>
-              <td class="col-amount"><div class="rp-cell"><span class="rp-sym">Rp</span><span class="rp-val" style="font-weight:800;">${formatNumber(sAkhir)}</span></div></td>
+              <td class="col-amount"><div class="rp-cell"><span class="rp-sym">Rp</span><span style="font-weight:600;">${formatNumber(sLalu)}</span></div></td>
+              <td class="col-amount"><div class="rp-cell"><span class="rp-sym">Rp</span><span class="rp-val-in">${formatNumber(mIn)}</span></div></td>
+              <td class="col-amount"><div class="rp-cell"><span class="rp-sym">Rp</span><span class="rp-val-out">${formatNumber(mOut)}</span></div></td>
+              <td class="col-amount"><div class="rp-cell"><span class="rp-sym">Rp</span><span style="font-weight:800; color:var(--emerald-900);">${formatNumber(sAkhir)}</span></div></td>
             </tr>
           `;
         });
@@ -1203,11 +1519,14 @@
         dom.rekapValMasuk.textContent = formatNumber(totInYear);
         dom.rekapValKeluar.textContent = formatNumber(totOutYear);
         dom.rekapValAkhir.textContent = formatNumber(running);
-        dom.sigDateLine.textContent = `Candi Gebang, 31- Desember ${year}`;
+        dom.sigDateLine.textContent = `Candi Gebang, 31 Desember ${year}`;
       };
 
       const renderReport = () => {
-        updateHeaderAndFooterInfo();
+        dom.displayKetua.textContent = config.ketua;
+        dom.displayBendahara.textContent = config.bendahara;
+        renderLegalizationAssets();
+
         const mode = dom.reportMode.value;
         const year = dom.filterYear.value;
         const month = dom.filterMonth.value;
@@ -1221,16 +1540,26 @@
         }
       };
 
+      const toggleStamp = () => {
+        if (!legalData.stampImage) {
+          legalData.stampImage = DEFAULT_STAMP_DATA_URI;
+        }
+        legalData.stampActive = !legalData.stampActive;
+        saveLegalData();
+        renderLegalizationAssets();
+        showToast(legalData.stampActive ? 'Cap Masjid ditempelkan di tengah tanda tangan!' : 'Cap Masjid dilepas dari laporan.');
+      };
+
       const exportToJpg = async () => {
         try {
           dom.btnExportJpg.disabled = true;
           dom.printableReport.classList.add('exporting');
-          showToast('Menyiapkan gambar JPG kualitas tinggi...');
+          showToast('Menyiapkan gambar JPG resolusi tinggi...');
 
           const canvas = await window.html2canvas(dom.printableReport, {
             scale: 2.2,
             backgroundColor: '#ffffff',
-            windowWidth: 1050,
+            windowWidth: 1080,
             useCORS: true
           });
 
@@ -1260,7 +1589,7 @@
           const canvas = await window.html2canvas(dom.printableReport, {
             scale: 2,
             backgroundColor: '#ffffff',
-            windowWidth: 1050,
+            windowWidth: 1080,
             useCORS: true
           });
 
@@ -1339,11 +1668,63 @@
           }
         });
 
+        // Event Tanda Tangan Digital
+        dom.btnClearSigKetua.addEventListener('click', () => {
+          padKetua.clear();
+          legalData.sigKetua = '';
+          saveLegalData();
+          renderLegalizationAssets();
+        });
+
+        dom.btnClearSigBendahara.addEventListener('click', () => {
+          padBendahara.clear();
+          legalData.sigBendahara = '';
+          saveLegalData();
+          renderLegalizationAssets();
+        });
+
+        dom.btnApplySignatures.addEventListener('click', () => {
+          if (!padKetua.isEmpty()) {
+            legalData.sigKetua = padKetua.toDataURL();
+          }
+          if (!padBendahara.isEmpty()) {
+            legalData.sigBendahara = padBendahara.toDataURL();
+          }
+          saveLegalData();
+          renderLegalizationAssets();
+          showToast('Tanda tangan berhasil dipasang ke laporan!');
+        });
+
+        // Event Cap / Stempel
+        dom.btnToggleStamp.addEventListener('click', toggleStamp);
+        dom.btnQuickStamp.addEventListener('click', toggleStamp);
+
+        dom.btnResetDefaultStamp.addEventListener('click', () => {
+          legalData.stampImage = DEFAULT_STAMP_DATA_URI;
+          legalData.stampActive = true;
+          saveLegalData();
+          renderLegalizationAssets();
+          showToast('Cap resmi Al-Marhamah diaktifkan!');
+        });
+
+        dom.fileStampInput.addEventListener('change', (e) => {
+          const file = e.target.files && e.target.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = (ev) => {
+            legalData.stampImage = String(ev.target.result);
+            legalData.stampActive = true;
+            saveLegalData();
+            renderLegalizationAssets();
+            showToast('Gambar Cap berhasil dimuat dan ditempelkan di tengah!');
+          };
+          reader.readAsDataURL(file);
+        });
+
         dom.btnSaveConfig.addEventListener('click', () => {
           config.baseBalance = Number(dom.cfgSaldoAwal.value) || 0;
           config.ketua = dom.cfgKetua.value.trim() || 'H. Zaenal Abidin';
           config.bendahara = dom.cfgBendahara.value.trim() || 'Lugito';
-          config.rekening = dom.cfgRekening.value.trim() || config.rekening;
           saveConfig();
           renderReport();
           showToast('Pengaturan & Saldo Awal diperbarui!');
@@ -1357,7 +1738,7 @@
         dom.btnPrint.addEventListener('click', () => window.print());
 
         dom.btnBackupJson.addEventListener('click', () => {
-          const blob = new Blob([JSON.stringify({ config, transactions }, null, 2)], { type: 'application/json' });
+          const blob = new Blob([JSON.stringify({ config, legalData, transactions }, null, 2)], { type: 'application/json' });
           const url = URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.href = url;
@@ -1376,11 +1757,13 @@
               if (Array.isArray(parsed.transactions)) {
                 transactions = parsed.transactions.map(sanitizeTransaction).filter(Boolean);
                 if (parsed.config) Object.assign(config, parsed.config);
+                if (parsed.legalData) Object.assign(legalData, parsed.legalData);
                 saveConfig();
+                saveLegalData();
                 saveTransactions();
                 populateYears();
                 renderReport();
-                showToast('Data berhasil dipulihkan!');
+                showToast('Data & Legalitas berhasil dipulihkan!');
               }
             } catch (err) {
               showToast('File JSON tidak valid.');
@@ -1390,7 +1773,7 @@
         });
 
         dom.btnResetSample.addEventListener('click', () => {
-          if (window.confirm('Muat ulang seluruh data contoh Bulan Agustus 2026 sesuai gambar?')) {
+          if (window.confirm('Muat ulang seluruh data contoh Bulan Agustus 2026?')) {
             transactions = getAugustSampleTransactions();
             config.baseBalance = 15550000;
             dom.cfgSaldoAwal.value = config.baseBalance;
@@ -1409,11 +1792,13 @@
         loadData();
         updateSuggestions();
 
+        padKetua = setupSignaturePad(dom.canvasSigKetua);
+        padBendahara = setupSignaturePad(dom.canvasSigBendahara);
+
         dom.txDate.value = '2026-08-31';
         dom.cfgSaldoAwal.value = config.baseBalance;
         dom.cfgKetua.value = config.ketua;
         dom.cfgBendahara.value = config.bendahara;
-        dom.cfgRekening.value = config.rekening;
 
         populateYears();
         dom.filterYear.value = '2026';
