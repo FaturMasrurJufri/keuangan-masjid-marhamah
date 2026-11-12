@@ -194,34 +194,61 @@
       gap: 8px;
     }
 
-    /* Area Canvas Tanda Tangan di Sidebar */
+    /* ==========================================================================
+       KANVAS TANDA TANGAN RASIO MENDEKATI 1:1 & LELUASA DI LAYAR HP
+       ========================================================================== */
     .sig-pad-box {
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
       background: #f8fafc;
-      padding: 8px;
-      margin-bottom: 12px;
+      padding: 10px;
+      margin-bottom: 14px;
     }
 
     .sig-pad-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 6px;
-      font-size: 0.8rem;
+      margin-bottom: 8px;
+      font-size: 0.82rem;
       font-weight: 700;
-      color: var(--slate-700);
+      color: var(--emerald-900);
+    }
+
+    .sig-canvas-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 0.88;
+      min-height: 245px;
+      background: var(--white);
+      border: 2px dashed #94a3b8;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    /* Garis bantu tipis di dalam kanvas agar posisi tanda tangan seimbang */
+    .sig-canvas-wrapper::after {
+      content: 'Area Tanda Tangan (Goreskan Penuh di Sini)';
+      position: absolute;
+      bottom: 14px;
+      left: 10%;
+      right: 10%;
+      border-bottom: 1px dashed #cbd5e1;
+      text-align: center;
+      font-size: 0.7rem;
+      color: #94a3b8;
+      padding-bottom: 4px;
+      pointer-events: none;
     }
 
     .sig-canvas {
       width: 100%;
-      height: 110px;
-      background: var(--white);
-      border: 1px dashed #94a3b8;
-      border-radius: 6px;
+      height: 100%;
       touch-action: none;
       cursor: crosshair;
       display: block;
+      position: relative;
+      z-index: 2;
     }
 
     /* Pembungkus Scrollable di HP */
@@ -486,35 +513,40 @@
       padding: 9px 14px;
     }
 
-    /* Area Tanda Tangan & Cap Proporsional di Tengah */
+    /* ==========================================================================
+       AREA TANDA TANGAN & CAP DI LAPORAN (UKURAN PENUH & PROPORSIONAL)
+       ========================================================================== */
     .legalization-area {
-      margin-top: 6px;
+      margin-top: 8px;
       position: relative;
     }
 
     .sig-date-text {
       text-align: right;
       padding-right: 48px;
-      font-size: 0.86rem;
+      font-size: 0.88rem;
       font-weight: 600;
       color: var(--slate-700);
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .sig-stamp-grid {
       display: grid;
       grid-template-columns: 1fr 220px 1fr;
       align-items: center;
-      padding: 0 20px;
+      padding: 0 16px;
       position: relative;
-      min-height: 155px;
+      min-height: 175px;
     }
 
     .sig-block {
       text-align: center;
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       color: var(--slate-900);
       z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .sig-role {
@@ -523,25 +555,31 @@
       margin-bottom: 4px;
     }
 
+    /* Kotak Tanda Tangan di Laporan Lebih Tinggi & Lebar agar Tanda Tangan Proporsional */
     .sig-image-holder {
-      height: 82px;
+      width: 240px;
+      height: 112px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 2px 0;
+      margin: 2px 0 4px 0;
+      padding: 4px;
     }
 
     .sig-image-holder img {
-      max-height: 80px;
-      max-width: 210px;
+      width: 100%;
+      height: 100%;
+      max-width: 230px;
+      max-height: 104px;
       object-fit: contain;
+      filter: contrast(1.15);
     }
 
     .sig-name {
       font-weight: 800;
       text-decoration: underline;
       color: var(--emerald-900);
-      font-size: 0.92rem;
+      font-size: 0.95rem;
     }
 
     /* Wadah Cap di Tengah-Tengah 2 Tanda Tangan */
@@ -549,14 +587,14 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 145px;
+      height: 155px;
       position: relative;
       z-index: 3;
     }
 
     .stamp-img-preview {
-      width: 142px;
-      height: 142px;
+      width: 148px;
+      height: 148px;
       object-fit: contain;
       opacity: 0.9;
       transform: rotate(-2deg);
@@ -664,41 +702,45 @@
         </form>
       </section>
 
-      <!-- 2. Menu Tanda Tangan Digital (HP Responsif) & Cap Masjid -->
+      <!-- 2. Menu Tanda Tangan Digital (Rasio Mendekati 1:1 & Leluasa) -->
       <section class="card">
         <div class="card-title">Legalitas: Tanda Tangan & Cap</div>
         <span class="field-hint" style="margin-bottom:10px;">
-          Goreskan tanda tangan langsung dengan jari di layar HP:
+          Kanvas berukuran besar (rasio ~1:1). Goreskan tanda tangan dengan leluasa, sistem otomatis menyesuaikan ukurannya di laporan:
         </span>
 
         <!-- Canvas Tanda Tangan Ketua -->
         <div class="sig-pad-box">
           <div class="sig-pad-header">
-            <span>Tanda Tangan Ketua Takmir</span>
-            <button type="button" id="btnClearSigKetua" class="btn btn-danger btn-sm" style="padding:2px 8px; font-size:0.72rem;">Hapus</button>
+            <span>1. Tanda Tangan Ketua Takmir</span>
+            <button type="button" id="btnClearSigKetua" class="btn btn-danger btn-sm" style="padding:3px 10px; font-size:0.74rem;">Ulangi / Hapus</button>
           </div>
-          <canvas id="canvasSigKetua" class="sig-canvas"></canvas>
+          <div class="sig-canvas-wrapper">
+            <canvas id="canvasSigKetua" class="sig-canvas"></canvas>
+          </div>
         </div>
 
         <!-- Canvas Tanda Tangan Bendahara -->
         <div class="sig-pad-box">
           <div class="sig-pad-header">
-            <span>Tanda Tangan Bendahara</span>
-            <button type="button" id="btnClearSigBendahara" class="btn btn-danger btn-sm" style="padding:2px 8px; font-size:0.72rem;">Hapus</button>
+            <span>2. Tanda Tangan Bendahara</span>
+            <button type="button" id="btnClearSigBendahara" class="btn btn-danger btn-sm" style="padding:3px 10px; font-size:0.74rem;">Ulangi / Hapus</button>
           </div>
-          <canvas id="canvasSigBendahara" class="sig-canvas"></canvas>
+          <div class="sig-canvas-wrapper">
+            <canvas id="canvasSigBendahara" class="sig-canvas"></canvas>
+          </div>
         </div>
 
-        <button type="button" id="btnApplySignatures" class="btn btn-primary btn-sm" style="margin-bottom:14px;">
+        <button type="button" id="btnApplySignatures" class="btn btn-primary" style="margin-bottom:14px;">
           Terapkan Tanda Tangan ke Laporan
         </button>
 
         <hr style="border:none; border-top:1px solid var(--slate-200); margin:12px 0;">
 
-        <!-- Menu Cap / Stempel Resmi (Sudah Tertanam) -->
+        <!-- Menu Cap / Stempel Resmi -->
         <div class="form-group" style="margin-bottom:4px;">
           <label>Menu Cap / Stempel Masjid</label>
-          <span class="field-hint">Logo Cap Al-Marhamah sudah siap. Klik tombol di bawah untuk menempel/melepas cap:</span>
+          <span class="field-hint">Klik tombol di bawah untuk menempel atau melepas cap di tengah tanda tangan:</span>
           <div style="display:flex; gap:8px; margin-top:6px;">
             <button type="button" id="btnToggleStamp" class="btn btn-gold btn-sm" style="flex:1.4;">
               Tempel Cap
@@ -793,7 +835,7 @@
       <!-- Kertas Laporan -->
       <div class="report-scroll-wrapper">
         <div id="printableReport">
-          <!-- KOP MASJID SESUAI PERMINTAAN -->
+          <!-- KOP MASJID -->
           <div class="kop-header">
             <div class="kop-badge">Laporan Keuangan Resmi</div>
             <h2>MASJID AL-MARHAMAH</h2>
@@ -895,7 +937,7 @@
       const STORAGE_KEY_LEGAL = 'almarhamah_kas_legal_v4';
       const DEFAULT_GSHEET_URL = 'https://script.google.com/macros/s/AKfycbwyBOLhNlFc4UHa-tBdSNA5QibitDSpeDivzHurzY332J3WgU1qg8KPkPlw6uARaegtuw/exec';
 
-      // Logo Cap Resmi Masjid Al-Marhamah (Sesuai Gambar yang Dikirim, Latar Belakang 100% Transparan Bersih)
+      // Logo Cap Resmi Masjid Al-Marhamah (Transparan Murni)
       const DEFAULT_STAMP_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320">
         <defs>
           <path id="topArc" d="M 52,158 A 108,108 0 1,1 268,158" />
@@ -910,7 +952,6 @@
           </text>
           <text x="53" y="136" font-size="27" text-anchor="middle">★</text>
           <text x="267" y="136" font-size="27" text-anchor="middle">★</text>
-          <!-- Siluet Menara & Kubah Kaligrafi Sesuai Cap Asli -->
           <path d="M 126,64 C 122,74 104,84 104,96 L 94,96 C 91,96 90,99 90,104 C 90,109 92,111 97,111 L 102,111 L 102,172 C 102,182 95,186 90,183 C 86,180 82,182 81,186 C 80,192 88,197 96,193 C 107,187 123,178 123,172 L 123,112 L 116,112 C 113,108 114,98 122,95 C 128,93 134,98 132,107 L 126,110 L 143,115 L 143,167 C 143,182 156,191 174,187 L 174,173 C 164,173 160,167 160,157 L 160,115 L 166,111 C 166,97 163,94 156,94 L 148,94 C 148,83 131,74 126,64 Z" />
           <path d="M 192,80 C 185,92 170,103 152,112 C 132,122 124,132 126,143 C 128,154 146,162 162,172 C 172,178 175,187 175,187 C 186,186 192,174 185,163 C 178,153 154,144 146,138 C 140,133 145,126 164,119 C 182,113 200,114 218,125 C 234,135 236,151 224,158 C 216,162 208,167 209,176 C 210,185 222,190 234,185 C 248,179 257,164 252,148 C 248,136 239,134 239,134 C 246,125 242,113 224,104 C 206,95 197,88 192,80 Z" />
           <text x="164" y="210" font-family="Georgia, 'Times New Roman', serif" font-size="23" font-weight="900" text-anchor="middle" letter-spacing="1">TA’MIR</text>
@@ -934,7 +975,6 @@
         bendahara: 'Lugito'
       };
 
-      // State Tanda Tangan Digital & Cap (Default menggunakan Cap Resmi Al-Marhamah)
       let legalData = {
         sigKetua: '',
         sigBendahara: '',
@@ -1022,7 +1062,62 @@
         return `${d}/${m}/${y}`;
       };
 
-      // Inisialisasi Canvas Tanda Tangan yang Responsif untuk Layar Sentuh HP & Mouse
+      // Fungsi Auto-Crop Tanda Tangan: Memotong ruang kosong di pinggir kanvas agar hasil di laporan penuh & proporsional
+      const getTrimmedSignatureDataURL = (sourceCanvas) => {
+        const width = sourceCanvas.width;
+        const height = sourceCanvas.height;
+        const ctx = sourceCanvas.getContext('2d');
+        const imageData = ctx.getImageData(0, 0, width, height);
+        const data = imageData.data;
+
+        let top = height;
+        let left = width;
+        let right = 0;
+        let bottom = 0;
+        let foundPixel = false;
+
+        for (let y = 0; y < height; y++) {
+          for (let x = 0; x < width; x++) {
+            const alpha = data[(y * width + x) * 4 + 3];
+            if (alpha > 15) {
+              foundPixel = true;
+              if (x < left) left = x;
+              if (x > right) right = x;
+              if (y < top) top = y;
+              if (y > bottom) bottom = y;
+            }
+          }
+        }
+
+        if (!foundPixel) return sourceCanvas.toDataURL('image/png');
+
+        const pad = 16;
+        const cropLeft = Math.max(0, left - pad);
+        const cropTop = Math.max(0, top - pad);
+        const cropWidth = Math.min(width - cropLeft, right - left + pad * 2);
+        const cropHeight = Math.min(height - cropTop, bottom - top + pad * 2);
+
+        const trimmedCanvas = document.createElement('canvas');
+        trimmedCanvas.width = cropWidth;
+        trimmedCanvas.height = cropHeight;
+        const trimmedCtx = trimmedCanvas.getContext('2d');
+
+        trimmedCtx.drawImage(
+          sourceCanvas,
+          cropLeft,
+          cropTop,
+          cropWidth,
+          cropHeight,
+          0,
+          0,
+          cropWidth,
+          cropHeight
+        );
+
+        return trimmedCanvas.toDataURL('image/png');
+      };
+
+      // Inisialisasi Canvas Tanda Tangan Rasio ~1:1 yang Responsif untuk Layar Sentuh HP
       const setupSignaturePad = (canvas) => {
         const ctx = canvas.getContext('2d');
         let drawing = false;
@@ -1034,7 +1129,7 @@
           canvas.width = rect.width * ratio;
           canvas.height = rect.height * ratio;
           ctx.scale(ratio, ratio);
-          ctx.lineWidth = 2.2;
+          ctx.lineWidth = 3.2; // Goresan pena lebih tegas agar jelas saat dicetak/share WA
           ctx.lineCap = 'round';
           ctx.lineJoin = 'round';
           ctx.strokeStyle = '#0f172a';
@@ -1086,18 +1181,20 @@
 
         return {
           clear: () => {
+            ctx.save();
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.restore();
             hasDrawn = false;
           },
           isEmpty: () => !hasDrawn,
-          toDataURL: () => canvas.toDataURL('image/png')
+          toDataURL: () => getTrimmedSignatureDataURL(canvas)
         };
       };
 
       let padKetua = null;
       let padBendahara = null;
 
-      // Render Tanda Tangan & Cap pada Lembar Laporan
       const renderLegalizationAssets = () => {
         if (legalData.sigKetua) {
           dom.imgSigKetua.src = legalData.sigKetua;
@@ -1692,7 +1789,7 @@
           }
           saveLegalData();
           renderLegalizationAssets();
-          showToast('Tanda tangan berhasil dipasang ke laporan!');
+          showToast('Tanda tangan berhasil dipasang secara proporsional!');
         });
 
         // Event Cap / Stempel
