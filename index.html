@@ -117,7 +117,7 @@
       display: block;
       font-size: 0.73rem;
       color: var(--slate-500);
-      margin-bottom: 5px;
+      margin-bottom: 6px;
     }
 
     .form-control {
@@ -125,13 +125,19 @@
       padding: 8px 11px;
       border: 1px solid #cbd5e1;
       border-radius: 8px;
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       transition: border-color 0.2s;
     }
 
     .form-control:focus {
       outline: none;
       border-color: var(--emerald-700);
+    }
+
+    .input-rupiah {
+      font-weight: 700;
+      color: var(--emerald-900);
+      letter-spacing: 0.3px;
     }
 
     .btn {
@@ -156,6 +162,138 @@
     .btn-danger { background: var(--rose-700); color: var(--white); }
     .btn-outline { background: var(--white); color: var(--emerald-800); border: 1px solid var(--emerald-800); }
     .btn-sm { padding: 6px 10px; font-size: 0.78rem; }
+
+    /* Kotak Ringkas Status Tanda Tangan di Sidebar */
+    .sig-trigger-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 10px 12px;
+      border: 1px solid var(--slate-200);
+      border-radius: 8px;
+      background: #f8fafc;
+      margin-bottom: 10px;
+    }
+
+    .sig-trigger-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .sig-trigger-title {
+      font-size: 0.83rem;
+      font-weight: 700;
+      color: var(--slate-900);
+    }
+
+    .sig-status-text {
+      font-size: 0.72rem;
+      color: var(--slate-500);
+    }
+
+    .sig-status-text.signed {
+      color: #15803d;
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       MODAL POP-UP TANDA TANGAN DENGAN RUANG JARI LEGA DI KIRI, KANAN & BAWAH
+       ========================================================================== */
+    .sig-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 20px 44px 20px;
+      z-index: 10000;
+      overflow-y: auto;
+      backdrop-filter: blur(3px);
+    }
+
+    .sig-modal-overlay.open {
+      display: flex;
+    }
+
+    .sig-modal-box {
+      background: var(--white);
+      width: 100%;
+      max-width: 340px;
+      border-radius: 16px;
+      padding: 18px 24px 26px 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      border-top: 6px solid var(--emerald-800);
+      text-align: center;
+      margin: auto;
+    }
+
+    .sig-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .sig-modal-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--emerald-900);
+    }
+
+    /* Area Bingkai Luar tempat Jari Aman Menyentuh/Scroll */
+    .sig-safe-touch-zone {
+      background: #f1f5f9;
+      padding: 16px 22px 20px 22px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      border: 1px solid #e2e8f0;
+    }
+
+    /* Kanvas Lebih Kompak (220x185px) di Tengah agar Kiri-Kanan-Bawah Lega */
+    .sig-canvas-wrapper {
+      position: relative;
+      width: 220px;
+      height: 185px;
+      max-width: 100%;
+      margin: 0 auto;
+      background: var(--white);
+      border: 2px dashed #64748b;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+    }
+
+    .sig-canvas-wrapper::after {
+      content: 'Goreskan di Sini';
+      position: absolute;
+      bottom: 10px;
+      left: 12%;
+      right: 12%;
+      border-bottom: 1px dashed #cbd5e1;
+      text-align: center;
+      font-size: 0.68rem;
+      color: #94a3b8;
+      padding-bottom: 3px;
+      pointer-events: none;
+    }
+
+    .sig-canvas {
+      width: 100%;
+      height: 100%;
+      touch-action: none;
+      cursor: crosshair;
+      display: block;
+      position: relative;
+      z-index: 2;
+    }
+
+    .sig-modal-actions {
+      display: flex;
+      gap: 8px;
+    }
 
     /* Toolbar Atas Laporan */
     .toolbar {
@@ -194,68 +332,12 @@
       gap: 8px;
     }
 
-    /* ==========================================================================
-       KANVAS TANDA TANGAN RASIO MENDEKATI 1:1 & LELUASA DI LAYAR HP
-       ========================================================================== */
-    .sig-pad-box {
-      border: 1.5px solid #cbd5e1;
-      border-radius: 10px;
-      background: #f8fafc;
-      padding: 10px;
-      margin-bottom: 14px;
-    }
-
-    .sig-pad-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: var(--emerald-900);
-    }
-
-    .sig-canvas-wrapper {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 1 / 0.88;
-      min-height: 245px;
-      background: var(--white);
-      border: 2px dashed #94a3b8;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    /* Garis bantu tipis di dalam kanvas agar posisi tanda tangan seimbang */
-    .sig-canvas-wrapper::after {
-      content: 'Area Tanda Tangan (Goreskan Penuh di Sini)';
-      position: absolute;
-      bottom: 14px;
-      left: 10%;
-      right: 10%;
-      border-bottom: 1px dashed #cbd5e1;
-      text-align: center;
-      font-size: 0.7rem;
-      color: #94a3b8;
-      padding-bottom: 4px;
-      pointer-events: none;
-    }
-
-    .sig-canvas {
-      width: 100%;
-      height: 100%;
-      touch-action: none;
-      cursor: crosshair;
-      display: block;
-      position: relative;
-      z-index: 2;
-    }
-
     /* Pembungkus Scrollable di HP */
     .report-scroll-wrapper {
       width: 100%;
       overflow-x: auto;
       padding-bottom: 16px;
+      -webkit-overflow-scrolling: touch;
     }
 
     /* ==========================================================================
@@ -275,7 +357,6 @@
       border-bottom: 6px solid var(--gold-400);
     }
 
-    /* Kop Laporan Elegan */
     .kop-header {
       text-align: center;
       padding-bottom: 18px;
@@ -296,13 +377,13 @@
 
     .kop-badge {
       display: inline-block;
-      font-size: 0.72rem;
+      font-size: 0.74rem;
       font-weight: 700;
-      letter-spacing: 2px;
+      letter-spacing: 1.8px;
       text-transform: uppercase;
       color: var(--emerald-700);
       background: var(--emerald-100);
-      padding: 3px 14px;
+      padding: 4px 16px;
       border-radius: 20px;
       margin-bottom: 6px;
     }
@@ -322,7 +403,6 @@
       letter-spacing: 0.3px;
     }
 
-    /* Judul Banner Periode */
     .report-title-bar {
       background: linear-gradient(90deg, var(--emerald-900) 0%, var(--emerald-700) 100%);
       color: var(--white);
@@ -336,7 +416,6 @@
       border-bottom: 3px solid var(--gold-400);
     }
 
-    /* Tabel Modern Proporsional */
     .ledger-container {
       border: 1px solid #cbd5e1;
       border-top: none;
@@ -513,9 +592,7 @@
       padding: 9px 14px;
     }
 
-    /* ==========================================================================
-       AREA TANDA TANGAN & CAP DI LAPORAN (UKURAN PENUH & PROPORSIONAL)
-       ========================================================================== */
+    /* Area Tanda Tangan & Cap di Laporan */
     .legalization-area {
       margin-top: 8px;
       position: relative;
@@ -555,7 +632,6 @@
       margin-bottom: 4px;
     }
 
-    /* Kotak Tanda Tangan di Laporan Lebih Tinggi & Lebar agar Tanda Tangan Proporsional */
     .sig-image-holder {
       width: 240px;
       height: 112px;
@@ -582,7 +658,6 @@
       font-size: 0.95rem;
     }
 
-    /* Wadah Cap di Tengah-Tengah 2 Tanda Tangan */
     .center-stamp-holder {
       display: flex;
       justify-content: center;
@@ -617,7 +692,7 @@
       font-size: 0.86rem;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
       display: none;
-      z-index: 9999;
+      z-index: 10001;
     }
 
     .exporting .no-export {
@@ -629,7 +704,7 @@
         background: #fff;
         padding: 0;
       }
-      .no-print, .app-banner, .sidebar, .toolbar {
+      .no-print, .app-banner, .sidebar, .toolbar, .sig-modal-overlay {
         display: none !important;
       }
       .main-layout {
@@ -660,7 +735,7 @@
   </header>
 
   <main class="main-layout">
-    <!-- PANEL KIRI: INPUT TRANSAKSI, TANDA TANGAN DIGITAL, & CAP -->
+    <!-- PANEL KIRI: INPUT TRANSAKSI, TOMBOL TANDA TANGAN, & CAP -->
     <aside class="sidebar no-print">
       <!-- 1. Input Transaksi -->
       <section class="card">
@@ -696,44 +771,59 @@
           </div>
           <div class="form-group">
             <label for="txAmount">Jumlah Nominal (Rp)</label>
-            <input type="number" id="txAmount" class="form-control" min="1" step="any" placeholder="Contoh: 3358000" required>
+            <span class="field-hint">Otomatis dipisah tanda titik ribuan saat diketik:</span>
+            <input
+              type="text"
+              id="txAmount"
+              inputmode="numeric"
+              class="form-control input-rupiah"
+              placeholder="Contoh: 1.500.000"
+              autocomplete="off"
+              required
+            >
           </div>
           <button type="submit" class="btn btn-primary">Simpan Transaksi</button>
         </form>
       </section>
 
-      <!-- 2. Menu Tanda Tangan Digital (Rasio Mendekati 1:1 & Leluasa) -->
+      <!-- 2. Menu Tanda Tangan & Cap -->
       <section class="card">
         <div class="card-title">Legalitas: Tanda Tangan & Cap</div>
-        <span class="field-hint" style="margin-bottom:10px;">
-          Kanvas berukuran besar (rasio ~1:1). Goreskan tanda tangan dengan leluasa, sistem otomatis menyesuaikan ukurannya di laporan:
+        <span class="field-hint">
+          Klik tombol <b>Tanda Tangan</b> untuk membuka kanvas tanda tangan:
         </span>
 
-        <!-- Canvas Tanda Tangan Ketua -->
-        <div class="sig-pad-box">
-          <div class="sig-pad-header">
-            <span>1. Tanda Tangan Ketua Takmir</span>
-            <button type="button" id="btnClearSigKetua" class="btn btn-danger btn-sm" style="padding:3px 10px; font-size:0.74rem;">Ulangi / Hapus</button>
+        <!-- Baris Tombol Ketua Takmir -->
+        <div class="sig-trigger-row">
+          <div class="sig-trigger-info">
+            <span class="sig-trigger-title">1. Ketua Takmir</span>
+            <span id="statusSigKetua" class="sig-status-text">Belum ada tanda tangan</span>
           </div>
-          <div class="sig-canvas-wrapper">
-            <canvas id="canvasSigKetua" class="sig-canvas"></canvas>
-          </div>
-        </div>
-
-        <!-- Canvas Tanda Tangan Bendahara -->
-        <div class="sig-pad-box">
-          <div class="sig-pad-header">
-            <span>2. Tanda Tangan Bendahara</span>
-            <button type="button" id="btnClearSigBendahara" class="btn btn-danger btn-sm" style="padding:3px 10px; font-size:0.74rem;">Ulangi / Hapus</button>
-          </div>
-          <div class="sig-canvas-wrapper">
-            <canvas id="canvasSigBendahara" class="sig-canvas"></canvas>
+          <div style="display:flex; gap:5px;">
+            <button type="button" id="btnOpenModalKetua" class="btn btn-primary btn-sm" style="width:auto;">
+              Tanda Tangan
+            </button>
+            <button type="button" id="btnRemoveSigKetua" class="btn btn-danger btn-sm" title="Hapus Tanda Tangan Ketua">
+              ×
+            </button>
           </div>
         </div>
 
-        <button type="button" id="btnApplySignatures" class="btn btn-primary" style="margin-bottom:14px;">
-          Terapkan Tanda Tangan ke Laporan
-        </button>
+        <!-- Baris Tombol Bendahara -->
+        <div class="sig-trigger-row">
+          <div class="sig-trigger-info">
+            <span class="sig-trigger-title">2. Bendahara</span>
+            <span id="statusSigBendahara" class="sig-status-text">Belum ada tanda tangan</span>
+          </div>
+          <div style="display:flex; gap:5px;">
+            <button type="button" id="btnOpenModalBendahara" class="btn btn-primary btn-sm" style="width:auto;">
+              Tanda Tangan
+            </button>
+            <button type="button" id="btnRemoveSigBendahara" class="btn btn-danger btn-sm" title="Hapus Tanda Tangan Bendahara">
+              ×
+            </button>
+          </div>
+        </div>
 
         <hr style="border:none; border-top:1px solid var(--slate-200); margin:12px 0;">
 
@@ -761,7 +851,14 @@
         <div class="card-title">Pengaturan Pengurus & Saldo</div>
         <div class="form-group">
           <label for="cfgSaldoAwal">Saldo Kas Awal Pertama Kali (Rp)</label>
-          <input type="number" id="cfgSaldoAwal" class="form-control" step="any" placeholder="15550000">
+          <input
+            type="text"
+            id="cfgSaldoAwal"
+            inputmode="numeric"
+            class="form-control input-rupiah"
+            placeholder="0"
+            autocomplete="off"
+          >
         </div>
         <div class="form-group">
           <label for="cfgKetua">Nama Ketua Takmir</label>
@@ -781,8 +878,8 @@
             Restore JSON
             <input type="file" id="fileRestoreJson" accept=".json" style="display:none;">
           </label>
-          <button type="button" id="btnResetSample" class="btn btn-danger btn-sm" style="width:100%; margin-top:4px;">
-            Muat Data Contoh (Agustus 2026)
+          <button type="button" id="btnClearAllData" class="btn btn-danger btn-sm" style="width:100%; margin-top:4px;">
+            Kosongkan Semua Transaksi
           </button>
         </div>
       </section>
@@ -837,14 +934,14 @@
         <div id="printableReport">
           <!-- KOP MASJID -->
           <div class="kop-header">
-            <div class="kop-badge">Laporan Keuangan Resmi</div>
+            <div class="kop-badge" id="kopBadgeText">Laporan Bulanan Kas Masjid</div>
             <h2>MASJID AL-MARHAMAH</h2>
             <div class="sub-kop">Kompleks Perum Candi Gebang Permai, Jetis, Wedomartani, Sleman</div>
           </div>
 
           <!-- JUDUL PERIODE LAPORAN -->
           <div class="report-title-bar" id="reportTitleBanner">
-            LAPORAN PENERIMAAN DAN PENGELUARAN KAS BULAN AGUSTUS 2026
+            LAPORAN PENERIMAAN DAN PENGELUARAN KAS BULAN NOVEMBER 2026
           </div>
 
           <!-- TABEL UTAMA PROPORSIONAL -->
@@ -890,7 +987,7 @@
             <!-- Area Tanda Tangan & Cap di Tengah -->
             <div class="legalization-area">
               <div class="sig-date-text" id="sigDateLine">
-                Candi Gebang, 31 Agustus 2026
+                Candi Gebang, 30 November 2026
               </div>
 
               <div class="sig-stamp-grid">
@@ -926,15 +1023,42 @@
     </section>
   </main>
 
+  <!-- JENDELA POP-UP (MODAL) KANVAS KOMPAK DENGAN AREA SCROLL JARI DI KIRI-KANAN-BAWAH -->
+  <div id="sigModalOverlay" class="sig-modal-overlay no-print">
+    <div class="sig-modal-box">
+      <div class="sig-modal-header">
+        <span id="sigModalTitle" class="sig-modal-title">Tanda Tangan Ketua Takmir</span>
+        <button type="button" id="btnCloseSigModal" class="btn btn-outline btn-sm" style="padding:3px 10px;">Tutup</button>
+      </div>
+      <span class="field-hint" style="margin-bottom:8px;">
+        Goreskan di kotak putih tengah. Area abu-abu di pinggir kiri, kanan, dan bawah aman untuk tempat jari:
+      </span>
+      <div class="sig-safe-touch-zone">
+        <div class="sig-canvas-wrapper">
+          <canvas id="modalSigCanvas" class="sig-canvas"></canvas>
+        </div>
+      </div>
+      <div class="sig-modal-actions">
+        <button type="button" id="btnClearModalCanvas" class="btn btn-danger" style="flex:1;">
+          Ulangi
+        </button>
+        <button type="button" id="btnSaveModalSig" class="btn btn-primary" style="flex:1.5;">
+          Simpan & Pasang
+        </button>
+      </div>
+    </div>
+  </div>
+
   <div id="toastMsg"></div>
 
   <script>
     (() => {
       'use strict';
 
-      const STORAGE_KEY_TX = 'almarhamah_kas_tx_v3';
-      const STORAGE_KEY_CFG = 'almarhamah_kas_cfg_v3';
-      const STORAGE_KEY_LEGAL = 'almarhamah_kas_legal_v4';
+      // Menggunakan key penyimpanan v5 agar seluruh data simulasi lama bersih total
+      const STORAGE_KEY_TX = 'almarhamah_kas_tx_v5_clean';
+      const STORAGE_KEY_CFG = 'almarhamah_kas_cfg_v5_clean';
+      const STORAGE_KEY_LEGAL = 'almarhamah_kas_legal_v5_clean';
       const DEFAULT_GSHEET_URL = 'https://script.google.com/macros/s/AKfycbwyBOLhNlFc4UHa-tBdSNA5QibitDSpeDivzHurzY332J3WgU1qg8KPkPlw6uARaegtuw/exec';
 
       // Logo Cap Resmi Masjid Al-Marhamah (Transparan Murni)
@@ -968,9 +1092,10 @@
         'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
       ];
 
+      // State Awal Bersih Tanpa Data Simulasi
       let transactions = [];
       let config = {
-        baseBalance: 15550000,
+        baseBalance: 0,
         ketua: 'H. Zaenal Abidin',
         bendahara: 'Lugito'
       };
@@ -979,8 +1104,11 @@
         sigKetua: '',
         sigBendahara: '',
         stampImage: DEFAULT_STAMP_DATA_URI,
-        stampActive: true
+        stampActive: false
       };
+
+      let activeSignerRole = 'KETUA';
+      let modalPad = null;
 
       const dom = {
         form: document.getElementById('transactionForm'),
@@ -989,11 +1117,18 @@
         txDesc: document.getElementById('txDesc'),
         descSuggestions: document.getElementById('descSuggestions'),
         txAmount: document.getElementById('txAmount'),
-        canvasSigKetua: document.getElementById('canvasSigKetua'),
-        canvasSigBendahara: document.getElementById('canvasSigBendahara'),
-        btnClearSigKetua: document.getElementById('btnClearSigKetua'),
-        btnClearSigBendahara: document.getElementById('btnClearSigBendahara'),
-        btnApplySignatures: document.getElementById('btnApplySignatures'),
+        statusSigKetua: document.getElementById('statusSigKetua'),
+        statusSigBendahara: document.getElementById('statusSigBendahara'),
+        btnOpenModalKetua: document.getElementById('btnOpenModalKetua'),
+        btnOpenModalBendahara: document.getElementById('btnOpenModalBendahara'),
+        btnRemoveSigKetua: document.getElementById('btnRemoveSigKetua'),
+        btnRemoveSigBendahara: document.getElementById('btnRemoveSigBendahara'),
+        sigModalOverlay: document.getElementById('sigModalOverlay'),
+        sigModalTitle: document.getElementById('sigModalTitle'),
+        btnCloseSigModal: document.getElementById('btnCloseSigModal'),
+        modalSigCanvas: document.getElementById('modalSigCanvas'),
+        btnClearModalCanvas: document.getElementById('btnClearModalCanvas'),
+        btnSaveModalSig: document.getElementById('btnSaveModalSig'),
         btnToggleStamp: document.getElementById('btnToggleStamp'),
         btnResetDefaultStamp: document.getElementById('btnResetDefaultStamp'),
         btnQuickStamp: document.getElementById('btnQuickStamp'),
@@ -1004,7 +1139,7 @@
         btnSaveConfig: document.getElementById('btnSaveConfig'),
         btnBackupJson: document.getElementById('btnBackupJson'),
         fileRestoreJson: document.getElementById('fileRestoreJson'),
-        btnResetSample: document.getElementById('btnResetSample'),
+        btnClearAllData: document.getElementById('btnClearAllData'),
         reportMode: document.getElementById('reportMode'),
         filterMonth: document.getElementById('filterMonth'),
         filterYear: document.getElementById('filterYear'),
@@ -1012,6 +1147,7 @@
         btnExportPdf: document.getElementById('btnExportPdf'),
         btnPrint: document.getElementById('btnPrint'),
         printableReport: document.getElementById('printableReport'),
+        kopBadgeText: document.getElementById('kopBadgeText'),
         reportTitleBanner: document.getElementById('reportTitleBanner'),
         ledgerHead: document.getElementById('ledgerHead'),
         ledgerBody: document.getElementById('ledgerBody'),
@@ -1038,12 +1174,34 @@
         setTimeout(() => { dom.toastMsg.style.display = 'none'; }, 3200);
       };
 
+      // Format angka dengan pemisah titik ribuan (contoh: 1.500.000)
       const formatNumber = (num) => {
         const n = Number.isFinite(Number(num)) ? Number(num) : 0;
         return new Intl.NumberFormat('id-ID', {
           minimumFractionDigits: 0,
           maximumFractionDigits: 0
         }).format(n);
+      };
+
+      // Mengambil nilai angka murni dari input yang memiliki titik ribuan
+      const parseCleanNumber = (str) => {
+        if (str === null || str === undefined) return 0;
+        const digitsOnly = String(str).replace(/[^\d]/g, '');
+        if (!digitsOnly) return 0;
+        const parsed = Number(digitsOnly);
+        return Number.isFinite(parsed) ? parsed : 0;
+      };
+
+      // Memasang format titik ribuan otomatis saat diketik pada input
+      const attachAutoThousandSeparator = (inputEl) => {
+        inputEl.addEventListener('input', () => {
+          const rawDigits = inputEl.value.replace(/[^\d]/g, '');
+          if (!rawDigits) {
+            inputEl.value = '';
+            return;
+          }
+          inputEl.value = formatNumber(Number(rawDigits));
+        });
       };
 
       const escapeHtml = (str) => {
@@ -1062,7 +1220,7 @@
         return `${d}/${m}/${y}`;
       };
 
-      // Fungsi Auto-Crop Tanda Tangan: Memotong ruang kosong di pinggir kanvas agar hasil di laporan penuh & proporsional
+      // Auto-Crop Tanda Tangan agar proporsional di laporan
       const getTrimmedSignatureDataURL = (sourceCanvas) => {
         const width = sourceCanvas.width;
         const height = sourceCanvas.height;
@@ -1089,9 +1247,9 @@
           }
         }
 
-        if (!foundPixel) return sourceCanvas.toDataURL('image/png');
+        if (!foundPixel) return '';
 
-        const pad = 16;
+        const pad = 14;
         const cropLeft = Math.max(0, left - pad);
         const cropTop = Math.max(0, top - pad);
         const cropWidth = Math.min(width - cropLeft, right - left + pad * 2);
@@ -1117,25 +1275,24 @@
         return trimmedCanvas.toDataURL('image/png');
       };
 
-      // Inisialisasi Canvas Tanda Tangan Rasio ~1:1 yang Responsif untuk Layar Sentuh HP
-      const setupSignaturePad = (canvas) => {
+      // Setup Kanvas di dalam Modal Pop-Up
+      const setupModalSignaturePad = (canvas) => {
         const ctx = canvas.getContext('2d');
         let drawing = false;
         let hasDrawn = false;
 
         const resizeCanvas = () => {
           const rect = canvas.getBoundingClientRect();
+          if (rect.width === 0 || rect.height === 0) return;
           const ratio = Math.max(window.devicePixelRatio || 1, 1);
           canvas.width = rect.width * ratio;
           canvas.height = rect.height * ratio;
           ctx.scale(ratio, ratio);
-          ctx.lineWidth = 3.2; // Goresan pena lebih tegas agar jelas saat dicetak/share WA
+          ctx.lineWidth = 3;
           ctx.lineCap = 'round';
           ctx.lineJoin = 'round';
           ctx.strokeStyle = '#0f172a';
         };
-
-        resizeCanvas();
 
         const getPoint = (e) => {
           const rect = canvas.getBoundingClientRect();
@@ -1180,6 +1337,7 @@
         window.addEventListener('touchend', endDraw);
 
         return {
+          resize: resizeCanvas,
           clear: () => {
             ctx.save();
             ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -1192,22 +1350,43 @@
         };
       };
 
-      let padKetua = null;
-      let padBendahara = null;
+      const openSignatureModal = (role) => {
+        activeSignerRole = role;
+        dom.sigModalTitle.textContent = role === 'KETUA'
+          ? 'Tanda Tangan Ketua Takmir'
+          : 'Tanda Tangan Bendahara';
+        dom.sigModalOverlay.classList.add('open');
+        requestAnimationFrame(() => {
+          modalPad.resize();
+          modalPad.clear();
+        });
+      };
+
+      const closeSignatureModal = () => {
+        dom.sigModalOverlay.classList.remove('open');
+      };
 
       const renderLegalizationAssets = () => {
         if (legalData.sigKetua) {
           dom.imgSigKetua.src = legalData.sigKetua;
           dom.imgSigKetua.style.display = 'block';
+          dom.statusSigKetua.textContent = 'Sudah ditandatangani';
+          dom.statusSigKetua.classList.add('signed');
         } else {
           dom.imgSigKetua.style.display = 'none';
+          dom.statusSigKetua.textContent = 'Belum ada tanda tangan';
+          dom.statusSigKetua.classList.remove('signed');
         }
 
         if (legalData.sigBendahara) {
           dom.imgSigBendahara.src = legalData.sigBendahara;
           dom.imgSigBendahara.style.display = 'block';
+          dom.statusSigBendahara.textContent = 'Sudah ditandatangani';
+          dom.statusSigBendahara.classList.add('signed');
         } else {
           dom.imgSigBendahara.style.display = 'none';
+          dom.statusSigBendahara.textContent = 'Belum ada tanda tangan';
+          dom.statusSigBendahara.classList.remove('signed');
         }
 
         const stampSrc = legalData.stampImage || DEFAULT_STAMP_DATA_URI;
@@ -1234,8 +1413,12 @@
 
       const sanitizeTransaction = (item) => {
         if (!item || typeof item !== 'object') return null;
-        const id = typeof item.id === 'string' && item.id.trim() !== ''
-          ? item.id.trim()
+        // Abaikan ID data simulasi lama (demo_*, in_*, out_*) agar bersih dari data contoh
+        const rawId = typeof item.id === 'string' ? item.id.trim() : '';
+        if (/^(demo_|in_|out_)/.test(rawId)) return null;
+
+        const id = rawId !== ''
+          ? rawId
           : `tx_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
         const date = typeof item.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(item.date)
           ? item.date
@@ -1252,62 +1435,6 @@
         if (!date || !type || !Number.isFinite(amount) || amount <= 0) return null;
         return { id, date, type, category, desc, amount };
       };
-
-      const getAugustSampleTransactions = () => [
-        { id: 'in_1', date: '2026-08-01', type: 'IN', category: 'Infaq', desc: 'Infaq Listrik Hamba Allah RW 62', amount: 300000 },
-        { id: 'in_2', date: '2026-08-07', type: 'IN', category: 'Infaq Jumat', desc: 'Kotak Infaq Jumat Pekan ke 1', amount: 3358000 },
-        { id: 'in_3', date: '2026-08-10', type: 'IN', category: 'Infaq', desc: 'Infaq Listrik Hamba Allah RW 66', amount: 1000000 },
-        { id: 'in_4', date: '2026-08-14', type: 'IN', category: 'Infaq Jumat', desc: 'Kotak Infaq Jumat Pekan ke 2', amount: 4020000 },
-        { id: 'in_5', date: '2026-08-21', type: 'IN', category: 'Infaq Jumat', desc: 'Kotak Infaq Jumat Pekan ke 3', amount: 3305000 },
-        { id: 'in_6', date: '2026-08-28', type: 'IN', category: 'Infaq Jumat', desc: 'Kotak Infaq Jumat Pekan ke 4', amount: 3063000 },
-        { id: 'in_7', date: '2026-08-31', type: 'IN', category: 'Infaq QRIS', desc: 'Infaq QRIS', amount: 2569000 },
-        { id: 'in_8', date: '2026-08-31', type: 'IN', category: 'Sedekah', desc: 'Sedekah Perawatan Mukena', amount: 100000 },
-        { id: 'in_9', date: '2026-08-31', type: 'IN', category: 'Sedekah', desc: 'Sedekah Perawatan Sarung dan peci', amount: 100000 },
-        { id: 'in_10', date: '2026-08-31', type: 'IN', category: 'Sedekah', desc: 'Sedekah Khotib Jumat ke 3', amount: 300000 },
-        { id: 'in_11', date: '2026-08-31', type: 'IN', category: 'Sedekah', desc: 'Sedekah angkut sampah', amount: 200000 },
-        { id: 'in_12', date: '2026-08-31', type: 'IN', category: 'Sedekah', desc: 'Sedekah Air Mineral Galon', amount: 200000 },
-        { id: 'in_13', date: '2026-08-31', type: 'IN', category: 'Sedekah', desc: 'Sedekah Internet', amount: 200000 },
-        { id: 'in_14', date: '2026-08-31', type: 'IN', category: 'Sedekah', desc: 'Sedekah BBM Genset', amount: 100000 },
-        { id: 'in_15', date: '2026-08-31', type: 'IN', category: 'Sedekah', desc: 'Sedekah Air PDAM', amount: 41000 },
-        { id: 'out_1', date: '2026-08-01', type: 'OUT', category: 'Operasional', desc: 'Akses Operasional Masjid', amount: 750000 },
-        { id: 'out_2', date: '2026-08-01', type: 'OUT', category: 'Bisyaroh', desc: 'Bisyaroh Ustadzah TPA', amount: 1100000 },
-        { id: 'out_3', date: '2026-08-01', type: 'OUT', category: 'Operasional', desc: 'Sembako Marbot', amount: 600000 },
-        { id: 'out_4', date: '2026-08-01', type: 'OUT', category: 'Bisyaroh', desc: 'Bisyaroh Ustadz Kajian rutin ke 1', amount: 1000000 },
-        { id: 'out_5', date: '2026-08-07', type: 'OUT', category: 'Sholat Jumat', desc: 'Pelaksanaan Sholat Jumat ke 1', amount: 500000 },
-        { id: 'out_6', date: '2026-08-07', type: 'OUT', category: 'Operasional', desc: 'Air Mineral', amount: 1405000 },
-        { id: 'out_7', date: '2026-08-08', type: 'OUT', category: 'Operasional', desc: 'Gas dan ATK', amount: 37000 },
-        { id: 'out_8', date: '2026-08-12', type: 'OUT', category: 'Bisyaroh', desc: 'Bisyaroh Ustadz Kajian rutin ke 2', amount: 1000000 },
-        { id: 'out_9', date: '2026-08-13', type: 'OUT', category: 'Perlengkapan', desc: 'Lampu Hias HUT RI ke 81', amount: 400000 },
-        { id: 'out_10', date: '2026-08-14', type: 'OUT', category: 'Sholat Jumat', desc: 'Pelaksanaan Sholat Jumat ke 2', amount: 500000 },
-        { id: 'out_11', date: '2026-08-14', type: 'OUT', category: 'Utilitas', desc: 'Listrik', amount: 2439000 },
-        { id: 'out_12', date: '2026-08-17', type: 'OUT', category: 'Konsumsi', desc: 'Konsumsi Kajian Ahad pagi', amount: 1000000 },
-        { id: 'out_13', date: '2026-08-17', type: 'OUT', category: 'Pemeliharaan', desc: 'Wall Paper PVC Imam', amount: 1350000 },
-        { id: 'out_14', date: '2026-08-17', type: 'OUT', category: 'Pemeliharaan', desc: 'Kontaktor AC', amount: 489000 },
-        { id: 'out_15', date: '2026-08-17', type: 'OUT', category: 'Konsumsi', desc: 'Konsumsi Maulid Nabi 130 Pcs', amount: 1950000 },
-        { id: 'out_16', date: '2026-08-19', type: 'OUT', category: 'Pemeliharaan', desc: 'Door Closer', amount: 455000 },
-        { id: 'out_17', date: '2026-08-20', type: 'OUT', category: 'Bisyaroh', desc: 'Bisyaroh Ustadz Kajian rutin ke 3', amount: 400000 },
-        { id: 'out_18', date: '2026-08-21', type: 'OUT', category: 'Sholat Jumat', desc: 'Pelaksanaan Sholat Jumat ke 3', amount: 200000 },
-        { id: 'out_19', date: '2026-08-21', type: 'OUT', category: 'Operasional', desc: 'Trash Bag', amount: 32000 },
-        { id: 'out_20', date: '2026-08-25', type: 'OUT', category: 'Bisyaroh', desc: 'Bisyaroh Ustadz Maulid Nabi', amount: 500000 },
-        { id: 'out_21', date: '2026-08-25', type: 'OUT', category: 'PHBI', desc: 'Qori Pengajian Maulid Nabi', amount: 200000 },
-        { id: 'out_22', date: '2026-08-25', type: 'OUT', category: 'Kebersihan', desc: 'Cairan Pembersih dan Pewangi', amount: 570000 },
-        { id: 'out_23', date: '2026-08-26', type: 'OUT', category: 'Pemeliharaan', desc: 'Kran Air', amount: 255000 },
-        { id: 'out_24', date: '2026-08-26', type: 'OUT', category: 'Bisyaroh', desc: 'Bisyaroh Ustadz Kajian rutin ke 4', amount: 200000 },
-        { id: 'out_25', date: '2026-08-28', type: 'OUT', category: 'Sholat Jumat', desc: 'Pelaksanaan Sholat Jumat ke 4', amount: 500000 },
-        { id: 'out_26', date: '2026-08-30', type: 'OUT', category: 'Bisyaroh', desc: 'Bisyaroh Ustadz Kajian Ahad Pagi', amount: 400000 },
-        { id: 'out_27', date: '2026-08-31', type: 'OUT', category: 'Kebersihan', desc: 'Cleaning Service', amount: 3100000 },
-        { id: 'out_28', date: '2026-08-31', type: 'OUT', category: 'Bisyaroh', desc: 'Bisyaroh Marbot', amount: 2000000 },
-        { id: 'out_29', date: '2026-08-31', type: 'OUT', category: 'Operasional', desc: 'Host Kajian Online', amount: 300000 },
-        { id: 'out_30', date: '2026-08-31', type: 'OUT', category: 'Operasional', desc: 'Host Pengelola WEB', amount: 300000 },
-        { id: 'out_31', date: '2026-08-31', type: 'OUT', category: 'Kebersihan', desc: 'Perawatan Mukena', amount: 100000 },
-        { id: 'out_32', date: '2026-08-31', type: 'OUT', category: 'Kebersihan', desc: 'Perawatan Sarung dan peci', amount: 100000 },
-        { id: 'out_33', date: '2026-08-31', type: 'OUT', category: 'Sholat Jumat', desc: 'Pelaksanaan Sholat Jumat ke 3', amount: 300000 },
-        { id: 'out_34', date: '2026-08-31', type: 'OUT', category: 'Kebersihan', desc: 'Angkut sampah', amount: 200000 },
-        { id: 'out_35', date: '2026-08-31', type: 'OUT', category: 'Utilitas', desc: 'Internet', amount: 200000 },
-        { id: 'out_36', date: '2026-08-31', type: 'OUT', category: 'Operasional', desc: 'Air Mineral Galon', amount: 200000 },
-        { id: 'out_37', date: '2026-08-31', type: 'OUT', category: 'Operasional', desc: 'BBM Genset', amount: 100000 },
-        { id: 'out_38', date: '2026-08-31', type: 'OUT', category: 'Utilitas', desc: 'Air PDAM', amount: 41000 }
-      ];
 
       const updateSuggestions = () => {
         const defaults = [
@@ -1352,13 +1479,19 @@
         try {
           const res = await fetch(DEFAULT_GSHEET_URL);
           const data = await res.json();
-          if (data.status === 'success' && Array.isArray(data.transactions) && data.transactions.length > 7) {
+          if (data.status === 'success' && Array.isArray(data.transactions)) {
+            // Filter hanya transaksi asli (bukan data contoh lama)
             const valid = data.transactions.map(sanitizeTransaction).filter(Boolean);
-            transactions = valid;
-            localStorage.setItem(STORAGE_KEY_TX, JSON.stringify(transactions));
-            updateSuggestions();
-            populateYears();
-            renderReport();
+            if (valid.length > 0) {
+              transactions = valid;
+              localStorage.setItem(STORAGE_KEY_TX, JSON.stringify(transactions));
+              updateSuggestions();
+              populateYears();
+              renderReport();
+            } else if (data.transactions.length > 0) {
+              // Bersihkan sisa data contoh lama di GSheet secara otomatis
+              pushToGoogleSheets(true);
+            }
           }
         } catch (err) {
           console.error('Pull GSheet error:', err);
@@ -1370,11 +1503,11 @@
           const rawTx = localStorage.getItem(STORAGE_KEY_TX);
           if (rawTx) {
             const parsed = JSON.parse(rawTx);
-            transactions = Array.isArray(parsed) && parsed.length > 0
+            transactions = Array.isArray(parsed)
               ? parsed.map(sanitizeTransaction).filter(Boolean)
-              : getAugustSampleTransactions();
+              : [];
           } else {
-            transactions = getAugustSampleTransactions();
+            transactions = [];
             localStorage.setItem(STORAGE_KEY_TX, JSON.stringify(transactions));
           }
 
@@ -1384,7 +1517,7 @@
             if (parsedCfg && typeof parsedCfg === 'object') {
               config.baseBalance = Number.isFinite(Number(parsedCfg.baseBalance))
                 ? Number(parsedCfg.baseBalance)
-                : 15550000;
+                : 0;
               config.ketua = parsedCfg.ketua || config.ketua;
               config.bendahara = parsedCfg.bendahara || config.bendahara;
             }
@@ -1397,13 +1530,11 @@
               legalData.sigKetua = parsedLegal.sigKetua || '';
               legalData.sigBendahara = parsedLegal.sigBendahara || '';
               legalData.stampImage = parsedLegal.stampImage || DEFAULT_STAMP_DATA_URI;
-              legalData.stampActive = typeof parsedLegal.stampActive === 'boolean'
-                ? parsedLegal.stampActive
-                : true;
+              legalData.stampActive = Boolean(parsedLegal.stampActive);
             }
           }
         } catch (err) {
-          transactions = getAugustSampleTransactions();
+          transactions = [];
         }
       };
 
@@ -1427,15 +1558,15 @@
 
       const populateYears = () => {
         const curYear = new Date().getFullYear();
-        const years = new Set([curYear - 1, curYear, curYear + 1, 2026]);
+        const years = new Set([curYear - 1, curYear, curYear + 1]);
         transactions.forEach((t) => {
           const y = parseInt(t.date.substring(0, 4), 10);
           if (Number.isFinite(y)) years.add(y);
         });
         const sorted = Array.from(years).sort((a, b) => a - b);
-        const prev = dom.filterYear.value || '2026';
+        const prev = dom.filterYear.value || String(curYear);
         dom.filterYear.innerHTML = sorted.map((y) => `<option value="${y}">${y}</option>`).join('');
-        dom.filterYear.value = sorted.includes(Number(prev)) ? String(prev) : '2026';
+        dom.filterYear.value = sorted.includes(Number(prev)) ? String(prev) : String(curYear);
       };
 
       // RENDER LAPORAN BULANAN DUA SISI
@@ -1444,6 +1575,7 @@
         const mIdx = parseInt(month, 10) - 1;
         const mName = MONTH_NAMES[mIdx] || '';
 
+        dom.kopBadgeText.textContent = 'Laporan Bulanan Kas Masjid';
         dom.reportTitleBanner.textContent = `LAPORAN PENERIMAAN DAN PENGELUARAN KAS BULAN ${mName.toUpperCase()} ${year}`;
 
         const sorted = getSortedTransactions();
@@ -1548,6 +1680,7 @@
 
       // RENDER REKAPITULASI TAHUNAN
       const renderYearlySummary = (year) => {
+        dom.kopBadgeText.textContent = 'Laporan Tahunan Kas Masjid';
         dom.reportTitleBanner.textContent = `LAPORAN REKAPITULASI PENERIMAAN DAN PENGELUARAN KAS TAHUN ${year}`;
 
         const sorted = getSortedTransactions();
@@ -1727,15 +1860,25 @@
       };
 
       const bindEvents = () => {
+        // Pasang pemisah ribuan otomatis pada kolom input angka
+        attachAutoThousandSeparator(dom.txAmount);
+        attachAutoThousandSeparator(dom.cfgSaldoAwal);
+
         dom.form.addEventListener('submit', (e) => {
           e.preventDefault();
+          const cleanAmount = parseCleanNumber(dom.txAmount.value);
+          if (cleanAmount <= 0) {
+            showToast('Masukkan jumlah nominal yang valid.');
+            return;
+          }
+
           const newTx = sanitizeTransaction({
             id: `tx_${Date.now()}`,
             date: dom.txDate.value,
             type: dom.txType.value,
             category: dom.txDesc.value,
             desc: dom.txDesc.value,
-            amount: Number(dom.txAmount.value)
+            amount: cleanAmount
           });
 
           if (!newTx) return;
@@ -1765,31 +1908,49 @@
           }
         });
 
-        // Event Tanda Tangan Digital
-        dom.btnClearSigKetua.addEventListener('click', () => {
-          padKetua.clear();
+        // Event Tombol Buka Modal Tanda Tangan
+        dom.btnOpenModalKetua.addEventListener('click', () => openSignatureModal('KETUA'));
+        dom.btnOpenModalBendahara.addEventListener('click', () => openSignatureModal('BENDAHARA'));
+        dom.btnCloseSigModal.addEventListener('click', closeSignatureModal);
+
+        // Tutup modal jika area gelap di luar kotak diketuk
+        dom.sigModalOverlay.addEventListener('click', (e) => {
+          if (e.target === dom.sigModalOverlay) closeSignatureModal();
+        });
+
+        dom.btnClearModalCanvas.addEventListener('click', () => {
+          modalPad.clear();
+        });
+
+        dom.btnSaveModalSig.addEventListener('click', () => {
+          if (modalPad.isEmpty()) {
+            showToast('Silakan goreskan tanda tangan terlebih dahulu.');
+            return;
+          }
+          const dataUrl = modalPad.toDataURL();
+          if (activeSignerRole === 'KETUA') {
+            legalData.sigKetua = dataUrl;
+          } else {
+            legalData.sigBendahara = dataUrl;
+          }
+          saveLegalData();
+          renderLegalizationAssets();
+          closeSignatureModal();
+          showToast('Tanda tangan berhasil disimpan & dipasang ke laporan!');
+        });
+
+        dom.btnRemoveSigKetua.addEventListener('click', () => {
           legalData.sigKetua = '';
           saveLegalData();
           renderLegalizationAssets();
+          showToast('Tanda tangan Ketua dihapus.');
         });
 
-        dom.btnClearSigBendahara.addEventListener('click', () => {
-          padBendahara.clear();
+        dom.btnRemoveSigBendahara.addEventListener('click', () => {
           legalData.sigBendahara = '';
           saveLegalData();
           renderLegalizationAssets();
-        });
-
-        dom.btnApplySignatures.addEventListener('click', () => {
-          if (!padKetua.isEmpty()) {
-            legalData.sigKetua = padKetua.toDataURL();
-          }
-          if (!padBendahara.isEmpty()) {
-            legalData.sigBendahara = padBendahara.toDataURL();
-          }
-          saveLegalData();
-          renderLegalizationAssets();
-          showToast('Tanda tangan berhasil dipasang secara proporsional!');
+          showToast('Tanda tangan Bendahara dihapus.');
         });
 
         // Event Cap / Stempel
@@ -1819,7 +1980,7 @@
         });
 
         dom.btnSaveConfig.addEventListener('click', () => {
-          config.baseBalance = Number(dom.cfgSaldoAwal.value) || 0;
+          config.baseBalance = parseCleanNumber(dom.cfgSaldoAwal.value);
           config.ketua = dom.cfgKetua.value.trim() || 'H. Zaenal Abidin';
           config.bendahara = dom.cfgBendahara.value.trim() || 'Lugito';
           saveConfig();
@@ -1853,7 +2014,12 @@
               const parsed = JSON.parse(String(ev.target.result));
               if (Array.isArray(parsed.transactions)) {
                 transactions = parsed.transactions.map(sanitizeTransaction).filter(Boolean);
-                if (parsed.config) Object.assign(config, parsed.config);
+                if (parsed.config) {
+                  Object.assign(config, parsed.config);
+                  dom.cfgSaldoAwal.value = config.baseBalance > 0 ? formatNumber(config.baseBalance) : '';
+                  dom.cfgKetua.value = config.ketua;
+                  dom.cfgBendahara.value = config.bendahara;
+                }
                 if (parsed.legalData) Object.assign(legalData, parsed.legalData);
                 saveConfig();
                 saveLegalData();
@@ -1869,18 +2035,16 @@
           reader.readAsText(file);
         });
 
-        dom.btnResetSample.addEventListener('click', () => {
-          if (window.confirm('Muat ulang seluruh data contoh Bulan Agustus 2026?')) {
-            transactions = getAugustSampleTransactions();
-            config.baseBalance = 15550000;
-            dom.cfgSaldoAwal.value = config.baseBalance;
+        dom.btnClearAllData.addEventListener('click', () => {
+          if (window.confirm('Kosongkan seluruh daftar transaksi dan mulai dari bersih (Rp 0)?')) {
+            transactions = [];
+            config.baseBalance = 0;
+            dom.cfgSaldoAwal.value = '';
             saveConfig();
             saveTransactions();
             populateYears();
-            dom.filterYear.value = '2026';
-            dom.filterMonth.value = '08';
             renderReport();
-            showToast('Data Agustus 2026 berhasil dimuat!');
+            showToast('Seluruh data transaksi telah dikosongkan.');
           }
         });
       };
@@ -1889,17 +2053,21 @@
         loadData();
         updateSuggestions();
 
-        padKetua = setupSignaturePad(dom.canvasSigKetua);
-        padBendahara = setupSignaturePad(dom.canvasSigBendahara);
+        modalPad = setupModalSignaturePad(dom.modalSigCanvas);
 
-        dom.txDate.value = '2026-08-31';
-        dom.cfgSaldoAwal.value = config.baseBalance;
+        const now = new Date();
+        const curYear = String(now.getFullYear());
+        const curMonth = String(now.getMonth() + 1).padStart(2, '0');
+        const todayIso = now.toISOString().slice(0, 10);
+
+        dom.txDate.value = todayIso;
+        dom.cfgSaldoAwal.value = config.baseBalance > 0 ? formatNumber(config.baseBalance) : '';
         dom.cfgKetua.value = config.ketua;
         dom.cfgBendahara.value = config.bendahara;
 
         populateYears();
-        dom.filterYear.value = '2026';
-        dom.filterMonth.value = '08';
+        dom.filterYear.value = curYear;
+        dom.filterMonth.value = curMonth;
 
         bindEvents();
         renderReport();
