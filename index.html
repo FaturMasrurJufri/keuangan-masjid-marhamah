@@ -37,21 +37,50 @@
     .app-header {
       background: linear-gradient(135deg, var(--primary), var(--primary-light));
       color: var(--white);
-      padding: 20px;
-      text-align: center;
+      padding: 18px 20px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
       margin-bottom: 24px;
     }
 
-    .app-header h1 {
-      font-size: 1.5rem;
-      margin-bottom: 4px;
+    .header-inner {
+      max-width: 1220px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .header-titles h1 {
+      font-size: 1.35rem;
+      margin-bottom: 2px;
       letter-spacing: 0.5px;
     }
 
-    .app-header p {
-      font-size: 0.9rem;
+    .header-titles p {
+      font-size: 0.85rem;
       opacity: 0.9;
+    }
+
+    .auth-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .mode-badge {
+      font-size: 0.78rem;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.2);
+      color: var(--white);
+    }
+
+    .mode-badge.admin-active {
+      background: var(--accent);
+      color: var(--dark);
     }
 
     .container {
@@ -64,9 +93,23 @@
       align-items: start;
     }
 
+    /* Jika Mode Jamaah (Bukan Admin), laporan melebar penuh 1 kolom */
+    body:not(.is-admin) .container {
+      grid-template-columns: 1fr;
+      max-width: 960px;
+    }
+
+    body:not(.is-admin) .admin-only {
+      display: none !important;
+    }
+
     @media (max-width: 940px) {
       .container {
         grid-template-columns: 1fr;
+      }
+      .header-inner {
+        flex-direction: column;
+        text-align: center;
       }
     }
 
@@ -89,23 +132,6 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
-
-    .sync-badge {
-      font-size: 0.72rem;
-      padding: 3px 8px;
-      border-radius: 12px;
-      font-weight: 700;
-    }
-
-    .sync-online {
-      background: #d1e7dd;
-      color: #0f5132;
-    }
-
-    .sync-offline {
-      background: #f8d7da;
-      color: #842029;
     }
 
     .form-group {
@@ -180,6 +206,11 @@
       color: var(--white);
     }
 
+    .btn-warning {
+      background-color: var(--accent);
+      color: var(--dark);
+    }
+
     .btn-outline {
       background-color: var(--white);
       color: var(--primary);
@@ -187,7 +218,7 @@
     }
 
     .btn-sm {
-      padding: 6px 10px;
+      padding: 6px 12px;
       font-size: 0.8rem;
     }
 
@@ -429,14 +460,23 @@
 <body>
 
   <header class="app-header no-print">
-    <h1>SISTEM INFORMASI BENDAHARA MASJID AL-MARHAMAH</h1>
-    <p>Perum Candi Gebang Permai, Wedomartani, Ngemplak, Sleman</p>
+    <div class="header-inner">
+      <div class="header-titles">
+        <h1>SISTEM INFORMASI KAS MASJID AL-MARHAMAH</h1>
+        <p>Perum Candi Gebang Permai, Wedomartani, Ngemplak, Sleman</p>
+      </div>
+      <div class="auth-bar">
+        <span id="modeBadge" class="mode-badge">Mode Jamaah (Lihat Laporan)</span>
+        <button type="button" id="btnToggleAdmin" class="btn btn-warning btn-sm">
+          Login Bendahara
+        </button>
+      </div>
+    </div>
   </header>
 
   <main class="container">
-    <!-- SIDEBAR: INPUT TRANSAKSI, CLOUD GSHEET & PENGATURAN -->
-    <aside class="sidebar no-print">
-      <!-- Form Input Transaksi -->
+    <!-- SIDEBAR KHUSUS BENDAHARA (Otomatis sembunyi jika belum login PIN) -->
+    <aside class="sidebar no-print admin-only">
       <section class="card">
         <div class="card-title">Input Transaksi Kas</div>
         <form id="transactionForm">
@@ -484,20 +524,8 @@
         </form>
       </section>
 
-      <!-- Panel Integrasi Google Sheets (Google Drive) - Disembunyikan agar otomatis tersambung -->
-      <section class="card" style="display:none;">
-        <div class="card-title">
-          <span>Google Sheets (Drive)</span>
-          <span id="syncStatusBadge" class="sync-badge sync-online">Terhubung GSheet</span>
-        </div>
-        <div class="form-group">
-          <input type="url" id="gsheetUrl" class="form-control" value="https://script.google.com/macros/s/AKfycbwyBOLhNlFc4UHa-tBdSNA5QibitDSpeDivzHurzY332J3WgU1qg8KPkPlw6uARaegtuw/exec">
-        </div>
-      </section>
-
-      <!-- Pengaturan Pejabat Tanda Tangan & Backup Data -->
       <section class="card">
-        <div class="card-title">Pengurus & Cadangan File</div>
+        <div class="card-title">Pengurus, PIN & Cadangan</div>
         <div class="form-group">
           <label for="ketuaName">Nama Ketua Takmir</label>
           <input type="text" id="ketuaName" class="form-control" placeholder="Nama Ketua Takmir">
@@ -506,8 +534,12 @@
           <label for="bendaharaName">Nama Bendahara</label>
           <input type="text" id="bendaharaName" class="form-control" placeholder="Nama Bendahara">
         </div>
+        <div class="form-group">
+          <label for="adminPinInput">PIN Login Bendahara</label>
+          <input type="password" id="adminPinInput" class="form-control" placeholder="Default: 1234">
+        </div>
         <button type="button" id="btnSaveConfig" class="btn btn-outline btn-sm" style="width:100%; margin-bottom:14px;">
-          Simpan Nama Pengurus
+          Simpan Pengaturan
         </button>
 
         <hr style="border:none; border-top:1px solid var(--border); margin: 14px 0;">
@@ -520,8 +552,8 @@
             Restore JSON
             <input type="file" id="fileRestoreJson" accept=".json" style="display:none;">
           </label>
-          <button type="button" id="btnResetDemo" class="btn btn-danger btn-sm" style="width:100%; margin-top:4px;">
-            Muat Ulang Data Contoh
+          <button type="button" id="btnClearAll" class="btn btn-danger btn-sm" style="width:100%; margin-top:4px;">
+            Kosongkan Semua Data Kas
           </button>
         </div>
       </section>
@@ -556,14 +588,17 @@
         </div>
 
         <div class="action-group">
-          <button type="button" id="btnExportJpg" class="btn btn-success">
-            Simpan JPG (Share WA)
+          <button type="button" id="btnRefreshCloud" class="btn btn-outline btn-sm">
+            Muat Ulang Data
           </button>
-          <button type="button" id="btnExportPdf" class="btn btn-primary" style="width:auto;">
+          <button type="button" id="btnExportJpg" class="btn btn-success btn-sm">
+            Simpan JPG (WA)
+          </button>
+          <button type="button" id="btnExportPdf" class="btn btn-primary btn-sm" style="width:auto;">
             Simpan PDF
           </button>
-          <button type="button" id="btnPrint" class="btn btn-outline">
-            Cetak Printout
+          <button type="button" id="btnPrint" class="btn btn-outline btn-sm">
+            Cetak
           </button>
         </div>
       </div>
@@ -630,10 +665,14 @@
     (() => {
       'use strict';
 
-      const STORAGE_KEY_TX = 'almarhamah_kas_transactions_v1';
-      const STORAGE_KEY_CFG = 'almarhamah_kas_config_v1';
-      
-      // URL Google Script Anda sudah ditanam secara permanen di sini:
+      const STORAGE_KEY_TX = 'almarhamah_kas_transactions_v3';
+      const STORAGE_KEY_CFG = 'almarhamah_kas_config_v3';
+      const SESSION_ADMIN_KEY = 'almarhamah_is_admin_session';
+      const LEGACY_KEYS = [
+        'almarhamah_kas_transactions_v1',
+        'almarhamah_kas_transactions_v2'
+      ];
+
       const DEFAULT_GSHEET_URL = 'https://script.google.com/macros/s/AKfycbwyBOLhNlFc4UHa-tBdSNA5QibitDSpeDivzHurzY332J3WgU1qg8KPkPlw6uARaegtuw/exec';
 
       const MONTH_NAMES = [
@@ -644,11 +683,14 @@
       let transactions = [];
       let config = {
         ketua: 'H. Ahmad Fauzi',
-        bendahara: 'Fatchurohman'
+        bendahara: 'Fatchurohman',
+        pin: '1234'
       };
-      let gsheetUrl = DEFAULT_GSHEET_URL;
+      let isAdmin = sessionStorage.getItem(SESSION_ADMIN_KEY) === 'true';
 
       const dom = {
+        modeBadge: document.getElementById('modeBadge'),
+        btnToggleAdmin: document.getElementById('btnToggleAdmin'),
         form: document.getElementById('transactionForm'),
         txDate: document.getElementById('txDate'),
         txType: document.getElementById('txType'),
@@ -658,13 +700,15 @@
         txAmount: document.getElementById('txAmount'),
         ketuaName: document.getElementById('ketuaName'),
         bendaharaName: document.getElementById('bendaharaName'),
+        adminPinInput: document.getElementById('adminPinInput'),
         btnSaveConfig: document.getElementById('btnSaveConfig'),
         btnBackupJson: document.getElementById('btnBackupJson'),
         fileRestoreJson: document.getElementById('fileRestoreJson'),
-        btnResetDemo: document.getElementById('btnResetDemo'),
+        btnClearAll: document.getElementById('btnClearAll'),
         reportMode: document.getElementById('reportMode'),
         filterMonth: document.getElementById('filterMonth'),
         filterYear: document.getElementById('filterYear'),
+        btnRefreshCloud: document.getElementById('btnRefreshCloud'),
         btnExportJpg: document.getElementById('btnExportJpg'),
         btnExportPdf: document.getElementById('btnExportPdf'),
         btnPrint: document.getElementById('btnPrint'),
@@ -691,6 +735,23 @@
         setTimeout(() => {
           dom.toastMsg.style.display = 'none';
         }, 3500);
+      };
+
+      const applyAdminUI = () => {
+        if (isAdmin) {
+          document.body.classList.add('is-admin');
+          dom.modeBadge.textContent = 'Mode Bendahara (Aktif)';
+          dom.modeBadge.classList.add('admin-active');
+          dom.btnToggleAdmin.textContent = 'Keluar Mode Bendahara';
+          dom.btnToggleAdmin.className = 'btn btn-danger btn-sm';
+        } else {
+          document.body.classList.remove('is-admin');
+          dom.modeBadge.textContent = 'Mode Jamaah (Lihat Laporan)';
+          dom.modeBadge.classList.remove('admin-active');
+          dom.btnToggleAdmin.textContent = 'Login Bendahara';
+          dom.btnToggleAdmin.className = 'btn btn-warning btn-sm';
+        }
+        renderReport();
       };
 
       const formatRupiah = (number) => {
@@ -730,8 +791,15 @@
 
       const sanitizeTransaction = (item) => {
         if (!item || typeof item !== 'object') return null;
-        const id = typeof item.id === 'string' && item.id.trim() !== ''
-          ? item.id.trim()
+
+        const rawId = typeof item.id === 'string' ? item.id.trim() : '';
+        // Blokir permanen semua data contoh lama yang berawalan 'demo_'
+        if (rawId.startsWith('demo_')) {
+          return null;
+        }
+
+        const id = rawId !== ''
+          ? rawId
           : `tx_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
         const date = typeof item.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(item.date)
           ? item.date
@@ -772,112 +840,58 @@
           .join('');
       };
 
-      const getDemoTransactions = () => [
-        {
-          id: 'demo_1',
-          date: '2026-10-02',
-          type: 'IN',
-          category: 'Infaq Jumat',
-          desc: 'Saldo Awal & Penerimaan Infaq Jumat Pekan 1 Oktober',
-          amount: 4500000
-        },
-        {
-          id: 'demo_2',
-          date: '2026-10-10',
-          type: 'OUT',
-          category: 'Operasional & Listrik/Air',
-          desc: 'Pembayaran Tagihan Listrik & Air PDAM Masjid',
-          amount: 650000
-        },
-        {
-          id: 'demo_3',
-          date: '2026-10-16',
-          type: 'IN',
-          category: 'Infaq Jumat',
-          desc: 'Penerimaan Kotak Amal Jumat Pekan 3 Oktober',
-          amount: 1850000
-        },
-        {
-          id: 'demo_4',
-          date: '2026-10-25',
-          type: 'OUT',
-          category: 'Bisyaroh Imam / Khatib / Marbot',
-          desc: 'Insentif Kebersihan & Marbot Bulan Oktober',
-          amount: 1200000
-        },
-        {
-          id: 'demo_5',
-          date: '2026-11-06',
-          type: 'IN',
-          category: 'Infaq Jumat',
-          desc: 'Penerimaan Kotak Amal Jumat Pekan 1 November',
-          amount: 2100000
-        },
-        {
-          id: 'demo_6',
-          date: '2026-11-08',
-          type: 'IN',
-          category: 'Sumbangan Pembangunan Parkir',
-          desc: 'Infaq khusus warga Blok C untuk kanopi tempat wudhu & parkir',
-          amount: 1000000
-        },
-        {
-          id: 'demo_7',
-          date: '2026-11-10',
-          type: 'OUT',
-          category: 'Sarana & Pemeliharaan Masjid',
-          desc: 'Servis Sound System & Pembelian Lampu LED Utama',
-          amount: 750000
-        }
-      ];
-
       const pushToGoogleSheets = async (silent = false) => {
-        if (!gsheetUrl) return;
         try {
           if (!silent) showToast('Menyimpan data ke Google Sheets...');
-          const response = await fetch(gsheetUrl, {
+          const response = await fetch(DEFAULT_GSHEET_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
             body: JSON.stringify({ transactions, config })
           });
           const resJson = await response.json();
-          if (resJson.status === 'success') {
-            if (!silent) showToast('Berhasil tersimpan di Google Sheets (Drive)!');
+          if (resJson && resJson.status === 'success') {
+            if (!silent) showToast('Tersimpan di Google Sheets!');
           } else {
-            throw new Error(resJson.message || 'Respons tidak dikenal');
+            throw new Error(resJson?.message || 'Respons tidak dikenal');
           }
         } catch (err) {
           console.error('Gagal sinkronisasi ke GSheet:', err);
-          if (!silent) showToast('Data tersimpan di HP, gagal dikirim ke GSheet.');
+          if (!silent) showToast('Tersimpan di HP, gagal kirim ke GSheet.');
         }
       };
 
       const pullFromGoogleSheets = async () => {
-        if (!gsheetUrl) return;
         try {
-          showToast('Menarik data terbaru dari Google Sheets...');
-          const response = await fetch(gsheetUrl);
+          showToast('Memuat data dari Google Sheets...');
+          const response = await fetch(`${DEFAULT_GSHEET_URL}?t=${Date.now()}`);
           const data = await response.json();
 
-          if (data.status === 'success' && Array.isArray(data.transactions)) {
-            const validTx = data.transactions.map(sanitizeTransaction).filter(Boolean);
-            if (validTx.length > 0) {
-              transactions = validTx;
-            } else {
-              transactions = getDemoTransactions();
+          if (data && data.status === 'success' && Array.isArray(data.transactions)) {
+            const rawCount = data.transactions.length;
+            const cleanedTx = data.transactions.map(sanitizeTransaction).filter(Boolean);
+
+            transactions = cleanedTx;
+            localStorage.setItem(STORAGE_KEY_TX, JSON.stringify(transactions));
+
+            // Jika di GSheet masih tersisa data demo_, otomatis bersihkan GSheet
+            if (rawCount !== cleanedTx.length) {
+              pushToGoogleSheets(true);
             }
+
             if (data.config && typeof data.config === 'object') {
               config.ketua = data.config.ketua || config.ketua;
               config.bendahara = data.config.bendahara || config.bendahara;
+              config.pin = data.config.pin || config.pin;
               dom.ketuaName.value = config.ketua;
               dom.bendaharaName.value = config.bendahara;
+              dom.adminPinInput.value = config.pin;
               localStorage.setItem(STORAGE_KEY_CFG, JSON.stringify(config));
             }
-            localStorage.setItem(STORAGE_KEY_TX, JSON.stringify(transactions));
+
             updateCategoryDatalist();
             populateYearSelect();
             renderReport();
-            showToast('Data sinkron dari Google Drive!');
+            showToast('Data terbaru siap!');
           }
         } catch (err) {
           console.error('Gagal menarik data dari GSheet:', err);
@@ -886,27 +900,31 @@
 
       const loadData = () => {
         try {
+          LEGACY_KEYS.forEach((k) => localStorage.removeItem(k));
+
           const rawTx = localStorage.getItem(STORAGE_KEY_TX);
-          if (rawTx) {
+          if (rawTx && rawTx.trim() !== '') {
             const parsed = JSON.parse(rawTx);
             transactions = Array.isArray(parsed)
               ? parsed.map(sanitizeTransaction).filter(Boolean)
-              : getDemoTransactions();
+              : [];
           } else {
-            transactions = getDemoTransactions();
-            localStorage.setItem(STORAGE_KEY_TX, JSON.stringify(transactions));
+            transactions = [];
           }
+          localStorage.setItem(STORAGE_KEY_TX, JSON.stringify(transactions));
 
           const rawCfg = localStorage.getItem(STORAGE_KEY_CFG);
-          if (rawCfg) {
+          if (rawCfg && rawCfg.trim() !== '') {
             const parsedCfg = JSON.parse(rawCfg);
             if (parsedCfg && typeof parsedCfg === 'object') {
               config.ketua = parsedCfg.ketua || config.ketua;
               config.bendahara = parsedCfg.bendahara || config.bendahara;
+              config.pin = parsedCfg.pin || config.pin;
             }
           }
         } catch (err) {
-          transactions = getDemoTransactions();
+          transactions = [];
+          localStorage.setItem(STORAGE_KEY_TX, JSON.stringify([]));
         }
       };
 
@@ -936,13 +954,13 @@
           if (Number.isFinite(yr)) years.add(yr);
         });
         const sortedYears = Array.from(years).sort((a, b) => a - b);
-        const prevSelected = dom.filterYear.value || '2026';
+        const prevSelected = dom.filterYear.value || String(currentYear);
         dom.filterYear.innerHTML = sortedYears
           .map((yr) => `<option value="${yr}">${yr}</option>`)
           .join('');
         dom.filterYear.value = sortedYears.includes(Number(prevSelected))
           ? String(prevSelected)
-          : String(sortedYears[sortedYears.length - 1]);
+          : String(currentYear);
       };
 
       const renderMonthlyReport = (year, month) => {
@@ -971,6 +989,7 @@
         let totalMasuk = 0;
         let totalKeluar = 0;
         let runningSaldo = saldoAwal;
+        const colSpanEmpty = isAdmin ? 8 : 7;
 
         dom.tableHead.innerHTML = `
           <tr>
@@ -981,7 +1000,7 @@
             <th style="width:130px;">Pemasukan (Rp)</th>
             <th style="width:130px;">Pengeluaran (Rp)</th>
             <th style="width:140px;">Saldo (Rp)</th>
-            <th class="no-export" style="width:70px;">Aksi</th>
+            ${isAdmin ? '<th class="no-export" style="width:70px;">Aksi</th>' : ''}
           </tr>
         `;
 
@@ -994,15 +1013,15 @@
             <td class="text-right">-</td>
             <td class="text-right">-</td>
             <td class="text-right">${formatRupiah(saldoAwal)}</td>
-            <td class="text-center no-export">-</td>
+            ${isAdmin ? '<td class="text-center no-export">-</td>' : ''}
           </tr>
         `;
 
         if (monthlyTx.length === 0) {
           rowsHtml += `
             <tr>
-              <td colspan="8" class="text-center" style="padding: 18px; color: var(--gray);">
-                Belum ada transaksi baru pada bulan ${monthName} ${year}. Saldo tetap melanjutkan dari bulan ${prevMonthName} ${prevYear}.
+              <td colspan="${colSpanEmpty}" class="text-center" style="padding: 18px; color: var(--gray);">
+                Belum ada transaksi pada bulan ${monthName} ${year}.
               </td>
             </tr>
           `;
@@ -1027,9 +1046,11 @@
                 <td class="text-right">${isMasuk ? formatRupiah(tx.amount) : '-'}</td>
                 <td class="text-right">${!isMasuk ? formatRupiah(tx.amount) : '-'}</td>
                 <td class="text-right" style="font-weight:600;">${formatRupiah(runningSaldo)}</td>
-                <td class="text-center no-export">
-                  <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="${escapeHtml(tx.id)}">Hapus</button>
-                </td>
+                ${isAdmin ? `
+                  <td class="text-center no-export">
+                    <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="${escapeHtml(tx.id)}">Hapus</button>
+                  </td>
+                ` : ''}
               </tr>
             `;
           });
@@ -1042,7 +1063,7 @@
             <td class="text-right">${formatRupiah(totalMasuk)}</td>
             <td class="text-right">${formatRupiah(totalKeluar)}</td>
             <td class="text-right">${formatRupiah(runningSaldo)}</td>
-            <td class="no-export"></td>
+            ${isAdmin ? '<td class="no-export"></td>' : ''}
           </tr>
         `;
 
@@ -1229,8 +1250,30 @@
       };
 
       const bindEvents = () => {
+        dom.btnToggleAdmin.addEventListener('click', () => {
+          if (isAdmin) {
+            isAdmin = false;
+            sessionStorage.removeItem(SESSION_ADMIN_KEY);
+            applyAdminUI();
+            showToast('Keluar dari Mode Bendahara.');
+          } else {
+            const inputPin = window.prompt('Masukkan PIN Bendahara:');
+            if (inputPin === null) return;
+            if (inputPin.trim() === String(config.pin)) {
+              isAdmin = true;
+              sessionStorage.setItem(SESSION_ADMIN_KEY, 'true');
+              applyAdminUI();
+              showToast('Mode Bendahara aktif!');
+            } else {
+              showToast('PIN salah!');
+            }
+          }
+        });
+
         dom.form.addEventListener('submit', (e) => {
           e.preventDefault();
+          if (!isAdmin) return;
+
           const newTx = sanitizeTransaction({
             id: `tx_${Date.now()}`,
             date: dom.txDate.value,
@@ -1257,6 +1300,7 @@
         });
 
         dom.tableBody.addEventListener('click', (e) => {
+          if (!isAdmin) return;
           const btn = e.target.closest('.btn-delete');
           if (!btn) return;
           const id = btn.getAttribute('data-id');
@@ -1269,16 +1313,19 @@
         });
 
         dom.btnSaveConfig.addEventListener('click', () => {
+          if (!isAdmin) return;
           config.ketua = dom.ketuaName.value.trim() || 'Ketua Takmir';
           config.bendahara = dom.bendaharaName.value.trim() || 'Bendahara';
+          config.pin = dom.adminPinInput.value.trim() || '1234';
           saveConfig();
           renderReport();
-          showToast('Nama pengurus diperbarui.');
+          showToast('Pengaturan & PIN berhasil disimpan.');
         });
 
         dom.reportMode.addEventListener('change', renderReport);
         dom.filterMonth.addEventListener('change', renderReport);
         dom.filterYear.addEventListener('change', renderReport);
+        dom.btnRefreshCloud.addEventListener('click', pullFromGoogleSheets);
         dom.btnExportJpg.addEventListener('click', exportToJpg);
         dom.btnExportPdf.addEventListener('click', exportToPdf);
         dom.btnPrint.addEventListener('click', () => window.print());
@@ -1294,6 +1341,7 @@
         });
 
         dom.fileRestoreJson.addEventListener('change', (e) => {
+          if (!isAdmin) return;
           const file = e.target.files && e.target.files[0];
           if (!file) return;
           const reader = new FileReader();
@@ -1314,14 +1362,14 @@
           reader.readAsText(file);
         });
 
-        dom.btnResetDemo.addEventListener('click', () => {
-          if (window.confirm('Muat ulang data simulasi Oktober-November 2026?')) {
-            transactions = getDemoTransactions();
+        dom.btnClearAll.addEventListener('click', () => {
+          if (!isAdmin) return;
+          if (window.confirm('Yakin ingin mengosongkan seluruh transaksi di HP dan Google Sheets?')) {
+            transactions = [];
             saveTransactions();
             populateYearSelect();
-            dom.filterYear.value = '2026';
-            dom.filterMonth.value = '11';
             renderReport();
+            showToast('Seluruh data transaksi telah dikosongkan!');
           }
         });
       };
@@ -1329,16 +1377,21 @@
       const init = () => {
         loadData();
         updateCategoryDatalist();
-        dom.txDate.value = new Date().toISOString().slice(0, 10);
+
+        const nowIso = new Date().toISOString().slice(0, 10);
+        const [currYear, currMonth] = nowIso.split('-');
+
+        dom.txDate.value = nowIso;
         dom.ketuaName.value = config.ketua;
         dom.bendaharaName.value = config.bendahara;
+        dom.adminPinInput.value = config.pin;
 
         populateYearSelect();
-        dom.filterYear.value = '2026';
-        dom.filterMonth.value = '11';
+        dom.filterYear.value = currYear;
+        dom.filterMonth.value = currMonth;
 
         bindEvents();
-        renderReport();
+        applyAdminUI();
         pullFromGoogleSheets();
       };
 
